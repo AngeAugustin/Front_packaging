@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 const Stocks = () => {
   const productsData = [
-    { name: "Packaging artisanal", quantity: 3 },
-    { name: "Bag packaging", quantity: 2 },
-    { name: "Rectangular packaging", quantity: 7 },
+    { name: "Packaging artisanal ", quantity: 3 },
+    { name: "Bag packaging  ", quantity: 2 },
+    { name: "Rectangular packaging  ", quantity: 7 },
   ];
 
   return (

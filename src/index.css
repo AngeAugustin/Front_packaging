@@ -1,13 +1,223 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Conteneur principal */
+.dashboard-container {
+  display: flex;
+  flex-direction: column; /* Mise en colonne pour que la barre supérieure soit au-dessus */
+  height: 80vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Barre supérieure */
+.top-bar {
+  width: 100%;
+  height: 80px; /* Hauteur de la barre supérieure */
+  background-color: white; /* Fond de la barre */
+  display: flex;
+  justify-content: flex-end; /* Aligner les éléments à droite */
+  align-items: center; /* Centrer verticalement */
+  padding-right: 5px; /* Espacement du bord droit */
 }
+
+/* Conteneur des informations de l'utilisateur */
+.user-info {
+  display: flex;
+  align-items: center; /* Aligner l'icône et le texte */
+  gap: 10px; /* Espacement entre l'icône et le texte */
+}
+
+/* Icône de l'utilisateur */
+.user-icon {
+  font-size: 2rem; /* Taille de l'icône */
+  color: #882904; /* Icône marron */
+}
+
+/* Conteneur des détails de l'utilisateur (nom et e-mail) */
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Style du nom de l'utilisateur */
+.user-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333; /* Texte noir */
+}
+
+/* Style de l'email de l'utilisateur */
+.user-email {
+  font-size: 0.9rem;
+  color: #882904; /* Texte marron foncé */
+}
+
+/* Conteneur de la barre latérale */
+.sidebar {
+  width: 200px; /* Largeur de la barre latérale */
+  padding: 30px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Assurez-vous que la barre latérale prenne toute la hauteur */
+  position: fixed; /* Fixe la barre latérale sur le côté gauche */
+  top: 0; /* Placer la barre latérale en haut */
+  left: 0; /* Placer la barre latérale à gauche */
+  z-index: 1; /* Assurez-vous que la sidebar soit au-dessus du contenu */
+}
+
+/* Conteneur du titre et de l'image dans la barre latérale */
+.sidebar-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Image centrée avant le titre */
+.sidebar-image {
+  width: 80px; /* Limite la largeur de l'image */
+  height: auto;
+  margin-bottom: 15px;
+}
+
+/* Style pour le titre Packaging */
+.sidebar h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #882904;
+}
+
+/* Style pour la navigation */
+nav {
+  width: 100%;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  padding: 15px 0;
+}
+
+/* Style des liens de menu */
+nav ul li a {
+  text-decoration: none;
+  color: #333; /* Texte noir par défaut */
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Alignement des éléments */
+  padding: 10px;
+  background-color: #fff; /* Fond blanc */
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Effet au survol */
+nav ul li a:hover {
+  background-color: #e4e4e4; /* Fond gris clair au survol */
+}
+
+/* Style pour les icônes */
+.menu-icon {
+  color: #882904; /* Icônes marron */
+  margin-right: 10px; /* Espacement entre l'icône et le texte */
+}
+
+/* Style pour les icônes au survol */
+nav ul li a:hover .menu-icon {
+  color: #882904; /* Icônes marron plus foncé au survol */
+}
+
+/* Effet au clic - bouton devient marron, texte et icône deviennent blancs */
+nav ul li a:active {
+  background-color: #882904; /* Fond marron au clic */
+  color: white; /* Texte blanc */
+}
+
+nav ul li a:active .menu-icon {
+  color: white; /* Icône devient blanche */
+}
+
+/* Lien Déconnexion centré dans la barre latérale */
+.logout-section {
+  margin-top: 50px; /* Force la section Déconnexion à se placer après les autres éléments */
+  display: flex;
+  justify-content: center; /* Centre horizontalement le lien Déconnexion */
+  align-items: center; /* Aligne verticalement le texte et l'icône */
+}
+
+.logout-link {
+  text-decoration: none;
+  color: #882904; /* Texte marron */
+  font-size: 1rem;
+  font-weight: bold; /* Texte en gras */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centre horizontalement le texte et l'icône */
+  padding: 10px 0; /* Pas de fond, juste un padding pour espacer */
+  transition: all 0.3s ease;
+}
+
+/* Style au survol du lien Déconnexion */
+.logout-link:hover {
+  color: #882904; /* Change la couleur du texte au survol */
+}
+
+/* Effet au clic - texte et icône deviennent blancs */
+.logout-link:active {
+  color: white; /* Texte devient blanc */
+}
+
+.logout-link:active .menu-icon {
+  color: white; /* Icône devient blanche */
+}
+
+/* Contenu principal, centré et espacé correctement */
+.main-content {
+  margin-left: 250px; /* Décale le contenu principal vers la droite pour éviter qu'il ne soit caché sous la sidebar */
+  padding: 20px;
+  flex: 1;
+  background-color: #f9f9f9;
+}
+
+/* Style des liens de menu */
+nav ul li a {
+  text-decoration: none;
+  color: #333; /* Texte noir par défaut */
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Alignement des éléments */
+  padding: 10px;
+  background-color: #fff; /* Fond blanc */
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Bouton actif */
+nav ul li a.active {
+  background-color: #882904; /* Fond marron pour le bouton actif */
+  color: white; /* Texte blanc */
+}
+
+nav ul li a.active .menu-icon {
+  color: white; /* Icône blanche pour le bouton actif */
+}
+
+/* Effet au survol */
+nav ul li a:hover {
+  background-color: #e4e4e4; /* Fond gris clair au survol */
+}
+
+nav ul li a:hover .menu-icon {
+  color: #882904; /* Icône marron plus foncé au survol */
+}
+
+
+
+
+

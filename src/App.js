@@ -10,6 +10,7 @@ import Stocker from './Pages/Stocker';
 import Clients from './Pages/Clients';
 import Stats from './Pages/Stats';
 import Layout from './Layout'; 
+import './index.css';
 
 function App() {
   return (

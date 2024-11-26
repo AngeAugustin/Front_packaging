@@ -10,7 +10,7 @@ const Stocks = () => {
   ];
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+    <div style={{ fontFamily: "Montserrat, sans-serif", padding: "20px" }}>
       {/* Header section with flex layout */}
       <div
         style={{

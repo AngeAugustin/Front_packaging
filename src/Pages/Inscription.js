@@ -1,7 +1,88 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Inscription = () => {
+  const navigate = useNavigate();
+
+  const [nameUser, setNameUser] = useState('');
+  const [firstnameUser, setFirstnameUser] = useState('');
+  const [emailUser, setEmailUser] = useState('');
+  const [telephoneUser, setTelephoneUser] = useState('');
+  const [passwordUser, setPasswordUser] = useState('');
+  const [confirmPasswordUser, setConfirmPasswordUser] = useState('');
+  const [Username, setUsername] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const handleInscription = async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+
+    if (!nameUser || !firstnameUser || !emailUser || !telephoneUser || !passwordUser || !confirmPasswordUser) {
+      setErrorMessage('Veuillez remplir tous les champs.');
+      setSuccessMessage('');
+      return;
+    }
+
+    if (passwordUser !== confirmPasswordUser) {
+      setErrorMessage('Les mots de passe ne correspondent pas.');
+      setSuccessMessage('');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (!emailRegex.test(emailUser)) {
+      setErrorMessage('Adresse email invalide.');
+      setSuccessMessage('');
+      return;
+    }
+
+    if (!phoneRegex.test(telephoneUser)) {
+      setErrorMessage('Numéro de téléphone invalide.');
+      setSuccessMessage('');
+      return;
+    }
+
+    try {
+      const usernameString = nameUser.slice(-5) + telephoneUser.slice(0, 5);
+      setUsername(usernameString);
+
+      const myInscription = {
+        Name_user: nameUser,
+        Firstname_user: firstnameUser,
+        Telephone_user: telephoneUser,
+        Email_user: emailUser,
+        Password_user: passwordUser, // Mot de passe inclus
+        Username: usernameString,
+      };
+
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(myInscription),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetch(`https://localhost:8000/inscriptionUser`, options);
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        setSuccessMessage('Inscription réussie !');
+        setErrorMessage('');
+        navigate('/connexion');
+      } else {
+        throw new Error('Une erreur s\'est produite');
+      }
+    } catch (error) {
+      console.log(error.message);
+      setErrorMessage('Erreur lors de l\'inscription.');
+      setSuccessMessage('');
+    }
+  };
+
   return (
     <div style={{ display: 'flex', height: '97vh', backgroundColor: '#F4F4F4' }}>
       {/* Section de gauche */}
@@ -25,11 +106,11 @@ const Inscription = () => {
             style={{ width: 90, height: 90 }}
           />
           <div>
-          <h2 style={{ marginTop: 15, fontSize: "19px" }}>Packaging</h2>
-        </div>
+            <h2 style={{ marginTop: 15, fontSize: '19px' }}>Packaging</h2>
+          </div>
         </div>
 
-        <div style={{ height: "100px" }}></div>
+        <div style={{ height: '100px' }}></div>
 
         {/* Contenu central */}
         <img
@@ -56,51 +137,67 @@ const Inscription = () => {
             src="/images/avatar.png" // Remplace par un lien pour l'icône utilisateur
             alt="Profil"
             style={{
-                width: 50,
-                height: 50, // La hauteur doit être égale à la largeur
-                borderRadius: '50%',
-                objectFit: 'cover', // Assure que l'image est bien contenue dans le cercle
-              }}
+              width: 50,
+              height: 50,
+              borderRadius: '50%',
+              objectFit: 'cover',
+            }}
           />
           <h2>Bienvenue à Packaging !</h2>
           <p>Pour vous inscrire, veuillez remplir les champs suivants.</p>
         </div>
-        <form style={{ width: '100%', maxWidth: 400 }}>
-           <input
-            type="nom"
+        <div style={{ height: '5px' }}></div>
+        <style>{keyframes}</style>
+        {errorMessage && <p style={errorStyle}>{errorMessage}</p>}
+        {successMessage && <p style={successStyle}>{successMessage}</p>}
+        <div style={{ height: '5px' }}></div>
+        <form onSubmit={handleInscription} style={{ width: '100%', maxWidth: 400 }}>
+          <input
+            type="text"
             placeholder="Nom"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={nameUser}
+            onChange={(e) => setNameUser(e.target.value)}
           />
           <input
-            type="prenom"
+            type="text"
             placeholder="Prénoms"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={firstnameUser}
+            onChange={(e) => setFirstnameUser(e.target.value)}
           />
           <input
             type="email"
             placeholder="Email"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={emailUser}
+            onChange={(e) => setEmailUser(e.target.value)}
           />
           <input
             type="tel"
             placeholder="Numéro de téléphone"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={telephoneUser}
+            onChange={(e) => setTelephoneUser(e.target.value)}
           />
           <input
             type="password"
             placeholder="Mot de passe"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={passwordUser}
+            onChange={(e) => setPasswordUser(e.target.value)}
           />
           <input
             type="password"
-            placeholder="Mot de passe à nouveau"
+            placeholder="Confirmer mot de passe"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={confirmPasswordUser}
+            onChange={(e) => setConfirmPasswordUser(e.target.value)}
           />
-          <Link to="/connexion">
           <button
             type="submit"
             style={{
-              width: '422px',
+              width: '100%',
               padding: '10px',
               backgroundColor: '#882904',
               color: '#fff',
@@ -108,15 +205,17 @@ const Inscription = () => {
               borderRadius: '5px',
               fontSize: '16px',
               cursor: 'pointer',
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
             }}
           >
             S'inscrire
           </button>
-          </Link>
         </form>
         <p style={{ marginTop: 20 }}>
-          Vous avez déjà un compte ? <a href="/connexion" style={{ color: '#882904', fontWeight: "bold" }}>Connectez-vous</a>
+          Vous avez déjà un compte ?{' '}
+          <a href="/connexion" style={{ color: '#882904', fontWeight: 'bold' }}>
+            Connectez-vous
+          </a>
         </p>
       </div>
     </div>
@@ -130,5 +229,22 @@ const inputStyle = {
   borderRadius: '5px',
   fontSize: '16px',
 };
+
+const errorStyle = {
+  color: 'red',
+  margin: '10px 0',
+};
+
+const successStyle = {
+  color: 'green',
+  margin: '10px 0',
+};
+
+const keyframes = `
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+`;
 
 export default Inscription;

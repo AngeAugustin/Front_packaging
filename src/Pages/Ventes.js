@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa"; // Icône de vente
 import { Link } from "react-router-dom";
+import { useAuth } from './AuthContext';
 
 const Ventes = () => {
-  const salesData = [
-    { name: "Packaging artisanal", date: "21/11/24", quantity: 3, total: "300 £" },
-    { name: "Bag packaging", date: "21/11/24", quantity: 2, total: "500 £" },
-    { name: "Rectangular packaging", date: "21/11/24", quantity: 7, total: "60 £" },
-  ];
+
+  const [ventes, setVentes] = useState([]);
+  const { Username } = useAuth();
+
+  useEffect(() => {
+    if (Username ) {
+      fetch(`https://localhost:8000/ventes/${Username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setVentes(data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [Username]);
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
@@ -49,19 +59,23 @@ const Ventes = () => {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
+              <th style={{ ...styles.headerCell, textAlign: "left" }}>Référence du produit</th>
               <th style={{ ...styles.headerCell, textAlign: "left" }}>Nom du produit</th>
               <th style={{ ...styles.headerCell, textAlign: "center" }}>Date de vente</th> {/* Centré */}
+              <th style={{ ...styles.headerCell, textAlign: "center" }}>Prix Unitaire</th> {/* Centré */}
               <th style={{ ...styles.headerCell, textAlign: "center" }}>Quantité vendue</th> {/* Centré */}
               <th style={{ ...styles.headerCell, textAlign: "center" }}>Montant total</th> {/* Centré */}
             </tr>
           </thead>
           <tbody>
-            {salesData.map((sale, index) => (
+            {ventes.map((vente, index) => (
               <tr key={index} style={styles.row}>
-                <td style={styles.cell}>{sale.name}</td>
-                <td style={{ ...styles.cell, textAlign: "center" }}>{sale.date}</td> {/* Centré */}
-                <td style={{ ...styles.cell, textAlign: "center" }}>{sale.quantity}</td> {/* Centré */}
-                <td style={{ ...styles.cell, textAlign: "center" }}>{sale.total}</td> {/* Centré */}
+                <td style={styles.cell}>{vente.Reference_produit}</td>
+                <td style={styles.cell}>{vente.Type_produit}</td>
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Date_vente}</td> {/* Centré */}
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit}</td> {/* Centré */}
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Qte_produit}</td> {/* Centré */}
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit*vente.Qte_produit}</td> {/* Centré */}
               </tr>
             ))}
           </tbody>

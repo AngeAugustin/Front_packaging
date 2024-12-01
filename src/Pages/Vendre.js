@@ -1,83 +1,169 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 const Vendre = () => {
+  const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        fullName: "",
-        phoneNumber: "",
-        email: "",
-        product: "",
-        unitPrice: 0,
-        quantity: 0,
-        paymentMode: "",
-      });
-    
-      const [ticket, setTicket] = useState(null);
-    
-      const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-        }));
+  const [formData, setFormData] = useState({
+    product: "",
+    unitPrice: "",
+    quantity: "",
+    paymentMode: "",
+    emailClient: "",
+    nameClient: "",
+    firstnameClient: "",
+    telephoneClient: "",
+  });
+
+  const [ticket, setTicket] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const { Username } = useAuth();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const generateTicket = () => {
+    const total = formData.unitPrice * formData.quantity;
+    setTicket({
+      productName: formData.product,
+      unitPrice: formData.unitPrice,
+      quantity: formData.quantity,
+      total: total,
+      paymentMode: formData.paymentMode,
+      nameClient: formData.nameClient,
+      firstnameClient: formData.firstnameClient,
+      emailClient: formData.emailClient,
+      telephoneClient: formData.telephoneClient,
+    });
+  };
+
+  const handleVendre = async (e) => {
+    if (e) e.preventDefault();
+
+    // Validation des champs
+    if (
+      !formData.product ||
+      !formData.quantity ||
+      !formData.unitPrice ||
+      !formData.paymentMode ||
+      !formData.nameClient ||
+      !formData.firstnameClient ||
+      !formData.emailClient ||
+      !formData.telephoneClient
+    ) {
+      setErrorMessage("Veuillez remplir tous les champs.");
+      setSuccessMessage("");
+      return;
+    }
+
+    try {
+      const codeFact = "FACT" + formData.quantity + "001";
+      const reference = "PA-AT001";
+      const customerID = formData.firstnameClient + formData.telephoneClient.slice(0, 2);
+      const totalFact = formData.unitPrice * formData.quantity;
+
+      const myVendre = {
+        Username: Username,
+        Reference_produit: reference,
+        Type_produit: formData.product,
+        Qte_produit: formData.quantity,
+        Prix_produit: formData.unitPrice,
+        Code_facture: codeFact,
+        //Mode_paiement: formData.paymentMode,
+        Date_vente: new Date().toISOString(),
+        Heure_vente: new Date().toISOString(),
+        Statut_produit: "Vendu",
+        Email_client: formData.emailClient,
+        Name_client: formData.nameClient,
+        Firstname_client: formData.firstnameClient,
+        Telephone_client: formData.telephoneClient,
+        Customer: customerID, 
+        Montant_facture: totalFact
       };
-    
-      const generateTicket = () => {
-        const total = formData.unitPrice * formData.quantity;
-        setTicket({
-          productName: formData.product,
-          customerName: formData.fullName,
-          unitPrice: formData.unitPrice,
-          quantity: formData.quantity,
-          total: total,
-          paymentMode: formData.paymentMode,
-        });
+
+      const options = {
+        method: "POST",
+        body: JSON.stringify(myVendre),
+        headers: {
+          "Content-Type": "application/json",
+        },
       };
+
+      const response = await fetch(
+        `https://localhost:8000/vendreProduit/${Username}/${reference}`,
+        options
+      );
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        setSuccessMessage("Produit vendu avec succès !");
+        setErrorMessage("");
+        navigate("/ventes");
+      } else {
+        throw new Error("Une erreur s'est produite lors de la vente.");
+      }
+    } catch (error) {
+      console.error(error.message);
+      setErrorMessage("Erreur lors de la vente du produit.");
+      setSuccessMessage("");
+    }
+  };
 
   return (
-    <div style={{ fontFamily: "Montserrat, sans-serif", padding: "20px", height: "400px" }}>
-      {/* Header section with flex layout */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+    <div style={{ fontFamily: "Montserrat, sans-serif", padding: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
         <div>
           <h2 style={{ margin: 0 }}>Ventes</h2>
           <p style={{ color: "#555", margin: 0 }}>Vendre un produit</p>
         </div>
       </div>
 
-      <div style={{ height: "5px" }}></div>
-
-      {/* Line separator with lighter color and thinner width */}
-      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div> {/* Légère et moins large */}
-
-      <div style={{ height: "10px" }}></div>
+      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div>
 
       <div style={styles.mainContainer}>
-        {/* Container gauche */}
         <div style={styles.verticalContainer}>
           <div style={styles.section}>
             <h3 style={styles.heading}>Informations du client</h3>
             <input
-              type="text"
-              name="fullName"
-              placeholder="Noms et prénoms"
-              value={formData.fullName}
+              name="nameClient"
+              placeholder="Nom du client"
+              value={formData.nameClient}
               onChange={handleChange}
               style={styles.input}
             />
             <input
-              type="text"
-              name="phoneNumber"
+              name="firstnameClient"
+              placeholder="Prénoms du client"
+              value={formData.firstnameClient}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="telephoneClient"
               placeholder="Numéro de téléphone"
-              value={formData.phoneNumber}
+              value={formData.telephoneClient}
               onChange={handleChange}
               style={styles.input}
             />
             <input
-              type="email"
-              name="email"
+              name="emailClient"
               placeholder="Adresse e-mail"
-              value={formData.email}
+              value={formData.emailClient}
               onChange={handleChange}
               style={styles.input}
             />
@@ -91,12 +177,10 @@ const Vendre = () => {
               onChange={handleChange}
               style={styles.input}
             >
-              <option value="">Sélection produit</option>
+              <option value="">Type de produit</option>
               <option value="Packaging artisanal">Packaging artisanal</option>
-              <option value="Autre produit">Autre produit</option>
             </select>
             <input
-              type="number"
               name="unitPrice"
               placeholder="Prix unitaire"
               value={formData.unitPrice}
@@ -107,6 +191,7 @@ const Vendre = () => {
               type="number"
               name="quantity"
               placeholder="Quantité"
+              min="1"
               value={formData.quantity}
               onChange={handleChange}
               style={styles.input}
@@ -114,7 +199,6 @@ const Vendre = () => {
           </div>
         </div>
 
-        {/* Container droit */}
         <div style={styles.verticalContainer}>
           <div style={styles.section}>
             <h3 style={styles.heading}>Paiement</h3>
@@ -129,116 +213,79 @@ const Vendre = () => {
               <option value="Espèces">Espèces</option>
               <option value="Virement">Virement</option>
             </select>
-            <button
-              onClick={generateTicket}
-              style={styles.button}
-              onMouseOver={(e) => (e.target.style.backgroundColor = "#7a482f")}
-              onMouseOut={(e) => (e.target.style.backgroundColor = "#9a5d3f")}
-            >
+            <button onClick={generateTicket} style={styles.button}>
               Générer un ticket
             </button>
           </div>
 
           {ticket && (
             <div style={styles.section}>
-              <h3 style={{ ...styles.heading, ...styles.ticketHeading }}>
-                Ticket
-              </h3>
+              <h3 style={styles.heading}>Ticket</h3>
               <p>Achat de : {ticket.productName}</p>
-              <p>Par : {ticket.customerName}</p>
+              <p>Par : {ticket.nameClient} {ticket.firstnameClient}</p>
+              <p>Adresse email : {ticket.emailClient} </p>
+              <p>Telephone : {ticket.telephoneClient} </p>
               <p>Prix unitaire : {ticket.unitPrice}€</p>
               <p>Quantité : {ticket.quantity}</p>
               <p>Total à payer : {ticket.total}€</p>
               <p>Paiement par : {ticket.paymentMode}</p>
-              <Link to="/ventes">
               <button
                 style={styles.button}
-                onMouseOver={(e) =>
-                  (e.target.style.backgroundColor = "#7a482f")
-                }
-                onMouseOut={(e) =>
-                  (e.target.style.backgroundColor = "#9a5d3f")
-                }
-                onClick={() => window.print()}
+                onClick={handleVendre}
               >
-                Imprimer
+                Valider la vente
               </button>
-              </Link>
-              
             </div>
           )}
         </div>
-      </div>   
-      
+      </div>
+
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
     </div>
   );
 };
 
 const styles = {
-    body: {
-      fontFamily: "Arial, sans-serif",
-      margin: 0,
-      padding: 0,
-      backgroundColor: "#f9f9f7",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-    },
-    mainContainer: {
-        display: "flex",
-        gap: "20px",
-        padding: "20px",
-        backgroundColor: "white",
-        borderRadius: "10px",
-        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-        overflowY: "auto",  // Ajout du défilement vertical
-      },
-    verticalContainer: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "20px",
-      flex: 1,
-    },
-    section: {
-      backgroundColor: "#fdfdfb",
-      borderRadius: "10px",
-      padding: "20px",
-      flex: 1,
-      boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
-    },
-    heading: {
-      marginBottom: "20px",
-      color: "black",
-    },
-    input: {
-      width: "100%",
-      marginBottom: "15px",
-      padding: "10px",
-      fontSize: "14px",
-      border: "1px solid #ddd",
-      borderRadius: "5px",
-      boxSizing: "border-box",
-    },
-    button: {
-      width: "100%",
-      backgroundColor: "#882904",
-      color: "white",
-      fontWeight: "bold",
-      padding: "10px",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-    },
-    ticket: {
-      textAlign: "center",
-      color: "#882904",
-    },
-    ticketHeading: {
-      color: "black",
-    },
-  };
-
-
+  mainContainer: {
+    display: "flex",
+    gap: "20px",
+    padding: "20px",
+    backgroundColor: "white",
+    borderRadius: "10px",
+  },
+  verticalContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+    flex: 1,
+  },
+  section: {
+    padding: "20px",
+    backgroundColor: "#fdfdfb",
+    borderRadius: "10px",
+  },
+  heading: {
+    marginBottom: "20px",
+    color: "black",
+  },
+  input: {
+    width: "100%",
+    marginBottom: "15px",
+    padding: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "5px",
+  },
+  button: {
+    width: "100%",
+    backgroundColor: "#882904",
+    color: "white",
+    fontWeight: "bold",
+    padding: "10px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+};
 
 export default Vendre;

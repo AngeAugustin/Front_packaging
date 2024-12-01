@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import { useAuth } from './Pages/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChartLine,
@@ -11,6 +12,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Layout = () => {
+
+  const { Email_user } = useAuth();
+  const { Username } = useAuth();
   return (
     <div className="dashboard-container">
       {/* Barre supérieure */}
@@ -18,8 +22,8 @@ const Layout = () => {
         <div className="user-info">
           <FontAwesomeIcon icon={faUserCircle} className="user-icon" />
           <div className="user-details">
-            <span className="user-name">John Doe</span>
-            <span className="user-email">john.doe@example.com</span>
+            <span className="user-name">{Username}</span>
+            <span className="user-email">{Email_user}</span>
           </div>
         </div>
       </header>
@@ -38,6 +42,17 @@ const Layout = () => {
         </div>
         <nav>
           <ul>
+          <li>
+            {Username === 'Admin' && (
+              <NavLink
+                to="/produits"
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                <FontAwesomeIcon icon={faChartLine} className="menu-icon" />
+                Produits
+              </NavLink>
+            )}
+          </li>
             <li>
               <NavLink
                 to="/ventes"

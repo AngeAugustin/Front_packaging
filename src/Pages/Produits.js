@@ -2,18 +2,15 @@ import React, { useState, useEffect }  from "react";
 import { FaPlus } from "react-icons/fa"; // Icône de "Plus"
 import { Link } from "react-router-dom";
 
-import { useNavigate } from 'react-router-dom';
+const Produits = () => {
 
-const Stocks = () => {
-
-  const navigate = useNavigate();
-  const [stocks, setStocks] = useState([]);
+  const [produits, setProduits] = useState([]);
 
   useEffect(() => {
-      fetch(`https://localhost:8000/stocks`)
+      fetch(`https://localhost:8000/produits`)
         .then((res) => res.json())
         .then((data) => {
-          setStocks(data);
+          setProduits(data);
         })
         .catch((err) => console.log(err));
 
@@ -31,10 +28,10 @@ const Stocks = () => {
         }}
       >
         <div>
-          <h2 style={{ margin: 0 }}>Stocks</h2>
-          <p style={{ color: "#555", margin: 0 }}>Gérer mes stocks</p>
+          <h2 style={{ margin: 0 }}>Produits</h2>
+          <p style={{ color: "#555", margin: 0 }}>Créer mes produits</p>
         </div>
-        <Link to="/stocker">
+        <Link to="/init">
         <button
           style={{
             backgroundColor: "#882904",
@@ -49,7 +46,7 @@ const Stocks = () => {
           }}
         >
           <FaPlus style={{ marginRight: "10px" }} /> 
-          Compléter le stock
+          Créer un produit
         </button>
       </Link>
         
@@ -81,49 +78,17 @@ const Stocks = () => {
                 Nom du produit
               </th>
               <th style={{ ...styles.headerCell, textAlign: "center" }}>
-                Quantité restante
-              </th>
-              <th style={{ ...styles.headerCell, textAlign: "center" }}>
-                Action
+                Date de création
               </th>
             </tr>
           </thead>
           <tbody>
-            {stocks.map((stock, index) => (
+            {produits.map((produit, index) => (
               <tr key={index} style={styles.row}>
-                <td style={styles.cell}>{stock.Reference_produit}</td>
-                <td style={styles.cell}>{stock.Type_produit}</td>
+                <td style={styles.cell}>{produit.Reference_produit}</td>
+                <td style={styles.cell}>{produit.Type_produit}</td>
                 <td style={{ ...styles.cell, textAlign: "center" }}>
-                  {stock.Qte_produit}
-                </td>
-                <td
-                  style={{
-                    ...styles.cell,
-                    textAlign: "center",
-                    display: "flex", // Flexbox pour aligner le bouton
-                    justifyContent: "center", // Centrer horizontalement
-                    alignItems: "center", // Centrer verticalement
-                  }}
-                >
-                  <Link to="/stocker">
-                  <button
-                    style={{
-                      backgroundColor: "#882904", // Couleur marron
-                      color: "white",
-                      border: "none",
-                      width: "25px", // Réduction de la largeur du cercle
-                      height: "25px", // Réduction de la hauteur du cercle
-                      borderRadius: "50%", // Cercle parfait
-                      cursor: "pointer",
-                      display: "flex", // Utilisation de flexbox pour l'alignement de l'icône
-                      justifyContent: "center", // Centrer horizontalement l'icône
-                      alignItems: "center", // Centrer verticalement l'icône
-                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    <FaPlus style={{ fontSize: "15px" }} /> {/* Icône de "Plus" plus petite */}
-                  </button>
-                  </Link>
+                  {produit.Date_entre}
                 </td>
               </tr>
             ))}
@@ -149,4 +114,4 @@ const styles = {
   },
 };
 
-export default Stocks;
+export default Produits;

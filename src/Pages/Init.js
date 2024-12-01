@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const Stocker = () => {
+const Init = () => {
   const navigate = useNavigate();
 
   const [typeProduit, setTypeProduit] = useState('');
@@ -13,7 +13,7 @@ const Stocker = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const { Username } = useAuth();
 
-  const handleStocker = async (e) => {
+  const handleInit = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
 
     if (!typeProduit || !qteProduit || !prixProduit) {
@@ -26,7 +26,7 @@ const Stocker = () => {
 
       const reference = 'PA-AT001';
 
-      const myStocker = {
+      const myInit = {
         Username: Username,
         Reference_produit: reference,
         Type_produit: typeProduit,
@@ -34,31 +34,31 @@ const Stocker = () => {
         Prix_produit: prixProduit,
         Date_entre: new Date().toISOString(), 
         Heure_entre: new Date().toISOString(),
-        Statut_produit: 'Ajouté'
+        Statut_produit: 'Initialisé'
       };
 
       const options = {
         method: 'POST',
-        body: JSON.stringify(myStocker),
+        body: JSON.stringify(myInit),
         headers: {
           'Content-Type': 'application/json',
         },
       };
 
-      const response = await fetch(`https://localhost:8000/stockerProduit/${Username}/${reference}`, options);
+      const response = await fetch(`https://localhost:8000/initProduit/${Username}`, options);
 
       if (response.ok) {
         const responseData = await response.json();
         console.log(responseData);
-        setSuccessMessage('Produit stocké avec succès !');
+        setSuccessMessage('Produit créé avec succès !');
         setErrorMessage('');
-        navigate('/stocks');
+        navigate('/produits');
       } else {
         throw new Error('Une erreur s\'est produite');
       }
     } catch (error) {
       console.log(error.message);
-      setErrorMessage('Erreur lors du stockage du produit.');
+      setErrorMessage('Erreur lors de la création du produit. Produit déjà existant.');
       setSuccessMessage('');
     }
   };
@@ -68,8 +68,8 @@ const Stocker = () => {
       {/* Header section with flex layout */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <div> 
-          <h2 style={{ margin: 0 }}>Stocks</h2>
-          <p style={{ color: "#555", margin: 0 }}>Compléter le stock</p>
+          <h2 style={{ margin: 0 }}>Produits</h2>
+          <p style={{ color: "#555", margin: 0 }}>Créer mes produits </p>
         </div>
       </div>
 
@@ -94,7 +94,7 @@ const Stocker = () => {
       >
         <div style={{ textAlign: 'center' }}>
          
-          <h3>Informations du stock à ajouter</h3>
+          <h3>Informations du produit à créer</h3>
     
         </div>
         <div style={{ height: '5px' }}></div>
@@ -102,7 +102,7 @@ const Stocker = () => {
         {errorMessage && <p style={errorStyle}>{errorMessage}</p>}
         {successMessage && <p style={successStyle}>{successMessage}</p>}
         <div style={{ height: '5px' }}></div>
-        <form onSubmit={handleStocker} style={{ width: '100%', maxWidth: 400 }}>
+        <form onSubmit={handleInit} style={{ width: '100%', maxWidth: 400 }}>
          <select
             placeholder="Type de produit"
             style={{ ...inputStyle, marginBottom: '15px', width: '420px' }}
@@ -146,7 +146,7 @@ const Stocker = () => {
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
             }}
           >
-            Compléter le stock 
+            Créer le produit
           </button>
 
         </form>
@@ -184,4 +184,4 @@ const successStyle = {
 };
 
 
-export default Stocker;
+export default Init;

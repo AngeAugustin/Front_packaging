@@ -9,6 +9,8 @@ import Stocks from './Pages/Stocks';
 import Stocker from './Pages/Stocker';
 import Clients from './Pages/Clients';
 import Stats from './Pages/Stats';
+import Produits from './Pages/Produits';
+import Init from './Pages/Init';
 import Layout from './Layout'; 
 import './index.css';
 
@@ -30,6 +32,8 @@ function App() {
             <Route path="Stocker" element={<Stocker />} />
             <Route path="Clients" element={<Clients />} />
             <Route path="Stats" element={<Stats />} />
+            <Route path="Produits" element={<Produits />} />
+            <Route path="Init" element={<Init />} />
           </Route>
         </Routes>
       </BrowserRouter>

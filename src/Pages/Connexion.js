@@ -1,7 +1,67 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const Connexion = () => {
+
+  const navigate = useNavigate();
+  const [username, setUser] = useState('');
+  const { setEmailUser } = useAuth();
+  const [passwordUser, setPasswordUser] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const { setUsername } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleConnexion = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (!username || !passwordUser) {
+      setErrorMessage('Veuillez remplir tous les champs.');
+      setSuccessMessage('');
+      setIsLoading(false);
+    } else {
+      try {
+        const myConnexion = {
+          Username: username,
+          Password_user: passwordUser,
+        };
+
+        const options = {
+          method: 'POST',
+          body: JSON.stringify(myConnexion),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
+
+        const response = await fetch('https://localhost:8000/connexionUser', options);
+
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log(responseData);
+          setUsername(responseData.Username);
+          setEmailUser(responseData.Email_user);
+
+          // Storing Username in local storage
+          localStorage.setItem('Username', responseData.Username);
+
+          navigate('/ventes');
+        } else {
+          throw new Error("Une erreur s'est produite");
+        }
+      } catch (error) {
+        console.log(error.message);
+        setErrorMessage('Informations incorrectes');
+        setSuccessMessage('');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <div style={{ display: 'flex', height: '97vh', backgroundColor: '#F4F4F4' }}>
       {/* Section de gauche */}
@@ -65,20 +125,25 @@ const Connexion = () => {
           <h2>Salut à nouveau !</h2>
           <p>Pour vous connecter, veuillez entrer vos identifiants.</p>
         </div>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
         <form style={{ width: '100%', maxWidth: 400 }}>
           <input
-            type="email"
-            placeholder="Email"
+            type="username"
+            placeholder="Nom d'utilisateur"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={username}
+            onChange={(e) => setUser(e.target.value)}
           />
           <input
             type="password"
             placeholder="Mot de passe"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={passwordUser}
+            onChange={(e) => setPasswordUser(e.target.value)}
           />
           
-          <Link to="/ventes">
-          <button
+          <button onClick={handleConnexion} disabled={isLoading}
             type="submit"
             style={{
               width: '422px',
@@ -92,9 +157,8 @@ const Connexion = () => {
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
             }}
           >
-            Se connecter
+            {isLoading ? 'Connexion en cours...' : 'Se connecter'}
           </button>
-          </Link>
         </form>
         <p style={{ marginTop: 20 }}>
           Vous n'avez pas de compte ? <a href="/inscription" style={{ color: '#882904', fontWeight: "bold" }}>Inscrivez-vous</a>

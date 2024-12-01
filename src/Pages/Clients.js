@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const Clients = () => {
-  const clientsData = [
-    { name: "FACHEHOUN Ange", telephone: "54362288", mail: "angeaugustin@gmail.com", point: 45},
-    { name: "KOLA Wolé", telephone: "90876655", mail: "kolawole@gmail.com", point: 200},
-    { name: "ZIRA Mora", telephone: "47098877", mail: "morazika@gmail.com", point: 350},
-    { name: "DIDI Ken", telephone: "97659001", mail: "kendidi@gmail.com", point: 700},
-  ];
+
+  const [clients, setClients] = useState([]);
+
+  useEffect(() => {
+      fetch(`https://localhost:8000/clients`)
+        .then((res) => res.json())
+        .then((data) => {
+          setClients(data);
+        })
+        .catch((err) => console.log(err));
+    
+  }, );
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
@@ -59,17 +65,17 @@ const Clients = () => {
             </tr>
           </thead>
           <tbody>
-            {clientsData.map((sale, index) => (
+            {clients.map((client, index) => (
               <tr key={index} style={styles.row}>
-                <td style={styles.cell}>{sale.name}</td>
+                <td style={styles.cell}>{client.Name_client} {client.Firstname_client}</td>
                 <td style={{ ...styles.cell, textAlign: "center" }}>
-                  {sale.telephone}
+                  {client.Telephone_client}
                 </td>
                 <td style={{ ...styles.cell, textAlign: "center" }}>
-                  {sale.mail}
+                  {client.Email_client}
                 </td>
                 <td style={{ ...styles.cell, textAlign: "center" }}>
-                  {sale.point}
+                  { }
                 </td>
               </tr>
             ))}

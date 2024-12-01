@@ -16,13 +16,44 @@ const Vendre = () => {
     telephoneClient: "",
   });
 
+  const [referenceProduit, setReferenceProduit] = useState("");
   const [ticket, setTicket] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const { Username } = useAuth();
 
+  // Fonction pour récupérer les détails du produit via l'API
+  const fetchProduitDetails = async (typeProduit) => {
+    try {
+      const response = await fetch(
+        `https://localhost:8000/search/${typeProduit}?Type_produit=${typeProduit}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setFormData((prevData) => ({
+          ...prevData,
+          product: typeProduit,
+          unitPrice: data.Prix_produit, // Mettre à jour le prix unitaire
+        }));
+        setReferenceProduit(data.Reference_produit); // Récupérer la référence du produit
+      } else {
+        console.error("Erreur lors de la récupération des données du produit.");
+        setErrorMessage("Produit introuvable ou problème avec l'API.");
+      }
+    } catch (error) {
+      console.error("Erreur réseau :", error);
+      setErrorMessage("Une erreur s'est produite lors de la connexion à l'API.");
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Si le Type_produit change, récupérer les données depuis l'API
+    if (name === "product" && value) {
+      fetchProduitDetails(value);
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -65,18 +96,17 @@ const Vendre = () => {
 
     try {
       const codeFact = "FACT" + formData.quantity + "001";
-      const reference = "PA-AT001";
-      const customerID = formData.firstnameClient + formData.telephoneClient.slice(0, 2);
+      const customerID =
+        formData.firstnameClient + formData.telephoneClient.slice(0, 5);
       const totalFact = formData.unitPrice * formData.quantity;
 
       const myVendre = {
         Username: Username,
-        Reference_produit: reference,
+        Reference_produit: referenceProduit, // Utilisation de la référence récupérée
         Type_produit: formData.product,
         Qte_produit: formData.quantity,
         Prix_produit: formData.unitPrice,
         Code_facture: codeFact,
-        //Mode_paiement: formData.paymentMode,
         Date_vente: new Date().toISOString(),
         Heure_vente: new Date().toISOString(),
         Statut_produit: "Vendu",
@@ -84,8 +114,8 @@ const Vendre = () => {
         Name_client: formData.nameClient,
         Firstname_client: formData.firstnameClient,
         Telephone_client: formData.telephoneClient,
-        Customer: customerID, 
-        Montant_facture: totalFact
+        Customer: customerID,
+        Montant_facture: totalFact,
       };
 
       const options = {
@@ -97,7 +127,7 @@ const Vendre = () => {
       };
 
       const response = await fetch(
-        `https://localhost:8000/vendreProduit/${Username}/${reference}`,
+        `https://localhost:8000/vendreProduit/${Username}/${referenceProduit}`,
         options
       );
 
@@ -179,6 +209,7 @@ const Vendre = () => {
             >
               <option value="">Type de produit</option>
               <option value="Packaging artisanal">Packaging artisanal</option>
+              <option value="Packaging moderne">Packaging moderne</option>
             </select>
             <input
               name="unitPrice"
@@ -186,6 +217,7 @@ const Vendre = () => {
               value={formData.unitPrice}
               onChange={handleChange}
               style={styles.input}
+              disabled // Désactiver car le prix vient de l'API
             />
             <input
               type="number"

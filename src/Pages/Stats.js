@@ -1,8 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Grid, Typography } from '@mui/material';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { useAuth } from './AuthContext';
+
 
 const Stats = () => {
+  const { Username } = useAuth();
+  const [stats, setStats] = useState({
+    totalVentes: 0,
+    totalStock: 0,
+    totalClients: 0,
+  });
+
+  useEffect(() => {
+    fetch(`https://localhost:8000/stats/${Username}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setStats({
+          totalVentes: data.totalVentes,
+          totalStock: data.totalStock,
+          totalClients: data.totalClients,
+        });
+      })
+      .catch((err) => console.log(err));
+  
+}, );
+
   // Données pour les graphiques
   const salesData = [
     { name: 'LUN', Jour: 30, Soirée: 10 },
@@ -28,25 +51,25 @@ const Stats = () => {
         <Grid item xs={3}>
           <Card style={{ ...styles.card, ...styles.brownCard }}>
             <Typography variant="h6">Ventes du jour</Typography>
-            <Typography variant="h3">456</Typography>
+            <Typography variant="h3">{stats.totalVentes}</Typography>
           </Card>
         </Grid>
         <Grid item xs={3}>
           <Card style={{ ...styles.card, ...styles.whiteCard }}>
             <Typography variant="h6">Stocks</Typography>
-            <Typography variant="h3">3452</Typography>
+            <Typography variant="h3">{stats.totalStock}</Typography>
           </Card>
         </Grid>
         <Grid item xs={3}>
           <Card style={{ ...styles.card, ...styles.brownCard }}>
             <Typography variant="h6">Clients fidèles</Typography>
-            <Typography variant="h3">2309</Typography>
+            <Typography variant="h3">{stats.totalClients}</Typography>
           </Card>
         </Grid>
         <Grid item xs={3}>
           <Card style={{ ...styles.card, ...styles.whiteCard }}>
             <Typography variant="h6">Notes</Typography>
-            <Typography variant="h3">4,5 ★</Typography>
+            <Typography variant="h3">2,5 ★</Typography>
           </Card>
         </Grid>
 
@@ -83,10 +106,10 @@ const Stats = () => {
               </Pie>
             </PieChart>
             <div style={styles.pieChartDetails}>
-              <p>08h : 28 ventes</p>
-              <p>10h : 163 ventes</p>
-              <p>13h : 328 ventes</p>
-              <p>16h : 81 ventes</p>
+              <p>08h : 00 ventes</p>
+              <p>10h : 00 ventes</p>
+              <p>13h : 00 ventes</p>
+              <p>16h : 00 ventes</p>
             </div>
           </Card>
         </Grid>

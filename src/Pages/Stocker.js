@@ -8,10 +8,32 @@ const Stocker = () => {
   const [typeProduit, setTypeProduit] = useState('');
   const [qteProduit, setQteProduit] = useState('');
   const [prixProduit, setPrixProduit] = useState('');
+  const [referenceProduit, setReferenceProduit] = useState('');
 
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const { Username } = useAuth();
+
+  // Nouvelle fonction pour récupérer les détails du produit
+  const fetchProductDetails = async (type) => {
+    try {
+      const response = await fetch(`https://localhost:8000/search/${type}?Type_produit=${type}`);
+      if (response.ok) {
+        const data = await response.json();
+        setReferenceProduit(data.Reference_produit); // Met à jour la référence
+        setPrixProduit(data.Prix_produit); // Met à jour le prix
+        setErrorMessage('');
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Erreur lors de la récupération des données.");
+        setReferenceProduit('');
+        setPrixProduit('');
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Erreur de connexion avec le serveur.");
+    }
+  };
 
   const handleStocker = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
@@ -23,12 +45,9 @@ const Stocker = () => {
     }
 
     try {
-
-      const reference = 'PA-AT001';
-
       const myStocker = {
         Username: Username,
-        Reference_produit: reference,
+        Reference_produit: referenceProduit,
         Type_produit: typeProduit,
         Qte_produit: qteProduit,
         Prix_produit: prixProduit,
@@ -45,7 +64,7 @@ const Stocker = () => {
         },
       };
 
-      const response = await fetch(`https://localhost:8000/stockerProduit/${Username}/${reference}`, options);
+      const response = await fetch(`https://localhost:8000/stockerProduit/${Username}/${referenceProduit}`, options);
 
       if (response.ok) {
         const responseData = await response.json();
@@ -63,9 +82,16 @@ const Stocker = () => {
     }
   };
 
+  const handleTypeChange = (e) => {
+    const selectedType = e.target.value;
+    setTypeProduit(selectedType);
+    if (selectedType) {
+      fetchProductDetails(selectedType); // Récupère les détails du produit
+    }
+  };
+
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px", height: "400px" }}>
-      {/* Header section with flex layout */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <div> 
           <h2 style={{ margin: 0 }}>Stocks</h2>
@@ -74,13 +100,9 @@ const Stocker = () => {
       </div>
 
       <div style={{ height: "5px" }}></div>
-
-      {/* Line separator with lighter color and thinner width */}
-      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div> {/* Légère et moins large */}
-
+      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div> 
       <div style={{ height: "10px" }}></div>
 
-      {/* Section de droite */}
       <div
         style={{
           flex: 1,
@@ -93,9 +115,7 @@ const Stocker = () => {
         }}
       >
         <div style={{ textAlign: 'center' }}>
-         
           <h3>Informations du stock à ajouter</h3>
-    
         </div>
         <div style={{ height: '5px' }}></div>
         <style>{keyframes}</style>
@@ -107,30 +127,31 @@ const Stocker = () => {
             placeholder="Type de produit"
             style={{ ...inputStyle, marginBottom: '15px', width: '420px' }}
             value={typeProduit}
-            onChange={(e) => setTypeProduit(e.target.value)}
-            >
+            onChange={handleTypeChange} // Récupère les détails
+          >
             <option value="" disabled selected>
                 Type de produit
             </option>
             <option value="Packaging artisanal">Packaging artisanal</option>
+            <option value="Packaging moderne">Packaging moderne</option>
           </select>
 
           <input
-            type="prix"
+            type="text"
             placeholder="Prix unitaire"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
-            value={prixProduit}
-            onChange={(e) => setPrixProduit(e.target.value)}
+            value={prixProduit} // Rempli automatiquement
+            readOnly // Empêche la modification
           />
           <input
             type="number"
             placeholder="Quantité"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
-            min="1" // Définit la quantité minimale
-            step="1" // Incrémente par 1
+            min="1"
+            step="1"
             value={qteProduit}
             onChange={(e) => setQteProduit(e.target.value)}
-            />
+          />
           
           <button
             type="submit"
@@ -150,23 +171,20 @@ const Stocker = () => {
           </button>
 
         </form>
-        
       </div>
-
-      
     </div>
   );
 };
 
 const inputStyle = {
-    flex: 1,
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    fontSize: '16px',
-  };
+  flex: 1,
+  padding: '10px',
+  border: '1px solid #ddd',
+  borderRadius: '5px',
+  fontSize: '16px',
+};
 
-  const keyframes = `
+const keyframes = `
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -182,6 +200,5 @@ const successStyle = {
   color: 'green',
   margin: '10px 0',
 };
-
 
 export default Stocker;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,10 +8,35 @@ const Init = () => {
   const [typeProduit, setTypeProduit] = useState('');
   const [qteProduit, setQteProduit] = useState('');
   const [prixProduit, setPrixProduit] = useState('');
+  const [referenceProduit, setReferenceProduit] = useState('');
+  const [usedReferences, setUsedReferences] = useState(new Set());
 
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const { Username } = useAuth();
+
+  // Fonction pour générer une référence unique
+  const generateUniqueReference = (typeProduit) => {
+    const prefix = typeProduit === "Packaging artisanal" ? "PA-AT" : "PA-MO";
+    let randomNumber;
+
+    // Assurez-vous que le numéro est unique
+    do {
+      randomNumber = Math.floor(100 + Math.random() * 900); // Génère un nombre entre 100 et 999
+    } while (usedReferences.has(randomNumber));
+
+    setUsedReferences((prev) => new Set(prev).add(randomNumber)); // Ajoute le numéro à l'ensemble
+
+    return `${prefix}-${randomNumber}`;
+  };
+
+  // Met à jour la référence automatiquement lorsqu’un type de produit est sélectionné
+  useEffect(() => {
+    if (typeProduit) {
+      const newReference = generateUniqueReference(typeProduit);
+      setReferenceProduit(newReference);
+    }
+  }, [typeProduit]);
 
   const handleInit = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
@@ -23,12 +48,9 @@ const Init = () => {
     }
 
     try {
-
-      const reference = 'PA-AT001';
-
       const myInit = {
         Username: Username,
-        Reference_produit: reference,
+        Reference_produit: referenceProduit,
         Type_produit: typeProduit,
         Qte_produit: qteProduit,
         Prix_produit: prixProduit,
@@ -65,7 +87,7 @@ const Init = () => {
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px", height: "400px" }}>
-      {/* Header section with flex layout */}
+      {/* Header section */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <div> 
           <h2 style={{ margin: 0 }}>Produits</h2>
@@ -73,14 +95,9 @@ const Init = () => {
         </div>
       </div>
 
-      <div style={{ height: "5px" }}></div>
+      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div>
 
-      {/* Line separator with lighter color and thinner width */}
-      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div> {/* Légère et moins large */}
-
-      <div style={{ height: "10px" }}></div>
-
-      {/* Section de droite */}
+      {/* Section principale */}
       <div
         style={{
           flex: 1,
@@ -92,31 +109,32 @@ const Init = () => {
           padding: '20px',
         }}
       >
-        <div style={{ textAlign: 'center' }}>
-         
-          <h3>Informations du produit à créer</h3>
-    
-        </div>
-        <div style={{ height: '5px' }}></div>
-        <style>{keyframes}</style>
+        <h3>Informations du produit à créer</h3>
         {errorMessage && <p style={errorStyle}>{errorMessage}</p>}
         {successMessage && <p style={successStyle}>{successMessage}</p>}
-        <div style={{ height: '5px' }}></div>
         <form onSubmit={handleInit} style={{ width: '100%', maxWidth: 400 }}>
-         <select
-            placeholder="Type de produit"
+          <select
             style={{ ...inputStyle, marginBottom: '15px', width: '420px' }}
             value={typeProduit}
             onChange={(e) => setTypeProduit(e.target.value)}
-            >
+          >
             <option value="" disabled selected>
-                Type de produit
+              Type de produit
             </option>
             <option value="Packaging artisanal">Packaging artisanal</option>
+            <option value="Packaging moderne">Packaging moderne</option>
           </select>
 
           <input
-            type="prix"
+            type="text"
+            placeholder="Référence du produit"
+            style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+            value={referenceProduit}
+            readOnly
+          />
+
+          <input
+            type="text"
             placeholder="Prix unitaire"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
             value={prixProduit}
@@ -126,12 +144,12 @@ const Init = () => {
             type="number"
             placeholder="Quantité"
             style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
-            min="1" // Définit la quantité minimale
-            step="1" // Incrémente par 1
+            min="1"
+            step="1"
             value={qteProduit}
             onChange={(e) => setQteProduit(e.target.value)}
-            />
-          
+          />
+
           <button
             type="submit"
             style={{
@@ -148,30 +166,19 @@ const Init = () => {
           >
             Créer le produit
           </button>
-
         </form>
-        
       </div>
-
-      
     </div>
   );
 };
 
 const inputStyle = {
-    flex: 1,
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    fontSize: '16px',
-  };
-
-  const keyframes = `
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-`;
+  flex: 1,
+  padding: '10px',
+  border: '1px solid #ddd',
+  borderRadius: '5px',
+  fontSize: '16px',
+};
 
 const errorStyle = {
   color: 'red',
@@ -182,6 +189,5 @@ const successStyle = {
   color: 'green',
   margin: '10px 0',
 };
-
 
 export default Init;

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 const Vendre = () => {
   const navigate = useNavigate();
 
+  const [currentStep, setCurrentStep] = useState(1); // Étape actuelle
   const [formData, setFormData] = useState({
     product: "",
     unitPrice: "",
@@ -22,7 +26,6 @@ const Vendre = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const { Username } = useAuth();
 
-  // Fonction pour récupérer les détails du produit via l'API
   const fetchProduitDetails = async (typeProduit) => {
     try {
       const response = await fetch(
@@ -33,9 +36,9 @@ const Vendre = () => {
         setFormData((prevData) => ({
           ...prevData,
           product: typeProduit,
-          unitPrice: data.Prix_produit, // Mettre à jour le prix unitaire
+          unitPrice: data.Prix_produit,
         }));
-        setReferenceProduit(data.Reference_produit); // Récupérer la référence du produit
+        setReferenceProduit(data.Reference_produit);
       } else {
         console.error("Erreur lors de la récupération des données du produit.");
         setErrorMessage("Produit introuvable ou problème avec l'API.");
@@ -49,7 +52,6 @@ const Vendre = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Si le Type_produit change, récupérer les données depuis l'API
     if (name === "product" && value) {
       fetchProduitDetails(value);
     }
@@ -60,8 +62,20 @@ const Vendre = () => {
     }));
   };
 
+  const generateUniqueCodeFact = () => {
+    const randomNum = Math.floor(10000 + Math.random() * 90000); // Générer un code unique
+    return `FACT00${randomNum}`;
+  };
+
   const generateTicket = () => {
+    const codeFact = generateUniqueCodeFact();
     const total = formData.unitPrice * formData.quantity;
+    const currentDate = new Date().toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
     setTicket({
       productName: formData.product,
       unitPrice: formData.unitPrice,
@@ -72,13 +86,16 @@ const Vendre = () => {
       firstnameClient: formData.firstnameClient,
       emailClient: formData.emailClient,
       telephoneClient: formData.telephoneClient,
+      codeFact: codeFact,
+      date: currentDate,
     });
+
+    setCurrentStep(3); // Passer à l'étape 3 après génération du ticket
   };
 
   const handleVendre = async (e) => {
     if (e) e.preventDefault();
 
-    // Validation des champs
     if (
       !formData.product ||
       !formData.quantity ||
@@ -95,14 +112,14 @@ const Vendre = () => {
     }
 
     try {
-      const codeFact = "FACT" + formData.quantity + "001";
+      const codeFact = generateUniqueCodeFact();
       const customerID =
         formData.firstnameClient + formData.telephoneClient.slice(0, 5);
       const totalFact = formData.unitPrice * formData.quantity;
 
       const myVendre = {
         Username: Username,
-        Reference_produit: referenceProduit, // Utilisation de la référence récupérée
+        Reference_produit: referenceProduit,
         Type_produit: formData.product,
         Qte_produit: formData.quantity,
         Prix_produit: formData.unitPrice,
@@ -136,6 +153,8 @@ const Vendre = () => {
         console.log(responseData);
         setSuccessMessage("Produit vendu avec succès !");
         setErrorMessage("");
+        // Générer et télécharger le PDF
+        generatePDF();
         navigate("/ventes");
       } else {
         throw new Error("Une erreur s'est produite lors de la vente.");
@@ -147,26 +166,129 @@ const Vendre = () => {
     }
   };
 
+  const generatePDF = () => {
+    if (!ticket) return;
+  
+    const doc = new jsPDF();
+  
+    // Informations de l'entreprise (fixées)
+    const entreprise = {
+      nom: 'PACKAGING STORE',
+      adresse: '123 Rue de l\'Entrepreneur',
+      ville: 'Paris',
+      pays: 'France',
+      tel: '+33 1 23 45 67 89',
+      email: 'contact@packaging.store',
+    };
+  
+    // Logo de l'entreprise (exemple avec un lien vers une image)
+    const logoUrl = '/images/logo.png'; // Remplacez par votre URL de logo
+    doc.addImage(logoUrl, 'JPEG', 20, 10, 30, 30); // Ajoute le logo
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text(`PACKAGING`, 24, 45);
+    doc.setFont('helvetica', 'normal');
+  
+    // Informations de la facture
+    const facture = {
+      numero: ticket.codeFact,
+      date: ticket.date,
+    };
+  
+    // Définir la police en gras pour les titres
+    doc.setFont('helvetica', 'bold');
+
+    // Titres en gras
+    doc.text(`Facture de vente N°:`, 100, 20);
+    doc.text(`Date:`, 100, 30);
+    doc.text(`Vendeur:`, 100, 40);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Nos informations`, 20, 60);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Entreprise:`, 20, 70);
+    doc.text(`Adresse:`, 20, 80);
+    doc.text(`Ville:`, 20, 90);
+    doc.text(`Téléphone:`, 20, 100);
+    doc.text(`Email:`, 20, 110);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Informations du client`, 115, 60);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Client:`, 115, 70);
+    doc.text(`Email:`, 115, 80);
+    doc.text(`Téléphone:`, 115, 90);
+
+    // Revenir à la police normale pour les valeurs
+    doc.setFont('helvetica', 'normal');
+
+    // Valeurs associées aux titres
+    doc.text(`${facture.numero}`, 140, 20);
+    doc.text(`${facture.date}`, 140, 30);
+    doc.text(`${Username}`, 140, 40);
+
+    doc.text(`${entreprise.nom}`, 45, 70);
+    doc.text(`${entreprise.adresse}`, 45, 80);
+    doc.text(`${entreprise.ville}, ${entreprise.pays}`, 45, 90);
+    doc.text(`${entreprise.tel}`, 45, 100);
+    doc.text(`${entreprise.email}`, 45, 110);
+
+    doc.text(`${ticket.firstnameClient} ${ticket.nameClient}`, 140, 70);
+    doc.text(`${ticket.emailClient}`, 140, 80);
+    doc.text(`${ticket.telephoneClient}`, 140, 90);
+
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Informations de la vente`, 82, 140);
+    doc.setFont('helvetica', 'normal');
+  
+    // Tableau des produits
+    const tableColumn = ["Nom du produit", "Quantité", "Prix unitaire", "Montant total", "Mode de paiement"];
+    const tableRows = [
+      [ticket.productName, ticket.quantity, `${ticket.unitPrice}€`, `${ticket.total}€`, ticket.paymentMode]
+    ];
+  
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 150,
+      startX: 30,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [136, 41, 4], // Couleur marron (en RGB) pour la première ligne (header)
+        textColor: [255, 255, 255], // Texte en blanc pour le header
+        fontStyle: 'bold'          // Texte en gras pour la première ligne
+      },
+    });
+
+    doc.text(`Merci pour votre achat !`, 80, 280);
+  
+    // Sauvegarde du PDF
+    doc.save(`Facture de vente_${ticket.codeFact}.pdf`);
+  };
+  
+
+  const nextStep = () => {
+    setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));
+  };
+
+  const prevStep = () => {
+    setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
+  };
+
   return (
-    <div style={{ fontFamily: "Montserrat, sans-serif", padding: "20px" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
-        <div>
+    <div style={{ fontFamily: "Montserrat, sans-serif", padding: "20px", height: "400px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <div> 
           <h2 style={{ margin: 0 }}>Ventes</h2>
-          <p style={{ color: "#555", margin: 0 }}>Vendre un produit</p>
+          <p style={{ color: "#555", margin: 0 }}>Vendre un produit </p>
         </div>
       </div>
 
       <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div>
 
-      <div style={styles.mainContainer}>
-        <div style={styles.verticalContainer}>
+      <div style={styles.container}>
+        {currentStep === 1 && (
           <div style={styles.section}>
             <h3 style={styles.heading}>Informations du client</h3>
             <input
@@ -197,10 +319,16 @@ const Vendre = () => {
               onChange={handleChange}
               style={styles.input}
             />
+            <div style={{ height: "5px" }}></div>
+            <button onClick={nextStep} style={styles.grayButton}>
+              Suivant
+            </button>
           </div>
+        )}
 
+        {currentStep === 2 && (
           <div style={styles.section}>
-            <h3 style={styles.heading}>Choix du produit</h3>
+            <h3 style={styles.heading}>Choix du produit et Paiement</h3>
             <select
               name="product"
               value={formData.product}
@@ -217,7 +345,7 @@ const Vendre = () => {
               value={formData.unitPrice}
               onChange={handleChange}
               style={styles.input}
-              disabled // Désactiver car le prix vient de l'API
+              disabled
             />
             <input
               type="number"
@@ -228,12 +356,6 @@ const Vendre = () => {
               onChange={handleChange}
               style={styles.input}
             />
-          </div>
-        </div>
-
-        <div style={styles.verticalContainer}>
-          <div style={styles.section}>
-            <h3 style={styles.heading}>Paiement</h3>
             <select
               name="paymentMode"
               value={formData.paymentMode}
@@ -245,78 +367,111 @@ const Vendre = () => {
               <option value="Espèces">Espèces</option>
               <option value="Virement">Virement</option>
             </select>
-            <button onClick={generateTicket} style={styles.button}>
-              Générer un ticket
-            </button>
+            <div style={{ height: "5px" }}></div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <button onClick={prevStep} style={styles.grayButton}>
+                Précédent
+              </button>
+              <button onClick={generateTicket} style={styles.grayButton}>
+                Suivant
+              </button>
+            </div>
           </div>
+        )}
 
-          {ticket && (
-            <div style={styles.section}>
-              <h3 style={styles.heading}>Ticket</h3>
-              <p>Achat de : {ticket.productName}</p>
-              <p>Par : {ticket.nameClient} {ticket.firstnameClient}</p>
-              <p>Adresse email : {ticket.emailClient} </p>
-              <p>Telephone : {ticket.telephoneClient} </p>
-              <p>Prix unitaire : {ticket.unitPrice}€</p>
-              <p>Quantité : {ticket.quantity}</p>
-              <p>Total à payer : {ticket.total}€</p>
-              <p>Paiement par : {ticket.paymentMode}</p>
-              <button
-                style={styles.button}
-                onClick={handleVendre}
-              >
+        {currentStep === 3 && ticket && (
+          <div style={styles.section}>
+            <h3 style={styles.heading}>Ticket de vente</h3>
+            <div style={styles.ticketContainer}>
+              <div>
+                <p><strong>Code Facture :</strong> {ticket.codeFact}</p>
+                <p><strong>Produit :</strong> {ticket.productName}</p>
+                <p><strong>Date :</strong> {ticket.date}</p>
+              </div>
+              <div>
+                <p><strong>Nom :</strong> {ticket.nameClient}</p>
+                <p><strong>Prénom :</strong> {ticket.firstnameClient}</p>
+                <p><strong>Email :</strong> {ticket.emailClient}</p>
+                <p><strong>Téléphone :</strong> {ticket.telephoneClient}</p>
+              </div>
+              <div>
+                <p><strong>Prix unitaire :</strong> {ticket.unitPrice}€</p>
+                <p><strong>Quantité :</strong> {ticket.quantity}</p>
+                <p><strong>Total :</strong> {ticket.total}€</p>
+                <p><strong>Paiement :</strong> {ticket.paymentMode}</p>
+              </div>
+              {/* Message d'erreur et de succès */}
+        <div style={styles.messageContainer}>
+          {errorMessage && <p style={styles.errorMessage}>{errorMessage}</p>}
+          {successMessage && <p style={styles.successMessage}>{successMessage}</p>}
+        </div>
+
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <button onClick={prevStep} style={styles.grayButton}>
+                Précédent
+              </button>
+              <button onClick={handleVendre} style={styles.marronButton}>
                 Valider la vente
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
     </div>
   );
 };
 
 const styles = {
-  mainContainer: {
-    display: "flex",
-    gap: "20px",
-    padding: "20px",
-    backgroundColor: "white",
-    borderRadius: "10px",
-  },
-  verticalContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "20px",
-    flex: 1,
-  },
-  section: {
-    padding: "20px",
-    backgroundColor: "#fdfdfb",
-    borderRadius: "10px",
-  },
-  heading: {
-    marginBottom: "20px",
-    color: "black",
-  },
-  input: {
-    width: "100%",
-    marginBottom: "15px",
-    padding: "10px",
-    border: "1px solid #ddd",
-    borderRadius: "5px",
-  },
-  button: {
-    width: "100%",
-    backgroundColor: "#882904",
-    color: "white",
+  errorMessage: {
+    color: "red",
     fontWeight: "bold",
-    padding: "10px",
+  },
+  successMessage: {
+    color: "green",
+    fontWeight: "bold",
+  },
+  container: {
+    backgroundColor: "white",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  },
+  section: { marginBottom: "0px" },
+  heading: { marginBottom: "10px" },
+  input: { width: "100%", padding: "10px", margin: "5px 0", fontSize: "16px", borderRadius: "5px", border: "1px solid #ddd" },
+  button: {
+    backgroundColor: "#4CAF50",
+    color: "white",
+    padding: "10px 15px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+    fontSize: "16px",
+  },
+  grayButton: {
+    backgroundColor: "#888",
+    color: "white",
+    padding: "10px 15px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
+  },
+  marronButton: {
+    backgroundColor: "#882904",
+    color: "white",
+    padding: "10px 15px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
+  },
+  ticketContainer: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: "20px",
+    marginBottom: "20px",
   },
 };
 

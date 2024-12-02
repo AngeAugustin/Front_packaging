@@ -45,8 +45,6 @@ const Inscription = () => {
     }
 
     try {
-      const usernameString = nameUser.slice(-5) + telephoneUser.slice(0, 5);
-      setUsername(usernameString);
 
       const myInscription = {
         Name_user: nameUser,
@@ -54,7 +52,7 @@ const Inscription = () => {
         Telephone_user: telephoneUser,
         Email_user: emailUser,
         Password_user: passwordUser, // Mot de passe inclus
-        Username: usernameString,
+        Username: firstnameUser,
       };
 
       const options = {
@@ -78,7 +76,7 @@ const Inscription = () => {
       }
     } catch (error) {
       console.log(error.message);
-      setErrorMessage('Erreur lors de l\'inscription.');
+      setErrorMessage('Données incorrectes ou déjà existante. ');
       setSuccessMessage('');
     }
   };

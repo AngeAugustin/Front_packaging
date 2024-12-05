@@ -174,10 +174,10 @@ const Vendre = () => {
     // Informations de l'entreprise (fixées)
     const entreprise = {
       nom: 'PACKAGING STORE',
-      adresse: '123 Rue de l\'Entrepreneur',
-      ville: 'Paris',
-      pays: 'France',
-      tel: '+33 1 23 45 67 89',
+      adresse: '123 Rue Cadjèhoun',
+      ville: 'Cotonou',
+      pays: 'Bénin',
+      tel: '+229 0195245627',
       email: 'contact@packaging.store',
     };
   
@@ -395,7 +395,7 @@ const Vendre = () => {
                 <p><strong>Téléphone :</strong> {ticket.telephoneClient}</p>
               </div>
               <div>
-                <p><strong>Prix unitaire :</strong> {ticket.unitPrice}€</p>
+                <p><strong>Prix unitaire :</strong> {ticket.unitPrice}FCFA</p>
                 <p><strong>Quantité :</strong> {ticket.quantity}</p>
                 <p><strong>Total :</strong> {ticket.total}FCFA</p>
                 <p><strong>Paiement :</strong> {ticket.paymentMode}</p>

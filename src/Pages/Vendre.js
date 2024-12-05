@@ -397,7 +397,7 @@ const Vendre = () => {
               <div>
                 <p><strong>Prix unitaire :</strong> {ticket.unitPrice}€</p>
                 <p><strong>Quantité :</strong> {ticket.quantity}</p>
-                <p><strong>Total :</strong> {ticket.total}€</p>
+                <p><strong>Total :</strong> {ticket.total}FCFA</p>
                 <p><strong>Paiement :</strong> {ticket.paymentMode}</p>
               </div>
               {/* Message d'erreur et de succès */}

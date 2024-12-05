@@ -10,7 +10,7 @@ const Stocks = () => {
   const [stocks, setStocks] = useState([]);
 
   useEffect(() => {
-      fetch(`https://localhost:8000/stocks`)
+      fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/stocks`)
         .then((res) => res.json())
         .then((data) => {
           setStocks(data);

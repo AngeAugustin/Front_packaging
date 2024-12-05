@@ -7,7 +7,7 @@ const Produits = () => {
 
   // Récupérer les produits depuis l'API
   useEffect(() => {
-    fetch(`https://localhost:8000/produits`)
+    fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/produits`)
       .then((res) => res.json())
       .then((data) => {
         setProduits(data);
@@ -17,7 +17,7 @@ const Produits = () => {
 
   // Fonction pour supprimer un produit
   const handleDelete = (Reference_produit) => {
-    const url = `https://localhost:8000/delete?Reference_produit=${Reference_produit}`;
+    const url = `https://packaging-backend-ccd132e45603.herokuapp.com/delete?Reference_produit=${Reference_produit}`;
     fetch(url, { method: "GET" }) // Utilise `GET` si ton backend est configuré ainsi
       .then((res) => {
         if (res.ok) {

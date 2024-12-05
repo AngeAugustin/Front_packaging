@@ -67,7 +67,7 @@ const Init = () => {
         },
       };
 
-      const response = await fetch(`https://localhost:8000/initProduit/${Username}`, options);
+      const response = await fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/initProduit/${Username}`, options);
 
       if (response.ok) {
         const responseData = await response.json();

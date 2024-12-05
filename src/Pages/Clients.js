@@ -5,7 +5,7 @@ const Clients = () => {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
-      fetch(`https://localhost:8000/clients`)
+      fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/clients`)
         .then((res) => res.json())
         .then((data) => {
           setClients(data);

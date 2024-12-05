@@ -37,7 +37,7 @@ const Connexion = () => {
           },
         };
 
-        const response = await fetch('https://localhost:8000/connexionUser', options);
+        const response = await fetch('https://packaging-backend-ccd132e45603.herokuapp.com/connexionUser', options);
 
         if (response.ok) {
           const responseData = await response.json();

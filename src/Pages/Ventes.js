@@ -10,7 +10,7 @@ const Ventes = () => {
 
   useEffect(() => {
     if (Username ) {
-      fetch(`https://localhost:8000/ventes/${Username}`)
+      fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/ventes/${Username}`)
         .then((res) => res.json())
         .then((data) => {
           setVentes(data);

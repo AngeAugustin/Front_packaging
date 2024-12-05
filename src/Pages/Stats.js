@@ -13,7 +13,7 @@ const Stats = () => {
   });
 
   useEffect(() => {
-    fetch(`https://localhost:8000/stats/${Username}`)
+    fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/stats/${Username}`)
       .then((res) => res.json())
       .then((data) => {
         setStats({

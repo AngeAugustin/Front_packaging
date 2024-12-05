@@ -80,7 +80,7 @@ const Connexion = () => {
         {/* Logo en haut à gauche */}
         <div style={{ position: 'absolute', top: 40, left: 40 }}>
           <img
-            src="/images/logo.png" // Remplace par le lien de ton logo
+            src="https://photos.app.goo.gl/zeb8BvZeMkBjggAB6" // Remplace par le lien de ton logo
             alt="Packaging"
             style={{ width: 90, height: 90 }}
           />
@@ -93,7 +93,7 @@ const Connexion = () => {
 
         {/* Contenu central */}
         <img
-          src="/images/colis.png" // Remplace par une image de colis
+          src="https://png.pngtree.com/png-vector/20231017/ourmid/pngtree-box-package-delivery-3d-illustration-png-image_10201455.png" // Remplace par une image de colis
           alt="Colis"
           style={{ width: '60%', marginTop: 30 }}
         />

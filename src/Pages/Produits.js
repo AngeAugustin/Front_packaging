@@ -119,7 +119,7 @@ const Produits = () => {
                   <button
                     onClick={() => handleDelete(produit.Reference_produit)} // Fonction appelée ici
                     style={{
-                      backgroundColor: "#17549A",
+                      backgroundColor: "red",
                       color: "white",
                       border: "none",
                       width: "25px",

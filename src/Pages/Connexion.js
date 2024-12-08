@@ -68,7 +68,7 @@ const Connexion = () => {
       <div
         style={{
           flex: 1,
-          backgroundColor: '#882904',
+          backgroundColor: '#17549A',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',

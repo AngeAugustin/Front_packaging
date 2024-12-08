@@ -85,7 +85,6 @@ const Connexion = () => {
             style={{ width: 90, height: 90 }}
           />
           <div>
-          <h2 style={{ marginTop: 15, fontSize: "19px" }}>Packaging</h2>
         </div>
         </div>
 

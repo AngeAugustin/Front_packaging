@@ -80,8 +80,8 @@ const Connexion = () => {
         {/* Logo en haut à gauche */}
         <div style={{ position: 'absolute', top: 40, left: 40 }}>
           <img
-            src="https://photos.app.goo.gl/zeb8BvZeMkBjggAB6" // Remplace par le lien de ton logo
-            alt="Packaging"
+            src="https://i.postimg.cc/6qVTwcCS/Whats-App-Image-2024-12-06-at-8-39-25-PM.jpg" // Remplace par le lien de ton logo
+            alt="Logo"
             style={{ width: 90, height: 90 }}
           />
           <div>

@@ -33,7 +33,7 @@ const Layout = () => {
         <div className="sidebar-header">
         <a href="/ventes">
           <img
-            src="/images/logo.png"
+            src="https://i.postimg.cc/6qVTwcCS/Whats-App-Image-2024-12-06-at-8-39-25-PM.jpg" 
             alt="Logo"
             className="sidebar-image"
           />

@@ -97,7 +97,7 @@ const Stats = () => {
                 data={pieData}
                 dataKey="value"
                 outerRadius={80}
-                fill="#8884d8"
+                fill="#17549A"
                 label
               >
                 {pieData.map((entry, index) => (
@@ -133,7 +133,7 @@ const styles = {
     backgroundColor: '#ffffff',
   },
   brownCard: {
-    backgroundColor: '#882904',
+    backgroundColor: '#17549A',
     color: '#ffffff',
     textAlign: 'center',
   },

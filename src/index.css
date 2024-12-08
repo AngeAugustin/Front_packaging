@@ -51,7 +51,7 @@ body {
 /* Style de l'email de l'utilisateur */
 .user-email {
   font-size: 0.9rem;
-  color: #882904; /* Texte marron foncé */
+  color: #17549A; /* Texte marron foncé */
 }
 
 /* Conteneur de la barre latérale */
@@ -89,7 +89,7 @@ body {
 .sidebar h3 {
   margin: 0;
   font-size: 1.5rem;
-  color: #882904;
+  color: #17549A;
 }
 
 /* Style pour la navigation */
@@ -128,18 +128,18 @@ nav ul li a:hover {
 
 /* Style pour les icônes */
 .menu-icon {
-  color: #882904; /* Icônes marron */
+  color: #17549A; /* Icônes marron */
   margin-right: 10px; /* Espacement entre l'icône et le texte */
 }
 
 /* Style pour les icônes au survol */
 nav ul li a:hover .menu-icon {
-  color: #882904; /* Icônes marron plus foncé au survol */
+  color: #17549A; /* Icônes marron plus foncé au survol */
 }
 
 /* Effet au clic - bouton devient marron, texte et icône deviennent blancs */
 nav ul li a:active {
-  background-color: #882904; /* Fond marron au clic */
+  background-color: #17549A; /* Fond marron au clic */
   color: white; /* Texte blanc */
 }
 
@@ -157,7 +157,7 @@ nav ul li a:active .menu-icon {
 
 .logout-link {
   text-decoration: none;
-  color: #882904; /* Texte marron */
+  color: #17549A; /* Texte marron */
   font-size: 1rem;
   font-weight: bold; /* Texte en gras */
   display: flex;
@@ -169,7 +169,7 @@ nav ul li a:active .menu-icon {
 
 /* Style au survol du lien Déconnexion */
 .logout-link:hover {
-  color: #882904; /* Change la couleur du texte au survol */
+  color: #17549A; /* Change la couleur du texte au survol */
 }
 
 /* Effet au clic - texte et icône deviennent blancs */

@@ -77,7 +77,7 @@ const Vendre = () => {
       month: "long",
       day: "numeric",
     });
-    const reliquat = total - formData.montantPercu;
+    const reliquat = formData.montantPercu - total;
 
     setTicket({
       productName: formData.product,
@@ -121,7 +121,7 @@ const Vendre = () => {
       const codeFact = generateUniqueCodeFact();
       const customerID = formData.firstnameClient + formData.telephoneClient.slice(0, 5);
       const totalFact = formData.unitPrice * formData.quantity;
-      const reliquat = totalFact - formData.montantPercu;
+      const reliquat = formData.montantPercu - totalFact ;
 
       const myVendre = {
         Username: Username,

@@ -110,8 +110,7 @@ const Vendre = () => {
       !formData.firstnameClient ||
       !formData.emailClient ||
       !formData.telephoneClient||
-      !formData.montantPercu||
-      !formData.reliquat
+      !formData.montantPercu
     ) {
       setErrorMessage("Veuillez remplir tous les champs.");
       setSuccessMessage("");
@@ -370,13 +369,6 @@ const Vendre = () => {
               name="montantPercu"
               placeholder="Montant perçu"
               value={formData.montantPercu}
-              onChange={handleChange}
-              style={styles.input}
-            />
-            <input
-              name="reliquat"
-              placeholder="Reliquat"
-              value={formData.reliquat}
               onChange={handleChange}
               style={styles.input}
             />

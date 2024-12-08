@@ -264,7 +264,7 @@ const Vendre = () => {
       startX: 30,
       theme: 'grid',
       headStyles: {
-        fillColor: [136, 41, 4], // Couleur marron (en RGB) pour la première ligne (header)
+        fillColor: [23, 84, 154], // Couleur marron (en RGB) pour la première ligne (header)
         textColor: [255, 255, 255], // Texte en blanc pour le header
         fontStyle: 'bold'          // Texte en gras pour la première ligne
       },

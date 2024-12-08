@@ -31,7 +31,7 @@ body {
 /* Icône de l'utilisateur */
 .user-icon {
   font-size: 2rem; /* Taille de l'icône */
-  color: #882904; /* Icône marron */
+  color: #17549A; /* Icône marron */
 }
 
 /* Conteneur des détails de l'utilisateur (nom et e-mail) */
@@ -205,7 +205,7 @@ nav ul li a {
 
 /* Bouton actif */
 nav ul li a.active {
-  background-color: #882904; /* Fond marron pour le bouton actif */
+  background-color: #17549A; /* Fond marron pour le bouton actif */
   color: white; /* Texte blanc */
 }
 
@@ -219,7 +219,7 @@ nav ul li a:hover {
 }
 
 nav ul li a:hover .menu-icon {
-  color: #882904; /* Icône marron plus foncé au survol */
+  color: #17549A; /* Icône marron plus foncé au survol */
 }
 
 

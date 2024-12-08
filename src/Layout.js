@@ -38,7 +38,6 @@ const Layout = () => {
             className="sidebar-image"
           />
         </a>
-          <h3>Packaging</h3>
         </div>
         <nav>
           <ul>

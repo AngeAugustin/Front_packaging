@@ -92,7 +92,7 @@ const Vendre = () => {
       codeFact: codeFact,
       date: currentDate,
       montantPercu: formData.montantPercu,
-      reliquat: formData.reliquat,
+      reliquat: reliquat,
     });
 
     setCurrentStep(3); // Passer à l'étape 3 après génération du ticket

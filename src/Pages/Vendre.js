@@ -212,7 +212,7 @@ const Vendre = () => {
 
     // Titres en gras
     doc.text(`Facture de vente N°:`, 100, 20);
-    doc.text(`Date: `, 100, 30);
+    doc.text(`Date:`, 100, 30);
     doc.text(`Vendeur:`, 100, 40);
 
     doc.setFont('helvetica', 'bold');

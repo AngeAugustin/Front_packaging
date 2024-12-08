@@ -186,7 +186,7 @@ const Vendre = () => {
     // Informations de l'entreprise (fixées)
     const entreprise = {
       nom: 'SKY-P',
-      adresse: 'POste Cadjèhoun, 200m de Bon Pasteur en allant vers la CNSS',
+      adresse: 'Après la Poste Cadjèhoun',
       ville: 'Cotonou',
       pays: 'Bénin',
       tel: '+229 0195245627',
@@ -212,7 +212,7 @@ const Vendre = () => {
 
     // Titres en gras
     doc.text(`Facture de vente N°:`, 100, 20);
-    doc.text(`Date et Heure: ${formattedDate}`, 100, 30);
+    doc.text(`Date: ${formattedDate}`, 100, 30);
     doc.text(`Vendeur:`, 100, 40);
 
     doc.setFont('helvetica', 'bold');

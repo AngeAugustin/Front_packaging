@@ -18,6 +18,8 @@ const Vendre = () => {
     nameClient: "",
     firstnameClient: "",
     telephoneClient: "",
+    montantPercu: "",
+    reliquat: "",
   });
 
   const [referenceProduit, setReferenceProduit] = useState("");
@@ -75,6 +77,7 @@ const Vendre = () => {
       month: "long",
       day: "numeric",
     });
+    const reliquat = total - formData.montantPercu;
 
     setTicket({
       productName: formData.product,
@@ -88,6 +91,8 @@ const Vendre = () => {
       telephoneClient: formData.telephoneClient,
       codeFact: codeFact,
       date: currentDate,
+      montantPercu: formData.montantPercu,
+      reliquat: formData.reliquat,
     });
 
     setCurrentStep(3); // Passer à l'étape 3 après génération du ticket
@@ -104,7 +109,9 @@ const Vendre = () => {
       !formData.nameClient ||
       !formData.firstnameClient ||
       !formData.emailClient ||
-      !formData.telephoneClient
+      !formData.telephoneClient||
+      !formData.montantPercu||
+      !formData.reliquat
     ) {
       setErrorMessage("Veuillez remplir tous les champs.");
       setSuccessMessage("");
@@ -113,9 +120,9 @@ const Vendre = () => {
 
     try {
       const codeFact = generateUniqueCodeFact();
-      const customerID =
-        formData.firstnameClient + formData.telephoneClient.slice(0, 5);
+      const customerID = formData.firstnameClient + formData.telephoneClient.slice(0, 5);
       const totalFact = formData.unitPrice * formData.quantity;
+      const reliquat = totalFact - formData.montantPercu;
 
       const myVendre = {
         Username: Username,
@@ -133,6 +140,9 @@ const Vendre = () => {
         Telephone_client: formData.telephoneClient,
         Customer: customerID,
         Montant_facture: totalFact,
+        Mode_paiement: formData.paymentMode,
+        Montant_percu: formData.montantPercu,
+        Reliquat: reliquat
       };
 
       const options = {
@@ -398,14 +408,15 @@ const Vendre = () => {
                 <p><strong>Prix unitaire :</strong> {ticket.unitPrice}FCFA</p>
                 <p><strong>Quantité :</strong> {ticket.quantity}</p>
                 <p><strong>Total :</strong> {ticket.total}FCFA</p>
+                <p><strong>Montant perçu :</strong> {ticket.montantPercu}FCFA</p>
+                <p><strong>Reliquat :</strong> {ticket.reliquat}FCFA</p>
                 <p><strong>Paiement :</strong> {ticket.paymentMode}</p>
               </div>
               {/* Message d'erreur et de succès */}
-        <div style={styles.messageContainer}>
-          {errorMessage && <p style={styles.errorMessage}>{errorMessage}</p>}
-          {successMessage && <p style={styles.successMessage}>{successMessage}</p>}
-        </div>
-
+              <div style={styles.messageContainer}>
+                {errorMessage && <p style={styles.errorMessage}>{errorMessage}</p>}
+                {successMessage && <p style={styles.successMessage}>{successMessage}</p>}
+              </div>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <button onClick={prevStep} style={styles.grayButton}>

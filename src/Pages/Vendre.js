@@ -366,6 +366,20 @@ const Vendre = () => {
               onChange={handleChange}
               style={styles.input}
             />
+            <input
+              name="montantPercu"
+              placeholder="Montant perçu"
+              value={formData.montantPercu}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="reliquat"
+              placeholder="Reliquat"
+              value={formData.reliquat}
+              onChange={handleChange}
+              style={styles.input}
+            />
             <select
               name="paymentMode"
               value={formData.paymentMode}

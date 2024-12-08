@@ -148,7 +148,7 @@ const Connexion = () => {
             style={{
               width: '422px',
               padding: '10px',
-              backgroundColor: '#882904',
+              backgroundColor: '#17549A',
               color: '#fff',
               border: 'none',
               borderRadius: '5px',
@@ -161,7 +161,7 @@ const Connexion = () => {
           </button>
         </form>
         <p style={{ marginTop: 20 }}>
-          Vous n'avez pas de compte ? <a href="/inscription" style={{ color: '#882904', fontWeight: "bold" }}>Inscrivez-vous</a>
+          Vous n'avez pas de compte ? <a href="/inscription" style={{ color: '#17549A', fontWeight: "bold" }}>Inscrivez-vous</a>
         </p>
       </div>
     </div>

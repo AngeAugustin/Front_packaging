@@ -87,7 +87,7 @@ const Inscription = () => {
       <div
         style={{
           flex: 1,
-          backgroundColor: '#882904',
+          backgroundColor: '#17549A',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
@@ -197,7 +197,7 @@ const Inscription = () => {
             style={{
               width: '100%',
               padding: '10px',
-              backgroundColor: '#882904',
+              backgroundColor: '#17549A',
               color: '#fff',
               border: 'none',
               borderRadius: '5px',

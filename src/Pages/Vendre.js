@@ -182,12 +182,12 @@ const Vendre = () => {
   
     // Informations de l'entreprise (fixées)
     const entreprise = {
-      nom: 'PACKAGING STORE',
-      adresse: '123 Rue Cadjèhoun',
+      nom: 'SKY-P',
+      adresse: 'POste Cadjèhoun, 200m de Bon Pasteur en allant vers la CNSS',
       ville: 'Cotonou',
       pays: 'Bénin',
       tel: '+229 0195245627',
-      email: 'contact@packaging.store',
+      email: 'skypemballage@gmail.com',
     };
   
     // Logo de l'entreprise (exemple avec un lien vers une image)

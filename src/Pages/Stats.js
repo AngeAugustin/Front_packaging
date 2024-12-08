@@ -81,7 +81,7 @@ const Stats = () => {
               <BarChart data={salesData} margin={{ top: 20, right: 20, left: 20, bottom: 5 }}>
                 <XAxis dataKey="name" />
                 <Tooltip />
-                <Bar dataKey="Jour" fill="#882904" />
+                <Bar dataKey="Jour" fill="#17549A" />
                 <Bar dataKey="Soirée" fill="#FFD700" />
               </BarChart>
             </ResponsiveContainer>

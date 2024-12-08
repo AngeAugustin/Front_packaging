@@ -158,7 +158,7 @@ const Stocker = () => {
             style={{
               width: '422px',
               padding: '10px',
-              backgroundColor: '#882904',
+              backgroundColor: '#17549A',
               color: '#fff',
               border: 'none',
               borderRadius: '5px',

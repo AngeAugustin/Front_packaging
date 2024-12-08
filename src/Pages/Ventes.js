@@ -30,7 +30,7 @@ const Ventes = () => {
         <Link to="/vendre">
         <button
           style={{
-            backgroundColor: "#882904",
+            backgroundColor: "#17549A",
             color: "white",
             border: "none",
             padding: "10px 20px",

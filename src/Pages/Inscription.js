@@ -99,12 +99,12 @@ const Inscription = () => {
         {/* Logo en haut à gauche */}
         <div style={{ position: 'absolute', top: 40, left: 40 }}>
           <img
-            src="/images/logo.png" // Remplace par le lien de ton logo
-            alt="Packaging"
+            src="https://i.postimg.cc/6qVTwcCS/Whats-App-Image-2024-12-06-at-8-39-25-PM.jpg" // Remplace par le lien de ton logo
+            alt="SKY-P"
             style={{ width: 90, height: 90 }}
           />
           <div>
-            <h2 style={{ marginTop: 15, fontSize: '19px' }}>Packaging</h2>
+            <h2 style={{ marginTop: 15, fontSize: '19px' }}>SKY-P</h2>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ const Inscription = () => {
 
         {/* Contenu central */}
         <img
-          src="/images/colis.png" // Remplace par une image de colis
+          src="https://png.pngtree.com/png-vector/20231017/ourmid/pngtree-box-package-delivery-3d-illustration-png-image_10201455.png" // Remplace par une image de colis
           alt="Colis"
           style={{ width: '60%', marginTop: 30 }}
         />
@@ -141,7 +141,7 @@ const Inscription = () => {
               objectFit: 'cover',
             }}
           />
-          <h2>Bienvenue à Packaging !</h2>
+          <h2>Bienvenue à SKY-P !</h2>
           <p>Pour vous inscrire, veuillez remplir les champs suivants.</p>
         </div>
         <div style={{ height: '5px' }}></div>
@@ -211,7 +211,7 @@ const Inscription = () => {
         </form>
         <p style={{ marginTop: 20 }}>
           Vous avez déjà un compte ?{' '}
-          <a href="/connexion" style={{ color: '#882904', fontWeight: 'bold' }}>
+          <a href="/connexion" style={{ color: '#17549A', fontWeight: 'bold' }}>
             Connectez-vous
           </a>
         </p>

@@ -103,9 +103,6 @@ const Inscription = () => {
             alt="SKY-P"
             style={{ width: 90, height: 90 }}
           />
-          <div>
-            <h2 style={{ marginTop: 15, fontSize: '19px' }}>SKY-P</h2>
-          </div>
         </div>
 
         <div style={{ height: '100px' }}></div>

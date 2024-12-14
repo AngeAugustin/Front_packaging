@@ -22,7 +22,7 @@ const Stats = () => {
         });
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, );
 
   // Données pour les graphiques
   const salesData = [

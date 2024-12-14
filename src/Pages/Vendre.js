@@ -186,10 +186,10 @@ const Vendre = () => {
     // Informations de l'entreprise (fixées)
     const entreprise = {
       nom: 'SKY-P',
-      adresse: 'Après la Poste Cadjèhoun',
+      adresse: 'Bureau de Poste Cadjèhoun',
       ville: 'Cotonou',
       pays: 'Bénin',
-      tel: '+229 0195245627',
+      tel: '+229 01 97 14 53 78',
       email: 'skypemballage@gmail.com',
     };
   
@@ -221,6 +221,8 @@ const Vendre = () => {
     doc.text(`Ville:`, 20, 90);
     doc.text(`Téléphone:`, 20, 100);
     doc.text(`Email:`, 20, 110);
+    doc.text(`RCCM:`, 20, 120);
+    doc.text(`IFU:`, 20, 130);
 
     doc.setFont('helvetica', 'bold');
     doc.text(`Informations du client`, 115, 60);
@@ -242,6 +244,8 @@ const Vendre = () => {
     doc.text(`${entreprise.ville}, ${entreprise.pays}`, 45, 90);
     doc.text(`${entreprise.tel}`, 45, 100);
     doc.text(`${entreprise.email}`, 45, 110);
+    doc.text(`RB/ COT/ 21 B 29319`, 45, 120);
+    doc.text(`3 2021 1257 5665`, 45, 130);
 
     doc.text(`${ticket.firstnameClient} ${ticket.nameClient}`, 140, 70);
     doc.text(`${ticket.emailClient}`, 140, 80);
@@ -249,19 +253,19 @@ const Vendre = () => {
 
 
     doc.setFont('helvetica', 'bold');
-    doc.text(`Informations de la vente`, 82, 140);
+    doc.text(`Informations de la vente`, 82, 160);
     doc.setFont('helvetica', 'normal');
   
     // Tableau des produits
     const tableColumn = ["Nom du produit", "Quantité", "Prix unitaire", "Montant total", "Mode de paiement"];
     const tableRows = [
-      [ticket.productName, ticket.quantity, `${ticket.unitPrice}€`, `${ticket.total}€`, ticket.paymentMode]
+      [ticket.productName, ticket.quantity, `${ticket.unitPrice}FCFA`, `${ticket.total}FCFA`, ticket.paymentMode]
     ];
   
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 150,
+      startY: 170,
       startX: 30,
       theme: 'grid',
       headStyles: {

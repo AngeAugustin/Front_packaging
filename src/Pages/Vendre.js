@@ -259,7 +259,7 @@ const Vendre = () => {
     // Tableau des produits
     const tableColumn = ["Nom du produit", "Quantité", "Prix unitaire", "Montant total", "Mode de paiement"];
     const tableRows = [
-      [ticket.productName, ticket.quantity, `${ticket.unitPrice}" " FCFA`, `${ticket.total} " "FCFA`, ticket.paymentMode]
+      [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`, ticket.paymentMode]
     ];
   
     doc.autoTable({

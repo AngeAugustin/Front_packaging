@@ -194,7 +194,7 @@ const Vendre = () => {
     };
   
     // Logo de l'entreprise (exemple avec un lien vers une image)
-    const logoUrl = 'https://i.postimg.cc/6qVTwcCS/Whats-App-Image-2024-12-06-at-8-39-25-PM.jpg'; // Remplacez par votre URL de logo
+    const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png'; // Remplacez par votre URL de logo
     doc.addImage(logoUrl, 'JPEG', 20, 10, 30, 30); // Ajoute le logo
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);

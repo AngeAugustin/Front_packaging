@@ -82,12 +82,12 @@ const Inscription = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '97vh', backgroundColor: '#F4F4F4' }}>
+    <div style={{ display: 'flex', height: '97vh', width: '210vh', backgroundColor: '#F4F4F4' }}>
       {/* Section de gauche */}
       <div
         style={{
           flex: 1,
-          backgroundColor: '#17549A',
+          backgroundColor: '#f1f1f0',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
@@ -96,22 +96,12 @@ const Inscription = () => {
           color: '#fff',
         }}
       >
-        {/* Logo en haut à gauche */}
-        <div style={{ position: 'absolute', top: 40, left: 40 }}>
-          <img
-            src="https://i.postimg.cc/6qVTwcCS/Whats-App-Image-2024-12-06-at-8-39-25-PM.jpg" // Remplace par le lien de ton logo
-            alt="SKY-P"
-            style={{ width: 90, height: 90 }}
-          />
-        </div>
-
-        <div style={{ height: '100px' }}></div>
 
         {/* Contenu central */}
         <img
-          src="https://png.pngtree.com/png-vector/20231017/ourmid/pngtree-box-package-delivery-3d-illustration-png-image_10201455.png" // Remplace par une image de colis
+          src="https://i.postimg.cc/Njn8qFMb/banner-sky.png" // Remplace par une image de colis
           alt="Colis"
-          style={{ width: '60%', marginTop: 30 }}
+          style={{ width: '80%', marginTop: 30 }}
         />
       </div>
 
@@ -129,12 +119,12 @@ const Inscription = () => {
       >
         <div style={{ textAlign: 'center' }}>
           <img
-            src="/images/avatar.png" // Remplace par un lien pour l'icône utilisateur
+            src="https://i.postimg.cc/D0jq5w49/Avatar.png" // Remplace par un lien pour l'icône utilisateur
             alt="Profil"
             style={{
               width: 50,
               height: 50,
-              borderRadius: '50%',
+              borderRadius: '',
               objectFit: 'cover',
             }}
           />
@@ -192,9 +182,9 @@ const Inscription = () => {
           <button
             type="submit"
             style={{
-              width: '100%',
+              width: '420px',
               padding: '10px',
-              backgroundColor: '#17549A',
+              backgroundColor: '#004aad',
               color: '#fff',
               border: 'none',
               borderRadius: '5px',
@@ -208,7 +198,7 @@ const Inscription = () => {
         </form>
         <p style={{ marginTop: 20 }}>
           Vous avez déjà un compte ?{' '}
-          <a href="/connexion" style={{ color: '#17549A', fontWeight: 'bold' }}>
+          <a href="/connexion" style={{ color: '#004aad', fontWeight: 'bold' }}>
             Connectez-vous
           </a>
         </p>

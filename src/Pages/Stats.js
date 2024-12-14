@@ -81,7 +81,7 @@ const Stats = () => {
               <BarChart data={salesData} margin={{ top: 20, right: 20, left: 20, bottom: 5 }}>
                 <XAxis dataKey="name" />
                 <Tooltip />
-                <Bar dataKey="Jour" fill="#17549A" />
+                <Bar dataKey="Jour" fill="#004aad" />
                 <Bar dataKey="Soirée" fill="#FFD700" />
               </BarChart>
             </ResponsiveContainer>
@@ -91,13 +91,13 @@ const Stats = () => {
         {/* Graphique en forme de courbe */}
         <Grid item xs={4}>
           <Card style={styles.card}>
-            <Typography variant="h6">Statistiques journaliers</Typography>
+            <Typography variant="h6">Statistiques journalières</Typography>
             <PieChart width={200} height={200}>
               <Pie
                 data={pieData}
                 dataKey="value"
                 outerRadius={80}
-                fill="#17549A"
+                fill="#004aad"
                 label
               >
                 {pieData.map((entry, index) => (
@@ -133,7 +133,7 @@ const styles = {
     backgroundColor: '#ffffff',
   },
   brownCard: {
-    backgroundColor: '#17549A',
+    backgroundColor: '#004aad',
     color: '#ffffff',
     textAlign: 'center',
   },

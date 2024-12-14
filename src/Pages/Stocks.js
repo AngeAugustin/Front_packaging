@@ -37,7 +37,7 @@ const Stocks = () => {
         <Link to="/stocker">
         <button
           style={{
-            backgroundColor: "#17549A",
+            backgroundColor: "#004aad",
             color: "white",
             border: "none",
             padding: "10px 20px",
@@ -108,7 +108,7 @@ const Stocks = () => {
                   <Link to="/stocker">
                   <button
                     style={{
-                      backgroundColor: "#882904", // Couleur marron
+                      backgroundColor: "#004aad", // Couleur marron
                       color: "white",
                       border: "none",
                       width: "25px", // Réduction de la largeur du cercle

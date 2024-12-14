@@ -30,14 +30,15 @@ const Layout = () => {
 
       {/* Barre latérale */}
       <aside className="sidebar">
-        <div className="sidebar-header">
-        <a href="/ventes">
-          <img
-            src="https://i.postimg.cc/6qVTwcCS/Whats-App-Image-2024-12-06-at-8-39-25-PM.jpg" 
-            alt="Logo"
-            className="sidebar-image"
-          />
-        </a>
+        <div className="sidebar-header" style={{ marginBottom: '10px' }}>
+          <a href="/ventes">
+            <img
+              src="https://i.postimg.cc/rFCP5vjM/SKY-P.png"
+              alt="Logo"
+              className="sidebar-image"
+              style={{ width: '100px', height: '100px', marginBottom: '5px' }}
+            />
+          </a>
         </div>
         <nav>
           <ul>

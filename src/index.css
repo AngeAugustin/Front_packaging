@@ -31,7 +31,7 @@ body {
 /* Icône de l'utilisateur */
 .user-icon {
   font-size: 2rem; /* Taille de l'icône */
-  color: #17549A; /* Icône marron */
+  color: #004aad; /* Icône bleu */
 }
 
 /* Conteneur des détails de l'utilisateur (nom et e-mail) */
@@ -51,7 +51,7 @@ body {
 /* Style de l'email de l'utilisateur */
 .user-email {
   font-size: 0.9rem;
-  color: #17549A; /* Texte marron foncé */
+  color: #004aad; /* Texte bleu */
 }
 
 /* Conteneur de la barre latérale */
@@ -85,11 +85,11 @@ body {
   margin-bottom: 15px;
 }
 
-/* Style pour le titre Packaging */
+/* Style pour le titre SKY-P */
 .sidebar h3 {
   margin: 0;
   font-size: 1.5rem;
-  color: #17549A;
+  color: #004aad;
 }
 
 /* Style pour la navigation */
@@ -128,7 +128,7 @@ nav ul li a:hover {
 
 /* Style pour les icônes */
 .menu-icon {
-  color: #17549A; /* Icônes marron */
+  color: #004aad; /* Icônes Bleus */
   margin-right: 10px; /* Espacement entre l'icône et le texte */
 }
 
@@ -139,7 +139,7 @@ nav ul li a:hover .menu-icon {
 
 /* Effet au clic - bouton devient marron, texte et icône deviennent blancs */
 nav ul li a:active {
-  background-color: #17549A; /* Fond marron au clic */
+  background-color: #004aad; /* Fond Bleu au clic */
   color: white; /* Texte blanc */
 }
 
@@ -157,7 +157,7 @@ nav ul li a:active .menu-icon {
 
 .logout-link {
   text-decoration: none;
-  color: #17549A; /* Texte marron */
+  color: #004aad; /* Texte bleu */
   font-size: 1rem;
   font-weight: bold; /* Texte en gras */
   display: flex;
@@ -169,7 +169,7 @@ nav ul li a:active .menu-icon {
 
 /* Style au survol du lien Déconnexion */
 .logout-link:hover {
-  color: #17549A; /* Change la couleur du texte au survol */
+  color: #004aad; /* Change la couleur du texte au survol */
 }
 
 /* Effet au clic - texte et icône deviennent blancs */
@@ -205,7 +205,7 @@ nav ul li a {
 
 /* Bouton actif */
 nav ul li a.active {
-  background-color: #17549A; /* Fond marron pour le bouton actif */
+  background-color: #004aad; /* Fond bleu pour le bouton actif */
   color: white; /* Texte blanc */
 }
 
@@ -219,7 +219,7 @@ nav ul li a:hover {
 }
 
 nav ul li a:hover .menu-icon {
-  color: #17549A; /* Icône marron plus foncé au survol */
+  color: #004aad; /* Icône bleu plus foncé au survol */
 }
 
 

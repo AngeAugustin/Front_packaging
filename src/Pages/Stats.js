@@ -3,7 +3,6 @@ import { Card, Grid, Typography } from '@mui/material';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useAuth } from './AuthContext';
 
-
 const Stats = () => {
   const { Username } = useAuth();
   const [stats, setStats] = useState({
@@ -23,8 +22,7 @@ const Stats = () => {
         });
       })
       .catch((err) => console.log(err));
-  
-}, );
+  }, []);
 
   // Données pour les graphiques
   const salesData = [
@@ -42,7 +40,8 @@ const Stats = () => {
     { name: 'Reste', value: 55 },
   ];
 
-  const COLORS = ['#882904', '#D3D3D3'];
+  // Couleurs bleu et jaune
+  const COLORS = ['#004aad', '#FFD700']; // Bleu et Jaune
 
   return (
     <div style={styles.dashboardContainer}>

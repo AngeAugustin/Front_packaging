@@ -9,6 +9,7 @@ import {
   faFileAlt,
   faSignOutAlt,
   faUserCircle,
+  faBell, // Ajout de l'icône pour Notifications
 } from '@fortawesome/free-solid-svg-icons';
 
 const Layout = () => {
@@ -30,27 +31,38 @@ const Layout = () => {
 
       {/* Barre latérale */}
       <aside className="sidebar">
-      <div className="sidebar-header" style={{ marginBottom: '10px' }}>
-        <img
-          src="https://i.postimg.cc/rFCP5vjM/SKY-P.png"
-          alt="Logo"
-          className="sidebar-image"
-          style={{ width: '100px', height: '100px', marginBottom: '5px' }}
-        />
-      </div>
+        <div className="sidebar-header" style={{ marginBottom: '10px' }}>
+          <img
+            src="https://i.postimg.cc/rFCP5vjM/SKY-P.png"
+            alt="Logo"
+            className="sidebar-image"
+            style={{ width: '100px', height: '100px', marginBottom: '5px' }}
+          />
+        </div>
         <nav>
           <ul>
-          <li>
-            {Username === 'Admin' && (
-              <NavLink
-                to="/produits"
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                <FontAwesomeIcon icon={faChartLine} className="menu-icon" />
-                Produits
-              </NavLink>
-            )}
-          </li>
+            <li>
+              {Username === 'Admin' && (
+                <NavLink
+                  to="/produits"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  <FontAwesomeIcon icon={faChartLine} className="menu-icon" />
+                  Produits
+                </NavLink>
+              )}
+            </li>
+            <li>
+              {Username === 'Admin' && (
+                <NavLink
+                  to="/notifications"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  <FontAwesomeIcon icon={faBell} className="menu-icon" />
+                  Notifications
+                </NavLink>
+              )}
+            </li>
             <li>
               <NavLink
                 to="/ventes"

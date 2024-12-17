@@ -37,6 +37,13 @@ const Notifications = () => {
         <p style={{ color: "#555", margin: 0 }}>Gérer mes notifications</p>
       </div>
 
+      <div style={{ height: "5px" }}></div>
+
+      {/* Line separator with lighter color and thinner width */}
+      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div> {/* Légère et moins large */}
+
+      <div style={{ height: "10px" }}></div>
+
       {/* Conteneur blanc pour les notifications */}
       <div
         style={{

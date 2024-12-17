@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa"; // Icônes
 import { Link } from "react-router-dom";
+import { useAuth } from "./useAuth"; // Importation du hook d'authentification
 
 const Produits = () => {
   const [produits, setProduits] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [usernameInput, setUsernameInput] = useState("");
-  const [currentUsername, setCurrentUsername] = useState("Username"); // Remplacez par le nom d'utilisateur actuel
+  const { username: currentUsername } = useAuth(); // Récupération du nom d'utilisateur connecté
 
   // Récupérer les produits depuis l'API
   useEffect(() => {

@@ -20,6 +20,7 @@ const Vendre = () => {
     telephoneClient: "",
     montantPercu: "",
     reliquat: "",
+    typeClient: "",
   });
 
   const [referenceProduit, setReferenceProduit] = useState("");
@@ -93,6 +94,7 @@ const Vendre = () => {
       date: currentDate,
       montantPercu: formData.montantPercu,
       reliquat: reliquat,
+      typeClient: formData.typeClient,
     });
 
     setCurrentStep(3); // Passer à l'étape 3 après génération du ticket
@@ -110,7 +112,9 @@ const Vendre = () => {
       !formData.firstnameClient ||
       !formData.emailClient ||
       !formData.telephoneClient||
-      !formData.montantPercu
+      !formData.montantPercu||
+      !formData.typeClient
+      
     ) {
       setErrorMessage("Veuillez remplir tous les champs.");
       setSuccessMessage("");
@@ -141,7 +145,8 @@ const Vendre = () => {
         Montant_facture: totalFact,
         Mode_paiement: formData.paymentMode,
         Montant_percu: formData.montantPercu,
-        Reliquat: reliquat
+        Reliquat: reliquat,
+        Type_client: formData.typeClient
       };
 
       const options = {
@@ -305,6 +310,16 @@ const Vendre = () => {
         {currentStep === 1 && (
           <div style={styles.section}>
             <h3 style={styles.heading}>Informations du client</h3>
+            <select
+              name="typeClient"
+              value={formData.typeClient}
+              onChange={handleChange}
+              style={styles.input}
+            >
+              <option value="">Type de client</option>
+              <option value="Entreprise">Entreprise</option>
+              <option value="Particulier">Particulier</option>
+            </select>
             <input
               name="nameClient"
               placeholder="Nom du client"

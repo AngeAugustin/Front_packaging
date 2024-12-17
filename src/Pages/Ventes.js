@@ -28,15 +28,10 @@ const Ventes = () => {
     fetch(url, {
       method: "POST", // Méthode POST même si les paramètres sont dans l'URL
     })
-      .then((response) => response.json())
-      .then((data) => {
+      .then(() => {
         // Mettre à jour l'état des ventes après la suppression réussie
-        if (data.message) {
-          setVentes(ventes.filter((vente) => vente.Reference_produit !== Reference_produit || vente.Date_vente !== Date_vente));
-          alert("Produit annulé avec succès");
-        } else {
-          alert("Erreur lors de l'annulation du produit");
-        }
+        setVentes(ventes.filter((vente) => vente.Reference_produit !== Reference_produit || vente.Date_vente !== Date_vente));
+        alert("Produit annulé avec succès");
       })
       .catch((err) => {
         console.log(err);

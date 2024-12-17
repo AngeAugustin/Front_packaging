@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from "react";
 
-const Stocks = () => {
+const Notifications = () => {
 
   
   const [stocks, setStocks] = useState([]);
@@ -56,4 +56,4 @@ const Stocks = () => {
 };
 
 
-export default Stocks;
+export default Notifications;

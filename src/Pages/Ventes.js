@@ -144,7 +144,7 @@ const Ventes = () => {
                   {/* Icône de suppression */}
                   <FaTrash
                     style={{ cursor: "pointer", color: "red" }}
-                    onClick={() => handleDelete(vente.Reference_produit, vente.Qte_produit, vente.Date_vente)}
+                    onClick={() => handleDelete(vente.Reference_produit, vente.Qte_produit, vente.Date_vente, vente.Prix_produit, vente.Type_produit)}
                   />
                 </td>
               </tr>

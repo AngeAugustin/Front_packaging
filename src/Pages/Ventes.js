@@ -31,11 +31,10 @@ const Ventes = () => {
       .then(() => {
         // Mettre à jour l'état des ventes après la suppression réussie
         setVentes(ventes.filter((vente) => vente.Reference_produit !== Reference_produit || vente.Date_vente !== Date_vente));
-        alert("Produit annulé avec succès");
       })
       .catch((err) => {
         console.log(err);
-        alert("Erreur lors de la suppression");
+        // Vous pouvez afficher un message d'erreur ici si nécessaire.
       });
   };
 

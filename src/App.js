@@ -10,6 +10,7 @@ import Stocker from './Pages/Stocker';
 import Clients from './Pages/Clients';
 import Stats from './Pages/Stats';
 import Produits from './Pages/Produits';
+import Notifications from './Pages/Notifications';
 import Init from './Pages/Init';
 import Layout from './Layout'; 
 import './index.css';
@@ -29,6 +30,7 @@ function App() {
             <Route path="Ventes" element={<Ventes />} />
             <Route path="Vendre" element={<Vendre />} />
             <Route path="Stocks" element={<Stocks />} />
+            <Route path="Notifications" element={<Notifications />} />
             <Route path="Stocker" element={<Stocker />} />
             <Route path="Clients" element={<Clients />} />
             <Route path="Stats" element={<Stats />} />

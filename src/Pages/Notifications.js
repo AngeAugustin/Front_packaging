@@ -17,43 +17,25 @@ const Notifications = () => {
       {/* Header section */}
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
           marginBottom: "20px",
         }}
       >
-        <div>
-          <h2 style={{ margin: 0 }}>Notifications</h2>
-          <p style={{ color: "#555", margin: 0 }}>Gérer mes notifications</p>
-        </div>
+        <h2 style={{ margin: 0 }}>Notifications</h2>
+        <p style={{ color: "#555", margin: 0 }}>Gérer mes notifications</p>
       </div>
 
       {/* Line separator */}
       <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div>
 
-      {/* Notification flags */}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "15px",
-        }}
-      >
+      {/* Notification lines */}
+      <div>
         {notifications.length > 0 ? (
           notifications.map((notif, index) => (
             <div
               key={index}
               style={{
-                backgroundColor: "#f9f9f9",
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                padding: "15px",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                minWidth: "250px",
-                maxWidth: "300px",
-                flex: "1 1 calc(25% - 15px)", // Pour disposer les flags horizontalement
-                boxSizing: "border-box",
+                padding: "10px 0",
+                borderBottom: "1px solid #eee", // Ligne de séparation
               }}
             >
               <p style={{ margin: 0, lineHeight: "1.5" }}>
@@ -81,7 +63,7 @@ const Notifications = () => {
             </div>
           ))
         ) : (
-          <p style={{ color: "#555", textAlign: "center", width: "100%" }}>
+          <p style={{ color: "#555", textAlign: "center" }}>
             Aucune notification disponible
           </p>
         )}

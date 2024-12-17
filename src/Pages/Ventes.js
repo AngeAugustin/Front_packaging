@@ -7,6 +7,7 @@ const Ventes = () => {
   const [ventes, setVentes] = useState([]);
   const [typeClient, setTypeClient] = useState("Entreprise"); // Par défaut "Entreprise"
   const { Username } = useAuth();
+  const [message, setMessage] = useState(""); // Pour les notifications
 
   useEffect(() => {
     if (Username) {
@@ -19,8 +20,45 @@ const Ventes = () => {
     }
   }, [Username, typeClient]); // Dépendance au typeClient
 
+  // Fonction pour annuler une vente
+  const handleAnnulerProduit = (Reference_produit, Qte_produit, Date_vente) => {
+    const payload = {
+      Username,
+      Reference_produit,
+      Qte_produit,
+      Date_vente,
+    };
+
+    fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/annulerProduit/${Username}/${Reference_produit}/${Qte_produit}/${Date_vente}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          setMessage(`Erreur : ${data.error}`);
+        } else {
+          setMessage("Produit annulé avec succès.");
+          // Met à jour la liste des ventes après l'annulation
+          setVentes((prevVentes) =>
+            prevVentes.filter((vente) => vente.Reference_produit !== Reference_produit || vente.Date_vente !== Date_vente)
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setMessage("Une erreur est survenue lors de l'annulation.");
+      });
+  };
+
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+      {/* Notification */}
+      {message && <div style={{ marginBottom: "10px", color: "red" }}>{message}</div>}
+      
       {/* Header section with flex layout */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <div>
@@ -97,6 +135,7 @@ const Ventes = () => {
               <th style={{ ...styles.headerCell, textAlign: "center" }}>Prix Unitaire</th> {/* Centré */}
               <th style={{ ...styles.headerCell, textAlign: "center" }}>Quantité vendue</th> {/* Centré */}
               <th style={{ ...styles.headerCell, textAlign: "center" }}>Montant total</th> {/* Centré */}
+              <th style={{ ...styles.headerCell, textAlign: "center" }}>Action</th> {/* Centré */}
             </tr>
           </thead>
           <tbody>
@@ -108,6 +147,30 @@ const Ventes = () => {
                 <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit}</td> {/* Centré */}
                 <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Qte_produit}</td> {/* Centré */}
                 <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit * vente.Qte_produit}</td> {/* Centré */}
+                <td
+                  style={{
+                    ...styles.cell,
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <button
+                    onClick={() => handleAnnulerProduit(vente.Reference_produit, vente.Qte_produit, vente.Date_vente)}
+                    style={{
+                      backgroundColor: "#e74c3c",
+                      color: "white",
+                      border: "none",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
+                    }}
+                  >
+                    Annuler
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -4,20 +4,20 @@ import { Link } from "react-router-dom";
 import { useAuth } from './AuthContext';
 
 const Ventes = () => {
-
   const [ventes, setVentes] = useState([]);
+  const [typeClient, setTypeClient] = useState("Entreprise"); // Par défaut "Entreprise"
   const { Username } = useAuth();
 
   useEffect(() => {
-    if (Username ) {
-      fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/ventes/${Username}`)
+    if (Username) {
+      fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/ventes/${Username}/${typeClient}`)
         .then((res) => res.json())
         .then((data) => {
           setVentes(data);
         })
         .catch((err) => console.log(err));
     }
-  }, [Username]);
+  }, [Username, typeClient]); // Dépendance au typeClient
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
@@ -28,22 +28,22 @@ const Ventes = () => {
           <p style={{ color: "#555", margin: 0 }}>Gérer mes ventes</p>
         </div>
         <Link to="/vendre">
-        <button
-          style={{
-            backgroundColor: "#004aad",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            borderRadius: "5px",
-            cursor: "pointer",
-            display: "flex", // Utilisation de flexbox pour aligner l'icône et le texte
-            alignItems: "center", // Centrer verticalement l'icône et le texte
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
-          }}
-        >
-          <FaShoppingCart style={{ marginRight: "10px" }} /> {/* Icône de vente avec un espacement à droite */}
-          Vendre un produit
-        </button>
+          <button
+            style={{
+              backgroundColor: "#004aad",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              display: "flex", // Utilisation de flexbox pour aligner l'icône et le texte
+              alignItems: "center", // Centrer verticalement l'icône et le texte
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+            }}
+          >
+            <FaShoppingCart style={{ marginRight: "10px" }} /> {/* Icône de vente avec un espacement à droite */}
+            Vendre un produit
+          </button>
         </Link>
       </div>
 
@@ -52,7 +52,39 @@ const Ventes = () => {
       {/* Line separator with lighter color and thinner width */}
       <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div> {/* Légère et moins large */}
 
-      <div style={{ height: "10px" }}></div>
+      {/* Section de boutons pour sélectionner le type de client */}
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+        <button
+          onClick={() => setTypeClient("Entreprise")}
+          style={{
+            backgroundColor: typeClient === "Entreprise" ? "#004aad" : "#ccc",
+            color: typeClient === "Entreprise" ? "white" : "black",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "5px 0 0 5px",
+            cursor: "pointer",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+          }}
+        >
+          Entreprise
+        </button>
+        <button
+          onClick={() => setTypeClient("Particulier")}
+          style={{
+            backgroundColor: typeClient === "Particulier" ? "#004aad" : "#ccc",
+            color: typeClient === "Particulier" ? "white" : "black",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "0 5px 5px 0",
+            cursor: "pointer",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+          }}
+        >
+          Particulier
+        </button>
+      </div>
+
+      <div style={{ height: "5px" }}></div>
 
       {/* Table container with white background and rounded borders */}
       <div style={{ backgroundColor: "white", borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
@@ -75,7 +107,7 @@ const Ventes = () => {
                 <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Date_vente}</td> {/* Centré */}
                 <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit}</td> {/* Centré */}
                 <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Qte_produit}</td> {/* Centré */}
-                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit*vente.Qte_produit}</td> {/* Centré */}
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit * vente.Qte_produit}</td> {/* Centré */}
               </tr>
             ))}
           </tbody>

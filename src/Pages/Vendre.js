@@ -4,7 +4,6 @@ import { useAuth } from "./AuthContext";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-
 const Vendre = () => {
   const navigate = useNavigate();
 

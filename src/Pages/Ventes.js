@@ -20,9 +20,11 @@ const Ventes = () => {
   }, [Username, typeClient]); // Dépendance au typeClient
 
   const handleDelete = (Reference_produit, Qte_produit, Date_vente) => {
-    // Appel à votre backend pour annuler le produit
-    fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/annulerProduit/${Username}/${Reference_produit}/${Qte_produit}/${Date_vente}`, {
-      method: "POST",
+    // Construction de l'URL avec les paramètres dans la route
+    const url = `https://packaging-backend-ccd132e45603.herokuapp.com/annulerProduit/${Username}/${Reference_produit}/${Qte_produit}/${Date_vente}`;
+
+    fetch(url, {
+      method: "POST", // Méthode POST même si les paramètres sont dans l'URL
     })
       .then((response) => response.json())
       .then((data) => {

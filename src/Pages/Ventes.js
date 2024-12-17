@@ -21,7 +21,7 @@ const Ventes = () => {
 
   const handleDelete = (Reference_produit, Qte_produit, Date_vente) => {
     // Construction de l'URL avec les paramètres dans la route
-    const url = `https://packaging-backend-ccd132e45603.herokuapp.com/annulerProduit/${Username}/${Reference_produit}/${Qte_produit}/${Date_vente}`;
+    const url = `https://packaging-backend-ccd132e45603.herokuapp.com/annulerProduit/${Username}/${Date_vente}/${Reference_produit}/${Qte_produit}`;
 
     fetch(url, {
       method: "POST", // Méthode POST même si les paramètres sont dans l'URL

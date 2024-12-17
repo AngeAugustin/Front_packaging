@@ -31,6 +31,7 @@ const Ventes = () => {
       .then(() => {
         // Mettre à jour l'état des ventes après la suppression réussie
         setVentes(ventes.filter((vente) => vente.Reference_produit !== Reference_produit || vente.Date_vente !== Date_vente));
+        setShowConfirmation(false); // Fermer la modale après la suppression
       })
       .catch((err) => {
         console.log(err);

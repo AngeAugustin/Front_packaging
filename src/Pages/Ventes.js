@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaShoppingCart } from "react-icons/fa"; // Icône de vente
+import { FaShoppingCart, FaTrash } from "react-icons/fa"; // Icônes de vente et de suppression
 import { Link } from "react-router-dom";
 import { useAuth } from './AuthContext';
 
@@ -18,6 +18,27 @@ const Ventes = () => {
         .catch((err) => console.log(err));
     }
   }, [Username, typeClient]); // Dépendance au typeClient
+
+  const handleDelete = (Reference_produit, Qte_produit, Date_vente) => {
+    // Appel à votre backend pour annuler le produit
+    fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/annulerProduit/${Username}/${Reference_produit}/${Qte_produit}/${Date_vente}`, {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Mettre à jour l'état des ventes après la suppression réussie
+        if (data.message) {
+          setVentes(ventes.filter((vente) => vente.Reference_produit !== Reference_produit || vente.Date_vente !== Date_vente));
+          alert("Produit annulé avec succès");
+        } else {
+          alert("Erreur lors de l'annulation du produit");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Erreur lors de la suppression");
+      });
+  };
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
@@ -38,7 +59,7 @@ const Ventes = () => {
               cursor: "pointer",
               display: "flex", // Utilisation de flexbox pour aligner l'icône et le texte
               alignItems: "center", // Centrer verticalement l'icône et le texte
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
             <FaShoppingCart style={{ marginRight: "10px" }} /> {/* Icône de vente avec un espacement à droite */}
@@ -50,7 +71,7 @@ const Ventes = () => {
       <div style={{ height: "5px" }}></div>
 
       {/* Line separator with lighter color and thinner width */}
-      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div> {/* Légère et moins large */}
+      <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div>
 
       {/* Section de boutons pour sélectionner le type de client */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
@@ -63,7 +84,7 @@ const Ventes = () => {
             padding: "10px 20px",
             borderRadius: "5px 0 0 5px",
             cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
           }}
         >
           Entreprise
@@ -77,7 +98,7 @@ const Ventes = () => {
             padding: "10px 20px",
             borderRadius: "0 5px 5px 0",
             cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
           }}
         >
           Particulier
@@ -118,7 +139,11 @@ const Ventes = () => {
                     alignItems: "center",
                   }}
                 >
-                  Bouton Supprimer
+                  {/* Icône de suppression */}
+                  <FaTrash
+                    style={{ cursor: "pointer", color: "red" }}
+                    onClick={() => handleDelete(vente.Reference_produit, vente.Qte_produit, vente.Date_vente)}
+                  />
                 </td>
               </tr>
             ))}

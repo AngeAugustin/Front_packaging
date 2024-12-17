@@ -6,6 +6,8 @@ import { useAuth } from './AuthContext';
 const Ventes = () => {
   const [ventes, setVentes] = useState([]);
   const [typeClient, setTypeClient] = useState("Entreprise"); // Par défaut "Entreprise"
+  const [showConfirmation, setShowConfirmation] = useState(false); // État pour afficher la modale de confirmation
+  const [productToDelete, setProductToDelete] = useState(null); // Stocke le produit sélectionné pour la suppression
   const { Username } = useAuth();
 
   useEffect(() => {
@@ -40,6 +42,18 @@ const Ventes = () => {
         console.log(err);
         alert("Erreur lors de la suppression");
       });
+  };
+
+  // Afficher la confirmation de suppression
+  const showDeleteConfirmation = (product) => {
+    setProductToDelete(product);
+    setShowConfirmation(true);
+  };
+
+  // Annuler la suppression
+  const cancelDelete = () => {
+    setShowConfirmation(false);
+    setProductToDelete(null);
   };
 
   return (
@@ -144,7 +158,7 @@ const Ventes = () => {
                   {/* Icône de suppression */}
                   <FaTrash
                     style={{ cursor: "pointer", color: "red" }}
-                    onClick={() => handleDelete(vente.Reference_produit, vente.Qte_produit, vente.Date_vente, vente.Prix_produit, vente.Type_produit)}
+                    onClick={() => showDeleteConfirmation(vente)}
                   />
                 </td>
               </tr>
@@ -152,6 +166,19 @@ const Ventes = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmation && (
+        <div style={styles.modal}>
+          <div style={styles.modalContent}>
+            <p>Voulez-vous vraiment supprimer ce produit ?</p>
+            <div style={styles.modalButtons}>
+              <button onClick={() => handleDelete(productToDelete.Reference_produit, productToDelete.Qte_produit, productToDelete.Date_vente, productToDelete.Prix_produit, productToDelete.Type_produit)} style={styles.modalButton}>Oui</button>
+              <button onClick={cancelDelete} style={styles.modalButton}>Non</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -168,6 +195,36 @@ const styles = {
   },
   row: {
     backgroundColor: "#fff",
+  },
+  modal: {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: "20px",
+    borderRadius: "10px",
+    textAlign: "center",
+    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+  },
+  modalButtons: {
+    marginTop: "20px",
+  },
+  modalButton: {
+    padding: "10px 20px",
+    backgroundColor: "#004aad",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    margin: "0 10px",
   },
 };
 

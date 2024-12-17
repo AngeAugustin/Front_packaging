@@ -89,7 +89,7 @@ const Notifications = () => {
               <span style={{ color: "#007BFF", fontWeight: "600" }}>
                 {notif.Qte_produit}
               </span>{" "}
-              du produit{" "}
+              produit{" "}
               <span style={{ color: "#007BFF", fontWeight: "600" }}>
                 {notif.Type_produit}
               </span>{" "}

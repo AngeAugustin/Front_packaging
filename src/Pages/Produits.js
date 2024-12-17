@@ -255,4 +255,3 @@ const styles = {
 };
 
 export default Produits;
- 

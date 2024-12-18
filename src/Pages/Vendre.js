@@ -28,6 +28,31 @@ const Vendre = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const { Username } = useAuth();
 
+  const generateParticulierData = () => {
+    const randomNumber = Math.floor(100 + Math.random() * 900); // Génère un numéro aléatoire
+    const generatedName = `Client${randomNumber}`;
+    const generatedEmail = `${generatedName.toLowerCase()}@example.com`;
+    return {
+      nameClient: generatedName,
+      firstnameClient: generatedName,
+      emailClient: generatedEmail,
+      telephoneClient: "0123456789", // Exemple de téléphone fixe
+    };
+  };
+
+  const handleTypeClientChange = (value) => {
+    let updatedFields = {};
+    if (value === "Particulier") {
+      updatedFields = generateParticulierData();
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      typeClient: value,
+      ...updatedFields,
+    }));
+  };
+  
+
   const fetchProduitDetails = async (typeProduit) => {
     try {
       const response = await fetch(
@@ -53,6 +78,11 @@ const Vendre = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "typeClient") {
+      handleTypeClientChange(value);
+      return;
+    }
 
     if (name === "product" && value) {
       fetchProduitDetails(value);

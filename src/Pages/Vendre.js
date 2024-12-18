@@ -351,7 +351,7 @@ const Vendre = () => {
             <select
               name="typeClient"
               value={formData.typeClient}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleChange}
               style={styles.input}
             >
               <option value="">Type de client</option>
@@ -362,33 +362,33 @@ const Vendre = () => {
               name="nameClient"
               placeholder="Nom du client"
               value={formData.nameClient}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"} 
+              readOnly={formData.typeClient === "Particulier"}
             />
             <input
               name="firstnameClient"
               placeholder="Prénoms du client"
               value={formData.firstnameClient}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"} 
+              readOnly={formData.typeClient === "Particulier"}
             />
             <input
               name="telephoneClient"
               placeholder="Numéro de téléphone"
               value={formData.telephoneClient}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"} 
+              readOnly={formData.typeClient === "Particulier"}
             />
             <input
               name="emailClient"
               placeholder="Adresse e-mail"
               value={formData.emailClient}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"} 
+              readOnly={formData.typeClient === "Particulier"}
             />
             <div style={{ height: "5px" }}></div>
             <button onClick={nextStep} style={styles.grayButton}>

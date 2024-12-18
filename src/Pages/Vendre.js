@@ -364,7 +364,7 @@ const Vendre = () => {
               value={formData.nameClient}
               onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"}
+              disabled={formData.typeClient === "Particulier"}
             />
             <input
               name="firstnameClient"
@@ -372,7 +372,7 @@ const Vendre = () => {
               value={formData.firstnameClient}
               onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"}
+              disabled={formData.typeClient === "Particulier"}
             />
             <input
               name="telephoneClient"
@@ -380,7 +380,7 @@ const Vendre = () => {
               value={formData.telephoneClient}
               onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"}
+              disabled={formData.typeClient === "Particulier"}
             />
             <input
               name="emailClient"
@@ -388,7 +388,7 @@ const Vendre = () => {
               value={formData.emailClient}
               onChange={handleChange}
               style={styles.input}
-              readOnly={formData.typeClient === "Particulier"}
+              disabled={formData.typeClient === "Particulier"}
             />
             <div style={{ height: "5px" }}></div>
             <button onClick={nextStep} style={styles.grayButton}>

@@ -44,6 +44,14 @@ const Vendre = () => {
     let updatedFields = {};
     if (value === "Particulier") {
       updatedFields = generateParticulierData();
+    } else if (value === "Entreprise") {
+      updatedFields = {
+        nameClient: "",
+        firstnameClient: "",
+        emailClient: "",
+        telephoneClient: "",
+        // Ajoutez d'autres champs à réinitialiser si nécessaire
+      };
     }
     setFormData((prevData) => ({
       ...prevData,
@@ -51,6 +59,7 @@ const Vendre = () => {
       ...updatedFields,
     }));
   };
+  
   
 
   const fetchProduitDetails = async (typeProduit) => {

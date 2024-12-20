@@ -275,6 +275,7 @@ const Vendre = () => {
     doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 48);
     doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 53);
     doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);
+    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 63); // Nouveau
     
     // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
@@ -285,7 +286,7 @@ const Vendre = () => {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: gapAfterLogo + 68,
+      startY: gapAfterLogo + 73,
       margin: { left: 5, right: 5 },
       theme: 'grid',
       styles: {
@@ -299,9 +300,8 @@ const Vendre = () => {
     });
     
     // Informations sur le paiement
-    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, gapAfterLogo + 118);
-    doc.text(`Reliquat: ${ticket.reliquat}`, 5, gapAfterLogo + 123);
-    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 128);
+    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, gapAfterLogo + 123);
+    doc.text(`Reliquat: ${ticket.reliquat}`, 5, gapAfterLogo + 128);
     
     // Remerciement
     doc.setFont('helvetica', 'bold');

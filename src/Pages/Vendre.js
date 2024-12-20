@@ -268,10 +268,11 @@ const Vendre = () => {
     doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 28);
     doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 33);
     
-    // Informations du client
+    // Informations du client - Taille 6
     doc.setFont('helvetica', 'bold');
     doc.text('Informations du client', 5, gapAfterLogo + 43);
     doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6);
     doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 48);
     doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 53);
     doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);

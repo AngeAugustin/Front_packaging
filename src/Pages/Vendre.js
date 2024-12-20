@@ -248,7 +248,7 @@ const Vendre = () => {
     const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
     doc.addImage(logoUrl, 'JPEG', (width - 20) / 2, 5, 20, 20); // Logo réduit (20 mm x 20 mm)
     
-    // Ajout d'un espace vide avant les informations
+    // Ajout d'un espace vide après le logo
     const gapAfterLogo = 30; // Position Y après le logo (espace de 10 mm supplémentaire)
     
     doc.setFont('helvetica', 'normal');
@@ -257,29 +257,24 @@ const Vendre = () => {
     doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, gapAfterLogo + 4, { align: 'center' });
     doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, gapAfterLogo + 8, { align: 'center' });
     
-    // Titre principal
+    // Ligne combinée pour "Facture N°"
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
-    doc.text('Facture de vente', width / 2, gapAfterLogo + 18, { align: 'center' });
-    
-    // Ajout du numéro de facture
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.text(`N°: ${ticket.codeFact}`, width / 2, gapAfterLogo + 23, { align: 'center' });
+    doc.text(`Facture N° ${ticket.codeFact}`, width / 2, gapAfterLogo + 18, { align: 'center' });
     
     // Date et vendeur
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
-    doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 33);
-    doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 38);
+    doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 28);
+    doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 33);
     
     // Informations du client
     doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', 5, gapAfterLogo + 48);
+    doc.text('Informations du client', 5, gapAfterLogo + 43);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 53);
-    doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 58);
-    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 63);
+    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 48);
+    doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 53);
+    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);
     
     // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
@@ -290,7 +285,7 @@ const Vendre = () => {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: gapAfterLogo + 73,
+      startY: gapAfterLogo + 68,
       margin: { left: 5, right: 5 },
       theme: 'grid',
       styles: {
@@ -304,14 +299,14 @@ const Vendre = () => {
     });
     
     // Informations sur le paiement
-    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, gapAfterLogo + 123);
-    doc.text(`Reliquat: ${ticket.reliquat}`, 5, gapAfterLogo + 128);
-    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 133);
+    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, gapAfterLogo + 118);
+    doc.text(`Reliquat: ${ticket.reliquat}`, 5, gapAfterLogo + 123);
+    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 128);
     
     // Remerciement
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7);
-    doc.text('Merci pour votre achat !', width / 2, gapAfterLogo + 150, { align: 'center' });
+    doc.text('Merci pour votre achat !', width / 2, gapAfterLogo + 145, { align: 'center' });
     
     // Sauvegarde du PDF
     doc.save(`Ticket_${ticket.codeFact}.pdf`);

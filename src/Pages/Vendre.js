@@ -7,7 +7,7 @@ import 'jspdf-autotable';
 const Vendre = () => {
   const navigate = useNavigate();
 
-  const [currentStep, setCurrentStep] = useState(1); // Étape actuelle
+  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     product: "",
     unitPrice: "",
@@ -28,15 +28,17 @@ const Vendre = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const { Username } = useAuth();
 
+  const [isMontantPercuValid, setIsMontantPercuValid] = useState(true); // État pour vérifier la validité du montant perçu
+
   const generateParticulierData = () => {
-    const randomNumber = Math.floor(100 + Math.random() * 900); // Génère un numéro aléatoire
+    const randomNumber = Math.floor(100 + Math.random() * 900);
     const generatedName = `Client${randomNumber}`;
     const generatedEmail = `${generatedName.toLowerCase()}@example.com`;
     return {
       nameClient: generatedName,
       firstnameClient: generatedName,
       emailClient: generatedEmail,
-      telephoneClient: "0123456789", // Exemple de téléphone fixe
+      telephoneClient: "0123456789",
     };
   };
 
@@ -50,7 +52,6 @@ const Vendre = () => {
         firstnameClient: "",
         emailClient: "",
         telephoneClient: "",
-        // Ajoutez d'autres champs à réinitialiser si nécessaire
       };
     }
     setFormData((prevData) => ({
@@ -59,8 +60,6 @@ const Vendre = () => {
       ...updatedFields,
     }));
   };
-  
-  
 
   const fetchProduitDetails = async (typeProduit) => {
     try {
@@ -101,10 +100,16 @@ const Vendre = () => {
       ...prevData,
       [name]: value,
     }));
+
+    // Vérification pour "Montant perçu" : s'il est inférieur au total
+    if (name === "montantPercu") {
+      const total = formData.unitPrice * formData.quantity;
+      setIsMontantPercuValid(parseFloat(value) >= total);
+    }
   };
 
   const generateUniqueCodeFact = () => {
-    const randomNum = Math.floor(10000 + Math.random() * 90000); // Générer un code unique
+    const randomNum = Math.floor(10000 + Math.random() * 90000);
     return `FACT00${randomNum}`;
   };
 
@@ -135,7 +140,7 @@ const Vendre = () => {
       typeClient: formData.typeClient,
     });
 
-    setCurrentStep(3); // Passer à l'étape 3 après génération du ticket
+    setCurrentStep(3);
   };
 
   const handleVendre = async (e) => {
@@ -149,10 +154,9 @@ const Vendre = () => {
       !formData.nameClient ||
       !formData.firstnameClient ||
       !formData.emailClient ||
-      !formData.telephoneClient||
-      !formData.montantPercu||
+      !formData.telephoneClient ||
+      !formData.montantPercu ||
       !formData.typeClient
-      
     ) {
       setErrorMessage("Veuillez remplir tous les champs.");
       setSuccessMessage("");
@@ -163,7 +167,7 @@ const Vendre = () => {
       const codeFact = generateUniqueCodeFact();
       const customerID = formData.firstnameClient + formData.telephoneClient.slice(0, 5);
       const totalFact = formData.unitPrice * formData.quantity;
-      const reliquat = formData.montantPercu - totalFact ;
+      const reliquat = formData.montantPercu - totalFact;
 
       const myVendre = {
         Username: Username,
@@ -184,7 +188,7 @@ const Vendre = () => {
         Mode_paiement: formData.paymentMode,
         Montant_percu: formData.montantPercu,
         Reliquat: reliquat,
-        Type_client: formData.typeClient
+        Type_client: formData.typeClient,
       };
 
       const options = {
@@ -205,7 +209,6 @@ const Vendre = () => {
         console.log(responseData);
         setSuccessMessage("Produit vendu avec succès !");
         setErrorMessage("");
-        // Générer et télécharger le PDF
         generatePDF();
         navigate("/ventes");
       } else {
@@ -220,107 +223,7 @@ const Vendre = () => {
 
   const generatePDF = () => {
     if (!ticket) return;
-  
-    const doc = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: [58, 200] // Format 58 mm x 200 mm
-    });
-    
-    // Largeur du PDF
-    const width = 58; // en mm
-    
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`;
-    
-    // Informations de l'entreprise
-    const entreprise = {
-      adresse: 'Bureau de Poste Cadjèhoun',
-      ville: 'Cotonou',
-      pays: 'Bénin',
-      tel: '+229 01 97 14 53 78',
-      email: 'skypemballage@gmail.com',
-      rccm: 'RB/ COT/ 21 B 29319',
-      ifu: '3 2021 1257 5665',
-    };
-    
-    // Logo de l'entreprise (réduit)
-    const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
-    doc.addImage(logoUrl, 'JPEG', (width - 20) / 2, 5, 20, 20); // Logo réduit (20 mm x 20 mm)
-    
-    // Ajout d'un espace vide après le logo
-    const gapAfterLogo = 30; // Position Y après le logo (espace de 10 mm supplémentaire)
-    
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`${entreprise.ville} - ${entreprise.adresse}`, width / 2, gapAfterLogo, { align: 'center' });
-    doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, gapAfterLogo + 4, { align: 'center' });
-    doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, gapAfterLogo + 8, { align: 'center' });
-    
-    // Ligne combinée pour "Facture N°" avec taille de police 9
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9); // Taille de police ajustée à 9
-    doc.text(`Facture N° ${ticket.codeFact}`, width / 2, gapAfterLogo + 18, { align: 'center' });
-    
-    // Date et vendeur
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 28);
-    doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 33);
-    
-    // Informations du client - Taille 6
-    doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', width / 2, gapAfterLogo + 43, { align: 'center' }); // Centré
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 48);
-    doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 53);
-    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);
-    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 63); // Nouveau
-    
-    // Tableau des produits
-    const tableColumn = ["Produit", "Qté", "P.U", "Total"];
-    const tableRows = [
-      [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`]
-    ];
-    
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: gapAfterLogo + 73,
-      margin: { left: 5, right: 5 },
-      theme: 'grid',
-      styles: {
-        fontSize: 6,
-        cellPadding: 1,
-      },
-      headStyles: {
-        fillColor: [23, 84, 154],
-        textColor: [255, 255, 255],
-      },
-    });
-    
-    // Montant perçu et Reliquat sur la même ligne avec plus d'espace
-    const montantPerçuX = 5;
-    const reliquatX = 35; // Position du Reliquat à 35 mm
-    const yPosition = gapAfterLogo + 123; // Position Y commune pour les deux éléments
-    
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`Montant perçu: ${ticket.montantPercu} FCFA`, montantPerçuX, yPosition);
-    doc.text(`Reliquat: ${ticket.reliquat} FCFA`, reliquatX, yPosition);
-    
-    // Remerciement
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.text('Merci pour votre achat !', width / 2, gapAfterLogo + 145, { align: 'center' });
-    
-    // Sauvegarde du PDF
-    doc.save(`Ticket_${ticket.codeFact}.pdf`);
-    
-    
   };
-  
 
   const nextStep = () => {
     setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));
@@ -429,7 +332,10 @@ const Vendre = () => {
               placeholder="Montant perçu"
               value={formData.montantPercu}
               onChange={handleChange}
-              style={styles.input}
+              style={{
+                ...styles.input,
+                borderColor: !isMontantPercuValid ? 'red' : '#ddd', // Appliquer bordure rouge si montant perçu est invalide
+              }}
             />
             <select
               name="paymentMode"
@@ -477,7 +383,6 @@ const Vendre = () => {
                 <p><strong>Reliquat :</strong> {ticket.reliquat}FCFA</p>
                 <p><strong>Paiement :</strong> {ticket.paymentMode}</p>
               </div>
-              {/* Message d'erreur et de succès */}
               <div style={styles.messageContainer}>
                 {errorMessage && <p style={styles.errorMessage}>{errorMessage}</p>}
                 {successMessage && <p style={styles.successMessage}>{successMessage}</p>}
@@ -526,28 +431,30 @@ const styles = {
     fontSize: "16px",
   },
   grayButton: {
-    backgroundColor: "#888",
-    color: "white",
+    backgroundColor: "#ccc",
+    color: "black",
     padding: "10px 15px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
-    fontSize: "16px",
   },
   marronButton: {
-    backgroundColor: "#17549A",
+    backgroundColor: "#6f4f29",
     color: "white",
     padding: "10px 15px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
-    fontSize: "16px",
   },
   ticketContainer: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gap: "20px",
-    marginBottom: "20px",
+    marginTop: "20px",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  messageContainer: {
+    marginTop: "10px",
+    display: "flex",
+    justifyContent: "space-between",
   },
 };
 

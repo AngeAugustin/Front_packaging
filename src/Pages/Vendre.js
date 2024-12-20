@@ -224,7 +224,7 @@ const Vendre = () => {
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
-      format: [58, 200] // Format 58 mm x 200 mm (modifiable selon le besoin)
+      format: [58, 200] // Format 58 mm x 200 mm
     });
     
     // Largeur du PDF
@@ -248,9 +248,9 @@ const Vendre = () => {
     const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
     doc.addImage(logoUrl, 'JPEG', (width - 30) / 2, 5, 30, 30);
     
-    // Informations compactées avec une taille réduite
+    // Informations compactées avec une taille uniforme de 6 pt
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(5);
+    doc.setFontSize(6);
     doc.text(`${entreprise.ville} - ${entreprise.adresse}`, width / 2, 38, { align: 'center' });
     doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, 42, { align: 'center' });
     doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, 46, { align: 'center' });
@@ -273,7 +273,6 @@ const Vendre = () => {
     
     // Informations du client
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6);
     doc.text('Informations du client', 5, 85);
     doc.setFont('helvetica', 'normal');
     doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, 90);
@@ -303,7 +302,6 @@ const Vendre = () => {
     });
     
     // Informations sur le paiement
-    doc.setFontSize(6);
     doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, 160);
     doc.text(`Reliquat: ${ticket.reliquat}`, 5, 165);
     doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, 170);

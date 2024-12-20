@@ -300,9 +300,9 @@ const Vendre = () => {
       },
     });
     
-    // Montant perçu et Reliquat sur la même ligne avec FCFA
+    // Montant perçu et Reliquat sur la même ligne avec plus d'espace
     const montantPerçuX = 5;
-    const reliquatX = 30; // Position du reliquat (débutant à 30 mm de la marge à gauche)
+    const reliquatX = 40; // Position du Reliquat décalée pour plus d'espace
     const yPosition = gapAfterLogo + 123; // Position Y commune pour les deux éléments
     
     doc.setFont('helvetica', 'normal');

@@ -302,7 +302,7 @@ const Vendre = () => {
     
     // Montant perçu et Reliquat sur la même ligne avec plus d'espace
     const montantPerçuX = 5;
-    const reliquatX = 40; // Position du Reliquat décalée pour plus d'espace
+    const reliquatX = 35; // Position du Reliquat à 35 mm
     const yPosition = gapAfterLogo + 123; // Position Y commune pour les deux éléments
     
     doc.setFont('helvetica', 'normal');

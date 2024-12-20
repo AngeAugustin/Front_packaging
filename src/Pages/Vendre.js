@@ -300,15 +300,15 @@ const Vendre = () => {
       },
     });
     
-    // Montant perçu et Reliquat sur la même ligne
+    // Montant perçu et Reliquat sur la même ligne avec FCFA
     const montantPerçuX = 5;
     const reliquatX = 30; // Position du reliquat (débutant à 30 mm de la marge à gauche)
     const yPosition = gapAfterLogo + 123; // Position Y commune pour les deux éléments
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
-    doc.text(`Montant perçu: ${ticket.montantPercu}`, montantPerçuX, yPosition);
-    doc.text(`Reliquat: ${ticket.reliquat}`, reliquatX, yPosition);
+    doc.text(`Montant perçu: ${ticket.montantPercu} FCFA`, montantPerçuX, yPosition);
+    doc.text(`Reliquat: ${ticket.reliquat} FCFA`, reliquatX, yPosition);
     
     // Remerciement
     doc.setFont('helvetica', 'bold');

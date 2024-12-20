@@ -244,40 +244,42 @@ const Vendre = () => {
       ifu: '3 2021 1257 5665',
     };
     
-    // Logo de l'entreprise
+    // Logo de l'entreprise (réduit)
     const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
-    doc.addImage(logoUrl, 'JPEG', (width - 30) / 2, 5, 30, 30);
+    doc.addImage(logoUrl, 'JPEG', (width - 20) / 2, 5, 20, 20); // Logo réduit (20 mm x 20 mm)
     
-    // Informations compactées avec une taille uniforme de 6 pt
+    // Ajout d'un espace vide avant les informations
+    const gapAfterLogo = 30; // Position Y après le logo (espace de 10 mm supplémentaire)
+    
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
-    doc.text(`${entreprise.ville} - ${entreprise.adresse}`, width / 2, 38, { align: 'center' });
-    doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, 42, { align: 'center' });
-    doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, 46, { align: 'center' });
+    doc.text(`${entreprise.ville} - ${entreprise.adresse}`, width / 2, gapAfterLogo, { align: 'center' });
+    doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, gapAfterLogo + 4, { align: 'center' });
+    doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, gapAfterLogo + 8, { align: 'center' });
     
     // Titre principal
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
-    doc.text('Facture de vente', width / 2, 55, { align: 'center' });
+    doc.text('Facture de vente', width / 2, gapAfterLogo + 18, { align: 'center' });
     
     // Ajout du numéro de facture
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8);
-    doc.text(`N°: ${ticket.codeFact}`, width / 2, 60, { align: 'center' });
+    doc.text(`N°: ${ticket.codeFact}`, width / 2, gapAfterLogo + 23, { align: 'center' });
     
     // Date et vendeur
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
-    doc.text(`Date: ${formattedDate}`, 5, 70);
-    doc.text(`Vendeur: ${Username}`, 5, 75);
+    doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 33);
+    doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 38);
     
     // Informations du client
     doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', 5, 85);
+    doc.text('Informations du client', 5, gapAfterLogo + 48);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, 90);
-    doc.text(`Email: ${ticket.emailClient}`, 5, 95);
-    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, 100);
+    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 53);
+    doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 58);
+    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 63);
     
     // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
@@ -288,7 +290,7 @@ const Vendre = () => {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 110,
+      startY: gapAfterLogo + 73,
       margin: { left: 5, right: 5 },
       theme: 'grid',
       styles: {
@@ -302,14 +304,14 @@ const Vendre = () => {
     });
     
     // Informations sur le paiement
-    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, 160);
-    doc.text(`Reliquat: ${ticket.reliquat}`, 5, 165);
-    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, 170);
+    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, gapAfterLogo + 123);
+    doc.text(`Reliquat: ${ticket.reliquat}`, 5, gapAfterLogo + 128);
+    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 133);
     
     // Remerciement
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7);
-    doc.text('Merci pour votre achat !', width / 2, 190, { align: 'center' });
+    doc.text('Merci pour votre achat !', width / 2, gapAfterLogo + 150, { align: 'center' });
     
     // Sauvegarde du PDF
     doc.save(`Ticket_${ticket.codeFact}.pdf`);

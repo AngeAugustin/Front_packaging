@@ -104,12 +104,6 @@ const Stats = () => {
                 ))}
               </Pie>
             </PieChart>
-            <div style={styles.pieChartDetails}>
-              <p>08h : 00 ventes</p>
-              <p>10h : 00 ventes</p>
-              <p>13h : 00 ventes</p>
-              <p>16h : 00 ventes</p>
-            </div>
           </Card>
         </Grid>
       </Grid>

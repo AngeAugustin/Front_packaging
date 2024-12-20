@@ -270,7 +270,7 @@ const Vendre = () => {
     
     // Informations du client - Taille 6
     doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', 5, gapAfterLogo + 43);
+    doc.text('Informations du client', width / 2, gapAfterLogo + 43, { align: 'center' }); // Centré
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
     doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 48);

@@ -235,53 +235,48 @@ const Vendre = () => {
     
     // Informations de l'entreprise
     const entreprise = {
-      nom: 'SKY-P',
       adresse: 'Bureau de Poste Cadjèhoun',
       ville: 'Cotonou',
       pays: 'Bénin',
       tel: '+229 01 97 14 53 78',
       email: 'skypemballage@gmail.com',
+      rccm: 'RB/ COT/ 21 B 29319',
+      ifu: '3 2021 1257 5665',
     };
     
     // Logo de l'entreprise
     const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
     doc.addImage(logoUrl, 'JPEG', (width - 30) / 2, 5, 30, 30);
     
-    // Informations principales
+    // Informations compactées (ville, adresse, téléphone, etc.)
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.text(`${entreprise.ville} - ${entreprise.adresse}`, width / 2, 40, { align: 'center' });
+    doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, 45, { align: 'center' });
+    doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, 50, { align: 'center' });
+    
+    // Titre principal
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
-    doc.text('Facture de vente', width / 2, 40, { align: 'center' });
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
+    doc.text('Facture de vente', width / 2, 60, { align: 'center' });
     
     // Ajout du numéro de facture
     doc.setFont('helvetica', 'bold');
-    doc.text(`N°: ${ticket.codeFact}`, width / 2, 45, { align: 'center' }); // Numéro de facture centré
+    doc.text(`N°: ${ticket.codeFact}`, width / 2, 65, { align: 'center' });
     
     // Date et vendeur
     doc.setFont('helvetica', 'normal');
-    doc.text(`Date: ${formattedDate}`, 5, 55);
-    doc.text(`Vendeur: ${Username}`, 5, 60);
-    
-    // Informations de l'entreprise
-    doc.setFont('helvetica', 'bold');
-    doc.text('Nos informations', 5, 70);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Entreprise: ${entreprise.nom}`, 5, 75);
-    doc.text(`Adresse: ${entreprise.adresse}`, 5, 80);
-    doc.text(`Ville: ${entreprise.ville}, ${entreprise.pays}`, 5, 85);
-    doc.text(`Téléphone: ${entreprise.tel}`, 5, 90);
-    doc.text(`Email: ${entreprise.email}`, 5, 95);
-    doc.text(`RCCM: RB/ COT/ 21 B 29319`, 5, 100);
-    doc.text(`IFU: 3 2021 1257 5665`, 5, 105);
+    doc.setFontSize(8);
+    doc.text(`Date: ${formattedDate}`, 5, 75);
+    doc.text(`Vendeur: ${Username}`, 5, 80);
     
     // Informations du client
     doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', 5, 115);
+    doc.text('Informations du client', 5, 90);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, 120);
-    doc.text(`Email: ${ticket.emailClient}`, 5, 125);
-    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, 130);
+    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, 95);
+    doc.text(`Email: ${ticket.emailClient}`, 5, 100);
+    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, 105);
     
     // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
@@ -292,7 +287,7 @@ const Vendre = () => {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 140,
+      startY: 115,
       margin: { left: 5, right: 5 },
       theme: 'grid',
       styles: {
@@ -304,9 +299,11 @@ const Vendre = () => {
         textColor: [255, 255, 255],
       },
     });
-
+    
+    // Informations sur le paiement
     doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, 165);
     doc.text(`Reliquat: ${ticket.reliquat}`, 5, 170);
+    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, 175);
     
     // Remerciement
     doc.setFont('helvetica', 'bold');
@@ -314,6 +311,7 @@ const Vendre = () => {
     
     // Sauvegarde du PDF
     doc.save(`Ticket_${ticket.codeFact}.pdf`);
+    
     
   };
   

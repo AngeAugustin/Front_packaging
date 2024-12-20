@@ -257,9 +257,9 @@ const Vendre = () => {
     doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, gapAfterLogo + 4, { align: 'center' });
     doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, gapAfterLogo + 8, { align: 'center' });
     
-    // Ligne combinée pour "Facture N°"
+    // Ligne combinée pour "Facture N°" avec taille de police 9
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
+    doc.setFontSize(9); // Taille de police ajustée à 9
     doc.text(`Facture N° ${ticket.codeFact}`, width / 2, gapAfterLogo + 18, { align: 'center' });
     
     // Date et vendeur

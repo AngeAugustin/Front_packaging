@@ -300,9 +300,15 @@ const Vendre = () => {
       },
     });
     
-    // Informations sur le paiement
-    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, gapAfterLogo + 123);
-    doc.text(`Reliquat: ${ticket.reliquat}`, 5, gapAfterLogo + 128);
+    // Montant perçu et Reliquat sur la même ligne
+    const montantPerçuX = 5;
+    const reliquatX = 30; // Position du reliquat (débutant à 30 mm de la marge à gauche)
+    const yPosition = gapAfterLogo + 123; // Position Y commune pour les deux éléments
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6);
+    doc.text(`Montant perçu: ${ticket.montantPercu}`, montantPerçuX, yPosition);
+    doc.text(`Reliquat: ${ticket.reliquat}`, reliquatX, yPosition);
     
     // Remerciement
     doc.setFont('helvetica', 'bold');

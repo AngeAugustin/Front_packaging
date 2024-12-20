@@ -304,6 +304,9 @@ const Vendre = () => {
         textColor: [255, 255, 255],
       },
     });
+
+    doc.text(`Montant perçu: ${ticket.montantPercu}`, 5, 165);
+    doc.text(`Reliquat: ${ticket.reliquat}`, 5, 170);
     
     // Remerciement
     doc.setFont('helvetica', 'bold');

@@ -253,28 +253,35 @@ const Vendre = () => {
     doc.text('Facture de vente', width / 2, 40, { align: 'center' });
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
-    doc.text(`Date: ${formattedDate}`, 5, 50);
-    doc.text(`Vendeur: ${Username}`, 5, 55);
+    
+    // Ajout du numéro de facture
+    doc.setFont('helvetica', 'bold');
+    doc.text(`N°: ${ticket.codeFact}`, width / 2, 45, { align: 'center' }); // Numéro de facture centré
+    
+    // Date et vendeur
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Date: ${formattedDate}`, 5, 55);
+    doc.text(`Vendeur: ${Username}`, 5, 60);
     
     // Informations de l'entreprise
     doc.setFont('helvetica', 'bold');
-    doc.text('Nos informations', 5, 65);
+    doc.text('Nos informations', 5, 70);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Entreprise: ${entreprise.nom}`, 5, 70);
-    doc.text(`Adresse: ${entreprise.adresse}`, 5, 75);
-    doc.text(`Ville: ${entreprise.ville}, ${entreprise.pays}`, 5, 80);
-    doc.text(`Téléphone: ${entreprise.tel}`, 5, 85);
-    doc.text(`Email: ${entreprise.email}`, 5, 90);
-    doc.text(`RCCM: RB/ COT/ 21 B 29319`, 5, 95);
-    doc.text(`IFU: 3 2021 1257 5665`, 5, 100);
+    doc.text(`Entreprise: ${entreprise.nom}`, 5, 75);
+    doc.text(`Adresse: ${entreprise.adresse}`, 5, 80);
+    doc.text(`Ville: ${entreprise.ville}, ${entreprise.pays}`, 5, 85);
+    doc.text(`Téléphone: ${entreprise.tel}`, 5, 90);
+    doc.text(`Email: ${entreprise.email}`, 5, 95);
+    doc.text(`RCCM: RB/ COT/ 21 B 29319`, 5, 100);
+    doc.text(`IFU: 3 2021 1257 5665`, 5, 105);
     
     // Informations du client
     doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', 5, 110);
+    doc.text('Informations du client', 5, 115);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, 115);
-    doc.text(`Email: ${ticket.emailClient}`, 5, 120);
-    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, 125);
+    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, 120);
+    doc.text(`Email: ${ticket.emailClient}`, 5, 125);
+    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, 130);
     
     // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
@@ -285,7 +292,7 @@ const Vendre = () => {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 130,
+      startY: 140,
       margin: { left: 5, right: 5 },
       theme: 'grid',
       styles: {

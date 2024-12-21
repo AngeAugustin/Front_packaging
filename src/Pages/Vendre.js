@@ -210,13 +210,7 @@ const Vendre = () => {
         setSuccessMessage("Produit vendu avec succès !");
         setErrorMessage("");
         generatePDF();
-        
-        // Attendre la fin du rendu du PDF, puis imprimer
-      setTimeout(() => {
-        window.print(); // Lancement de l'impression
-        navigate("/ventes"); // Redirection après l'impression
-      }, 1000);
-
+        navigate("/ventes");
       } else {
         throw new Error("Une erreur s'est produite lors de la vente.");
       }
@@ -231,52 +225,52 @@ const Vendre = () => {
     if (!ticket) return;
 
     const doc = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: [58, 200] // Format 58 mm x 200 mm
+        orientation: "portrait",
+        unit: "mm",
+        format: [58, 200] // Format 58 mm x 200 mm
     });
-    
+
     // Largeur du PDF
     const width = 58; // en mm
-    
+
     const currentDate = new Date();
     const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`;
-    
+
     // Informations de l'entreprise
     const entreprise = {
-      adresse: 'Bureau de Poste Cadjèhoun',
-      ville: 'Cotonou',
-      pays: 'Bénin',
-      tel: '+229 01 97 14 53 78',
-      email: 'skypemballage@gmail.com',
-      rccm: 'RB/ COT/ 21 B 29319',
-      ifu: '3 2021 1257 5665',
+        adresse: 'Bureau de Poste Cadjèhoun',
+        ville: 'Cotonou',
+        pays: 'Bénin',
+        tel: '+229 01 97 14 53 78',
+        email: 'skypemballage@gmail.com',
+        rccm: 'RB/ COT/ 21 B 29319',
+        ifu: '3 2021 1257 5665',
     };
-    
+
     // Logo de l'entreprise (réduit)
     const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
     doc.addImage(logoUrl, 'JPEG', (width - 20) / 2, 5, 20, 20); // Logo réduit (20 mm x 20 mm)
-    
+
     // Ajout d'un espace vide après le logo
     const gapAfterLogo = 30; // Position Y après le logo (espace de 10 mm supplémentaire)
-    
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
     doc.text(`${entreprise.ville} - ${entreprise.adresse}`, width / 2, gapAfterLogo, { align: 'center' });
     doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, gapAfterLogo + 4, { align: 'center' });
     doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, gapAfterLogo + 8, { align: 'center' });
-    
+
     // Ligne combinée pour "Facture N°" avec taille de police 9
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9); // Taille de police ajustée à 9
     doc.text(`Facture N° ${ticket.codeFact}`, width / 2, gapAfterLogo + 18, { align: 'center' });
-    
+
     // Date et vendeur
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
     doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 28);
     doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 33);
-    
+
     // Informations du client - Taille 6
     doc.setFont('helvetica', 'bold');
     doc.text('Informations du client', width / 2, gapAfterLogo + 43, { align: 'center' }); // Centré
@@ -286,48 +280,52 @@ const Vendre = () => {
     doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 53);
     doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);
     doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 63); // Nouveau
-    
+
     // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
     const tableRows = [
-      [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`]
+        [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`]
     ];
-    
+
     doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: gapAfterLogo + 73,
-      margin: { left: 5, right: 5 },
-      theme: 'grid',
-      styles: {
-        fontSize: 6,
-        cellPadding: 1,
-      },
-      headStyles: {
-        fillColor: [23, 84, 154],
-        textColor: [255, 255, 255],
-      },
+        head: [tableColumn],
+        body: tableRows,
+        startY: gapAfterLogo + 73,
+        margin: { left: 5, right: 5 },
+        theme: 'grid',
+        styles: {
+            fontSize: 6,
+            cellPadding: 1,
+        },
+        headStyles: {
+            fillColor: [23, 84, 154],
+            textColor: [255, 255, 255],
+        },
     });
-    
+
     // Montant perçu et Reliquat sur la même ligne avec plus d'espace
     const montantPerçuX = 5;
     const reliquatX = 35; // Position du Reliquat à 35 mm
     const yPosition = gapAfterLogo + 123; // Position Y commune pour les deux éléments
-    
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
     doc.text(`Montant perçu: ${ticket.montantPercu} FCFA`, montantPerçuX, yPosition);
     doc.text(`Reliquat: ${ticket.reliquat} FCFA`, reliquatX, yPosition);
-    
+
     // Remerciement
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7);
     doc.text('Merci pour votre achat !', width / 2, gapAfterLogo + 145, { align: 'center' });
-    
-    // Sauvegarde du PDF
-    doc.save(`Ticket_${ticket.codeFact}.pdf`);
-    
-  };
+
+    // Affichage du PDF dans un nouvel onglet pour impression
+    const pdfBlob = doc.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const printWindow = window.open(pdfUrl, '_blank');
+    printWindow.focus();
+    printWindow.print();
+};
+
 
   const nextStep = () => {
     setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));

@@ -210,7 +210,13 @@ const Vendre = () => {
         setSuccessMessage("Produit vendu avec succès !");
         setErrorMessage("");
         generatePDF();
-        navigate("/ventes");
+        
+        // Attendre la fin du rendu du PDF, puis imprimer
+      setTimeout(() => {
+        window.print(); // Lancement de l'impression
+        navigate("/ventes"); // Redirection après l'impression
+      }, 1000);
+
       } else {
         throw new Error("Une erreur s'est produite lors de la vente.");
       }

@@ -281,7 +281,7 @@ const Vendre = () => {
     doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);
     doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 63); // Nouveau
 
-    // Tableau des produits
+    // Tableau des produits avec texte en gras
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
     const tableRows = [
         [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`]
@@ -296,11 +296,16 @@ const Vendre = () => {
         styles: {
             fontSize: 6,
             cellPadding: 1,
+            fontStyle: 'bold' // Ajout pour mettre tout le texte en gras
         },
         headStyles: {
             fillColor: [23, 84, 154],
             textColor: [255, 255, 255],
+            fontStyle: 'bold' // Entête en gras également
         },
+        bodyStyles: {
+            fontStyle: 'bold' // Corps du tableau en gras
+        }
     });
 
     // Montant perçu et Reliquat sur la même ligne avec plus d'espace

@@ -294,7 +294,7 @@ const Vendre = () => {
       margin: { left: 3, right: 3 }, // Réduction des marges pour maximiser la largeur disponible
       theme: 'grid',
       styles: {
-          fontSize: 8, // Augmentation de la taille de police
+          fontSize: 9, // Augmentation de la taille de police
           cellPadding: 2, // Plus d'espace dans chaque cellule
           fontStyle: 'bold' // Texte en gras
       },
@@ -310,7 +310,7 @@ const Vendre = () => {
           0: { cellWidth: 18 }, // Première colonne (Produit) plus large
           1: { cellWidth: 10 }, // Colonne Qté plus étroite
           2: { cellWidth: 10 }, // Colonne P.U
-          3: { cellWidth: 11 }  // Colonne Total
+          3: { cellWidth: 13 }  // Colonne Total
       }
   });
   

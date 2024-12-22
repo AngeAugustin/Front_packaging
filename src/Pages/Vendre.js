@@ -284,7 +284,7 @@ const Vendre = () => {
     // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
     const tableRows = [
-        [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`]
+        [ticket.productName, ticket.quantity, `${ticket.unitPrice}`, `${ticket.total} FCFA`]
     ];
 
     doc.autoTable({
@@ -307,8 +307,8 @@ const Vendre = () => {
             fontStyle: 'normal'
         },
         columnStyles: {
-            0: { cellWidth: 20 }, // Largeur de la colonne "Produit"
-            1: { cellWidth: 10 }, // Largeur de la colonne "Qté"
+            0: { cellWidth: 18 }, // Largeur de la colonne "Produit"
+            1: { cellWidth: 9 }, // Largeur de la colonne "Qté"
             2: { cellWidth: 12 }, // Largeur de la colonne "P.U"
             3: { cellWidth: 16 }  // Largeur de la colonne "Total"
         }

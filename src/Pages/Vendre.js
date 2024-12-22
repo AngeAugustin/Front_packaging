@@ -307,10 +307,10 @@ const Vendre = () => {
           fontStyle: 'bold'
       },
       columnStyles: {
-          0: { cellWidth: 20 }, // Première colonne (Produit) plus large
+          0: { cellWidth: 18 }, // Première colonne (Produit) plus large
           1: { cellWidth: 10 }, // Colonne Qté plus étroite
           2: { cellWidth: 10 }, // Colonne P.U
-          3: { cellWidth: 15 }  // Colonne Total
+          3: { cellWidth: 11 }  // Colonne Total
       }
   });
   

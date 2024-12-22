@@ -307,7 +307,7 @@ const Vendre = () => {
           fontStyle: 'bold'
       },
       columnStyles: {
-          0: { cellWidth: 25 }, // Première colonne (Produit) plus large
+          0: { cellWidth: 20 }, // Première colonne (Produit) plus large
           1: { cellWidth: 10 }, // Colonne Qté plus étroite
           2: { cellWidth: 10 }, // Colonne P.U
           3: { cellWidth: 15 }  // Colonne Total
@@ -322,8 +322,8 @@ const Vendre = () => {
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
-    doc.text(`Montant perçu: ${ticket.montantPercu} FCFA`, montantPerçuX, yPosition);
-    doc.text(`Reliquat: ${ticket.reliquat} FCFA`, reliquatX, yPosition);
+    doc.text(`Montant perçu: ${ticket.montantPercu} `, montantPerçuX, yPosition);
+    doc.text(`Reliquat: ${ticket.reliquat} `, reliquatX, yPosition);
 
     // Remerciement
     doc.setFont('helvetica', 'bold');

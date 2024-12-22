@@ -320,22 +320,19 @@ const Vendre = () => {
 
     // Génération du PDF en tant que Blob
     const pdfBlob = doc.output('blob');
+
+    // Création d'une URL Blob
     const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Création d'une iframe pour gérer l'impression automatique
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.top = '-10000px';
-    iframe.style.left = '-10000px';
-    document.body.appendChild(iframe);
+    // Ouverture dans une nouvelle fenêtre
+    const newWindow = window.open(pdfUrl);
 
-    iframe.onload = () => {
-        iframe.contentWindow.focus();
-        iframe.contentWindow.print();
-        document.body.removeChild(iframe); // Supprime l'iframe après impression
-    };
-
-    iframe.src = pdfUrl; // Charge le PDF dans l'iframe
+    // Impression automatique
+    if (newWindow) {
+        newWindow.onload = () => {
+            newWindow.print();
+        };
+    }
 };
 
 

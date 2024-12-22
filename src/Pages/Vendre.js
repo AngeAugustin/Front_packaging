@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import printJS from 'print-js'; 
 
 const Vendre = () => {
   const navigate = useNavigate();
@@ -227,10 +228,10 @@ const Vendre = () => {
     const doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",
-        format: [58, 200] // Format 58 mm x 200 mm
+        format: [58, 200]
     });
 
-    // Configuration et contenu du PDF (inchangés)
+    // Contenu du PDF (identique à votre code existant)
     const width = 58;
     const currentDate = new Date();
     const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`;
@@ -320,19 +321,13 @@ const Vendre = () => {
 
     // Génération du PDF en tant que Blob
     const pdfBlob = doc.output('blob');
-
-    // Création d'une URL Blob
     const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Ouverture dans une nouvelle fenêtre
-    const newWindow = window.open(pdfUrl);
-
-    // Impression automatique
-    if (newWindow) {
-        newWindow.onload = () => {
-            newWindow.print();
-        };
-    }
+    // Impression directe avec print-js
+    printJS({
+        printable: pdfUrl,
+        type: 'pdf'
+    });
 };
 
 

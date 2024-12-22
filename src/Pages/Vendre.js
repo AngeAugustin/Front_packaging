@@ -284,7 +284,7 @@ const Vendre = () => {
     // Tableau des produits avec texte en gras
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
     const tableRows = [
-        [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`]
+        [ticket.productName, ticket.quantity, `${ticket.unitPrice} `, `${ticket.total} `]
     ];
 
     doc.autoTable({

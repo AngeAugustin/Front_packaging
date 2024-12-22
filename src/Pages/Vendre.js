@@ -227,7 +227,7 @@ const Vendre = () => {
     const doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",
-        format: [58, 200] // Format 58 mm x 200 mm
+        format: [58, 220] // Format augmenté à 58 mm x 220 mm
     });
 
     // Largeur du PDF
@@ -247,12 +247,12 @@ const Vendre = () => {
         ifu: '3 2021 1257 5665',
     };
 
-    // Logo de l'entreprise (réduit)
+    // Logo de l'entreprise
     const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
-    doc.addImage(logoUrl, 'JPEG', (width - 20) / 2, 5, 20, 20); // Logo réduit (20 mm x 20 mm)
+    doc.addImage(logoUrl, 'JPEG', (width - 20) / 2, 5, 20, 20);
 
     // Ajout d'un espace vide après le logo
-    const gapAfterLogo = 30; // Position Y après le logo (espace de 10 mm supplémentaire)
+    const gapAfterLogo = 30;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
@@ -260,9 +260,9 @@ const Vendre = () => {
     doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, gapAfterLogo + 4, { align: 'center' });
     doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, gapAfterLogo + 8, { align: 'center' });
 
-    // Ligne combinée pour "Facture N°" avec taille de police 9
+    // Ligne combinée pour "Facture N°"
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9); // Taille de police ajustée à 9
+    doc.setFontSize(9);
     doc.text(`Facture N° ${ticket.codeFact}`, width / 2, gapAfterLogo + 18, { align: 'center' });
 
     // Date et vendeur
@@ -271,17 +271,17 @@ const Vendre = () => {
     doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 28);
     doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 33);
 
-    // Informations du client - Taille 6
+    // Informations du client
     doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', width / 2, gapAfterLogo + 43, { align: 'center' }); // Centré
+    doc.text('Informations du client', width / 2, gapAfterLogo + 43, { align: 'center' });
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
     doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 48);
     doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 53);
     doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);
-    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 63); // Nouveau
+    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 63);
 
-    // Tableau des produits avec texte en gras
+    // Tableau des produits
     const tableColumn = ["Produit", "Qté", "P.U", "Total"];
     const tableRows = [
         [ticket.productName, ticket.quantity, `${ticket.unitPrice} FCFA`, `${ticket.total} FCFA`]
@@ -294,24 +294,30 @@ const Vendre = () => {
         margin: { left: 5, right: 5 },
         theme: 'grid',
         styles: {
-            fontSize: 6,
-            cellPadding: 1,
-            fontStyle: 'bold' // Ajout pour mettre tout le texte en gras
+            fontSize: 8, // Augmenter la taille de la police
+            cellPadding: 2, // Augmenter légèrement le padding
+            fontStyle: 'bold'
         },
         headStyles: {
             fillColor: [23, 84, 154],
             textColor: [255, 255, 255],
-            fontStyle: 'bold' // Entête en gras également
+            fontStyle: 'bold'
         },
         bodyStyles: {
-            fontStyle: 'bold' // Corps du tableau en gras
+            fontStyle: 'normal'
+        },
+        columnStyles: {
+            0: { cellWidth: 20 }, // Largeur de la colonne "Produit"
+            1: { cellWidth: 10 }, // Largeur de la colonne "Qté"
+            2: { cellWidth: 12 }, // Largeur de la colonne "P.U"
+            3: { cellWidth: 16 }  // Largeur de la colonne "Total"
         }
     });
 
-    // Montant perçu et Reliquat sur la même ligne avec plus d'espace
+    // Montant perçu et Reliquat
     const montantPerçuX = 5;
-    const reliquatX = 35; // Position du Reliquat à 35 mm
-    const yPosition = gapAfterLogo + 123; // Position Y commune pour les deux éléments
+    const reliquatX = 35;
+    const yPosition = gapAfterLogo + 123;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6);
@@ -326,6 +332,7 @@ const Vendre = () => {
     // Sauvegarde du PDF
     doc.save(`Facture_${ticket.codeFact}.pdf`);
 };
+
 
 
 

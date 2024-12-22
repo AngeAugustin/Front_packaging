@@ -288,25 +288,32 @@ const Vendre = () => {
     ];
 
     doc.autoTable({
-        head: [tableColumn],
-        body: tableRows,
-        startY: gapAfterLogo + 73,
-        margin: { left: 5, right: 5 },
-        theme: 'grid',
-        styles: {
-            fontSize: 6,
-            cellPadding: 1,
-            fontStyle: 'bold' // Ajout pour mettre tout le texte en gras
-        },
-        headStyles: {
-            fillColor: [23, 84, 154],
-            textColor: [255, 255, 255],
-            fontStyle: 'bold' // Entête en gras également
-        },
-        bodyStyles: {
-            fontStyle: 'bold' // Corps du tableau en gras
-        }
-    });
+      head: [tableColumn],
+      body: tableRows,
+      startY: gapAfterLogo + 73,
+      margin: { left: 3, right: 3 }, // Réduction des marges pour maximiser la largeur disponible
+      theme: 'grid',
+      styles: {
+          fontSize: 8, // Augmentation de la taille de police
+          cellPadding: 2, // Plus d'espace dans chaque cellule
+          fontStyle: 'bold' // Texte en gras
+      },
+      headStyles: {
+          fillColor: [23, 84, 154],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+      },
+      bodyStyles: {
+          fontStyle: 'bold'
+      },
+      columnStyles: {
+          0: { cellWidth: 25 }, // Première colonne (Produit) plus large
+          1: { cellWidth: 10 }, // Colonne Qté plus étroite
+          2: { cellWidth: 10 }, // Colonne P.U
+          3: { cellWidth: 15 }  // Colonne Total
+      }
+  });
+  
 
     // Montant perçu et Reliquat sur la même ligne avec plus d'espace
     const montantPerçuX = 5;

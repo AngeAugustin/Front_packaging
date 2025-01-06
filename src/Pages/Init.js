@@ -17,7 +17,28 @@ const Init = () => {
 
   // Fonction pour générer une référence unique
   const generateUniqueReference = (typeProduit) => {
-    const prefix = typeProduit === "Packaging artisanal" ? "PA-AT" : "PA-MO";
+    let prefix;
+
+    switch (typeProduit) {
+      case "Packaging artisanal":
+        prefix = "PA-AT";
+        break;
+      case "Packaging moderne":
+        prefix = "PA-MO";
+        break;
+      case "Eau":
+        prefix = "A-EA";
+        break;
+      case "Bière":
+        prefix = "A-BI";
+        break;
+      case "Sucrerie":
+        prefix = "A-SU";
+        break;
+      default:
+        prefix = "UNK";
+    }
+
     let randomNumber;
 
     // Assurez-vous que le numéro est unique
@@ -54,7 +75,7 @@ const Init = () => {
         Type_produit: typeProduit,
         Qte_produit: qteProduit,
         Prix_produit: prixProduit,
-        Date_entre: new Date().toISOString(), 
+        Date_entre: new Date().toISOString(),
         Heure_entre: new Date().toISOString(),
         Statut_produit: 'Initialisé'
       };
@@ -123,6 +144,9 @@ const Init = () => {
             </option>
             <option value="Packaging artisanal">Packaging artisanal</option>
             <option value="Packaging moderne">Packaging moderne</option>
+            <option value="Eau">Eau</option>
+            <option value="Bière">Bière</option>
+            <option value="Sucrerie">Sucrerie</option>
           </select>
 
           <input

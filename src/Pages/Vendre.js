@@ -416,6 +416,9 @@ const Vendre = () => {
               <option value="">Type de produit</option>
               <option value="Packaging artisanal">Packaging artisanal</option>
               <option value="Packaging moderne">Packaging moderne</option>
+              <option value="Eau">Eau</option>
+              <option value="Bière">Bière</option>
+              <option value="Sucrerie">Sucrerie</option>
             </select>
             <input
               name="unitPrice"

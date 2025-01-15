@@ -321,7 +321,7 @@ const Vendre = () => {
 
     // Enregistrement du fichier localement
     const fileName = `Facture_${ticket.codeFact}.pdf`;
-    doc.save(fileName); // Enregistre le PDF avec le nom fourni
+    doc.save(fileName); 
 
     // Génération du PDF en tant que Blob
     const pdfBlob = doc.output('blob');

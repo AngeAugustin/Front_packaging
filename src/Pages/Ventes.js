@@ -166,7 +166,7 @@ const Ventes = () => {
       {showConfirmation && (
         <div style={styles.modal}>
           <div style={styles.modalContent}>
-            <p>Voulez-vous vraiment supprimer ce produit ?</p>
+            <p>Voulez-vous vraiment supprimer cette vente ?</p>
             <div style={styles.modalButtons}>
               <button onClick={() => handleDelete(productToDelete.Reference_produit, productToDelete.Qte_produit, productToDelete.Date_vente, productToDelete.Prix_produit, productToDelete.Type_produit)} style={styles.modalButton}>Oui</button>
               <button onClick={cancelDelete} style={styles.modalButton}>Non</button>

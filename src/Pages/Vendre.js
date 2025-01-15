@@ -319,6 +319,10 @@ const Vendre = () => {
     doc.setFontSize(7);
     doc.text('Merci pour votre achat !', width / 2, gapAfterLogo + 145, { align: 'center' });
 
+    // Enregistrement du fichier localement
+    const fileName = `Facture_${ticket.codeFact}.pdf`;
+    doc.save(fileName); // Enregistre le PDF avec le nom fourni
+
     // Génération du PDF en tant que Blob
     const pdfBlob = doc.output('blob');
     const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -328,8 +332,7 @@ const Vendre = () => {
         printable: pdfUrl,
         type: 'pdf'
     });
-};
-
+  };
 
 
   const nextStep = () => {

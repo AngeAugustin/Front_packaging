@@ -513,7 +513,7 @@ const Vendre = () => {
         )}
       </div>
     </div>
-  );
+  ); 
 };
 
 const styles = {

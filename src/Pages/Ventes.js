@@ -119,75 +119,48 @@ const Ventes = () => {
       <div style={{ height: "5px" }}></div>
 
       {/* Table container with white background and rounded borders */}
-      <div 
-  style={{ 
-    backgroundColor: "white", 
-    borderRadius: "10px", 
-    overflow: "hidden", 
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" 
-  }}
->
-  {/* Conteneur avec scroll invisible */}
-  <div 
-    style={{
-      maxHeight: "400px",  // Ajuste la hauteur pour activer le scroll
-      overflowY: "scroll",
-      scrollbarWidth: "none", // Firefox
-      msOverflowStyle: "none" // IE/Edge
-    }}
-  >
-    {/* Masquage du scroll pour Chrome, Safari et Edge */}
-    <style>
-      {`
-        div::-webkit-scrollbar {
-          display: none;
-        }
-      `}
-    </style>
-
-    <table style={{ width: "100%", borderCollapse: "collapse" }}>
-      <thead>
-        <tr>
-          <th style={{ ...styles.headerCell, textAlign: "left" }}>Référence du produit</th>
-          <th style={{ ...styles.headerCell, textAlign: "left" }}>Nom du produit</th>
-          <th style={{ ...styles.headerCell, textAlign: "center" }}>Date de vente</th>
-          <th style={{ ...styles.headerCell, textAlign: "center" }}>Prix Unitaire</th>
-          <th style={{ ...styles.headerCell, textAlign: "center" }}>Quantité vendue</th>
-          <th style={{ ...styles.headerCell, textAlign: "center" }}>Montant total</th>
-          <th style={{ ...styles.headerCell, textAlign: "center" }}>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {ventes.map((vente, index) => (
-          <tr key={index} style={styles.row}>
-            <td style={styles.cell}>{vente.Reference_produit}</td>
-            <td style={styles.cell}>{vente.Type_produit}</td>
-            <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Date_vente}</td>
-            <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit}</td>
-            <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Qte_produit}</td>
-            <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit * vente.Qte_produit}</td>
-            <td
-              style={{
-                ...styles.cell,
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {/* Icône de suppression */}
-              <FaTrash
-                style={{ cursor: "pointer", color: "red" }}
-                onClick={() => showDeleteConfirmation(vente)}
-              />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-
+      <div style={{ backgroundColor: "white", borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th style={{ ...styles.headerCell, textAlign: "left" }}>Référence du produit</th>
+              <th style={{ ...styles.headerCell, textAlign: "left" }}>Nom du produit</th>
+              <th style={{ ...styles.headerCell, textAlign: "center" }}>Date de vente</th> {/* Centré */}
+              <th style={{ ...styles.headerCell, textAlign: "center" }}>Prix Unitaire</th> {/* Centré */}
+              <th style={{ ...styles.headerCell, textAlign: "center" }}>Quantité vendue</th> {/* Centré */}
+              <th style={{ ...styles.headerCell, textAlign: "center" }}>Montant total</th> {/* Centré */}
+              <th style={{ ...styles.headerCell, textAlign: "center" }}>Action</th> {/* Centré */}
+            </tr>
+          </thead>
+          <tbody>
+            {ventes.map((vente, index) => (
+              <tr key={index} style={styles.row}>
+                <td style={styles.cell}>{vente.Reference_produit}</td>
+                <td style={styles.cell}>{vente.Type_produit}</td>
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Date_vente}</td> {/* Centré */}
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit}</td> {/* Centré */}
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Qte_produit}</td> {/* Centré */}
+                <td style={{ ...styles.cell, textAlign: "center" }}>{vente.Prix_produit * vente.Qte_produit}</td> {/* Centré */}
+                <td
+                  style={{
+                    ...styles.cell,
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {/* Icône de suppression */}
+                  <FaTrash
+                    style={{ cursor: "pointer", color: "red" }}
+                    onClick={() => showDeleteConfirmation(vente)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Confirmation Modal */}
       {showConfirmation && (

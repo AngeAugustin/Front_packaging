@@ -7,7 +7,7 @@ body {
 .dashboard-container {
   display: flex;
   flex-direction: column; /* Mise en colonne pour que la barre supérieure soit au-dessus */
-  height: 80vh;
+  height: 97vh;
 }
 
 /* Barre supérieure */

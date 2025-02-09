@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -15,31 +16,52 @@ const Init = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const { Username } = useAuth();
 
-  // Fonction pour générer une référence unique basée sur le nom du produit
-  const generateUniqueReference = (nomProduit) => {
-    if (!nomProduit || nomProduit.length < 2) return ""; // S'assurer d'avoir au moins 2 lettres
-    
-    let prefix = nomProduit.substring(0, 2).toUpperCase(); // Prend les 2 premières lettres en majuscules
+  // Fonction pour générer une référence unique
+  const generateUniqueReference = (typeProduit) => {
+    let prefix;
+
+    switch (typeProduit) {
+      case "Packaging artisanal":
+        prefix = "PA-AT";
+        break;
+      case "Packaging moderne":
+        prefix = "PA-MO";
+        break;
+      case "Eau":
+        prefix = "A-EA";
+        break;
+      case "Bière":
+        prefix = "A-BI";
+        break;
+      case "Sucrerie":
+        prefix = "A-SU";
+        break;
+      default:
+        prefix = "UNK";
+    }
+
     let randomNumber;
 
+    // Assurez-vous que le numéro est unique
     do {
       randomNumber = Math.floor(100 + Math.random() * 900); // Génère un nombre entre 100 et 999
     } while (usedReferences.has(randomNumber));
 
-    setUsedReferences((prev) => new Set(prev).add(randomNumber));
-    return `${prefix}-SK-${randomNumber}`;
+    setUsedReferences((prev) => new Set(prev).add(randomNumber)); // Ajoute le numéro à l'ensemble
+
+    return `${prefix}-${randomNumber}`;
   };
 
-  // Met à jour la référence automatiquement quand l'utilisateur quitte le champ
-  const handleBlurTypeProduit = () => {
+  // Met à jour la référence automatiquement lorsqu’un type de produit est sélectionné
+  useEffect(() => {
     if (typeProduit) {
       const newReference = generateUniqueReference(typeProduit);
       setReferenceProduit(newReference);
     }
-  };
+  }, [typeProduit]);
 
   const handleInit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Empêche le rechargement de la page
 
     if (!typeProduit || !qteProduit || !prixProduit) {
       setErrorMessage('Veuillez remplir tous les champs.');
@@ -87,6 +109,7 @@ const Init = () => {
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px", height: "400px" }}>
+      {/* Header section */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <div> 
           <h2 style={{ margin: 0 }}>Produits</h2>
@@ -96,19 +119,36 @@ const Init = () => {
 
       <div style={{ borderBottom: "1px solid #ddd", marginBottom: "20px" }}></div>
 
-      <div style={{ flex: 1, backgroundColor: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+      {/* Section principale */}
+      <div
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px',
+        }}
+      >
         <h3>Informations du produit à créer</h3>
         {errorMessage && <p style={errorStyle}>{errorMessage}</p>}
         {successMessage && <p style={successStyle}>{successMessage}</p>}
-        <form onSubmit={handleInit} style={{ width: '100%', maxWidth: 500 }}>
-          <input
-            type="text"
-            placeholder="Nom du produit"
-            style={{ ...inputStyle, marginBottom: '15px', width: '100%' }}
+        <form onSubmit={handleInit} style={{ width: '100%', maxWidth: 400 }}>
+          <select
+            style={{ ...inputStyle, marginBottom: '15px', width: '420px' }}
             value={typeProduit}
             onChange={(e) => setTypeProduit(e.target.value)}
-            onBlur={handleBlurTypeProduit}
-          />
+          >
+            <option value="" disabled selected>
+              Type de produit
+            </option>
+            <option value="Packaging artisanal">Packaging artisanal</option>
+            <option value="Packaging moderne">Packaging moderne</option>
+            <option value="Eau">Eau</option>
+            <option value="Bière">Bière</option>
+            <option value="Sucrerie">Sucrerie</option>
+          </select>
 
           <input
             type="text"
@@ -135,7 +175,22 @@ const Init = () => {
             onChange={(e) => setQteProduit(e.target.value)}
           />
 
-          <button type="submit" style={buttonStyle}>Créer le produit</button>
+          <button
+            type="submit"
+            style={{
+              width: '422px',
+              padding: '10px',
+              backgroundColor: '#17549A',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              fontSize: '16px',
+              cursor: 'pointer',
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+            }}
+          >
+            Créer le produit
+          </button>
         </form>
       </div>
     </div>
@@ -158,17 +213,6 @@ const errorStyle = {
 const successStyle = {
   color: 'green',
   margin: '10px 0',
-};
-
-const buttonStyle = {
-  width: '105%',
-  padding: '10px',
-  backgroundColor: '#17549A',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '5px',
-  fontSize: '16px',
-  cursor: 'pointer',
 };
 
 export default Init;

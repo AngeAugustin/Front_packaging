@@ -533,7 +533,7 @@ const styles = {
   },
   section: { marginBottom: "0px" },
   heading: { marginBottom: "10px" },
-  input: { width: "100%", padding: "10px", margin: "5px 0", fontSize: "16px", borderRadius: "5px", border: "1px solid #ddd" },
+  input: { width: "97%", padding: "10px", margin: "5px 0", fontSize: "16px", borderRadius: "5px", border: "1px solid #ddd" },
   button: {
     backgroundColor: "#4CAF50",
     color: "white",

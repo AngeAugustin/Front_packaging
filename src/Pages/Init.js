@@ -100,7 +100,7 @@ const Init = () => {
         <h3>Informations du produit à créer</h3>
         {errorMessage && <p style={errorStyle}>{errorMessage}</p>}
         {successMessage && <p style={successStyle}>{successMessage}</p>}
-        <form onSubmit={handleInit} style={{ width: '100%', maxWidth: 400 }}>
+        <form onSubmit={handleInit} style={{ width: '100%', maxWidth: 500 }}>
           <input
             type="text"
             placeholder="Nom du produit"

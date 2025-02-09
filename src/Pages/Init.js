@@ -161,7 +161,7 @@ const successStyle = {
 };
 
 const buttonStyle = {
-  width: '110%',
+  width: '105%',
   padding: '10px',
   backgroundColor: '#17549A',
   color: '#fff',

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import jsPDF from 'jspdf';
@@ -28,8 +28,8 @@ const Vendre = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const { Username } = useAuth();
-
   const [isMontantPercuValid, setIsMontantPercuValid] = useState(true); // État pour vérifier la validité du montant perçu
+  const [productTypes, setProductTypes] = useState([]); 
 
   const generateParticulierData = () => {
     const randomNumber = Math.floor(100 + Math.random() * 900);
@@ -42,6 +42,25 @@ const Vendre = () => {
       telephoneClient: "0123456789",
     };
   };
+
+  // Récupération des types de produits via l'API
+  useEffect(() => {
+    const fetchProductTypes = async () => {
+      try {
+        const response = await fetch('https://backend-packaging-4c79ed1cf149.herokuapp.com/allproducts');
+        if (response.ok) {
+          const data = await response.json();
+          setProductTypes(data); // Assumons que data est un tableau de types de produits
+        } else {
+          console.error("Erreur lors de la récupération des types de produits.");
+        }
+      } catch (error) {
+        console.error("Erreur réseau :", error);
+      }
+    };
+
+    fetchProductTypes();
+  }, []); // Ce useEffect se déclenche au montage du composant
 
   const handleTypeClientChange = (value) => {
     let updatedFields = {};
@@ -416,12 +435,12 @@ const Vendre = () => {
               onChange={handleChange}
               style={styles.input}
             >
-              <option value="">Type de produit</option>
-              <option value="Packaging artisanal">Packaging artisanal</option>
-              <option value="Packaging moderne">Packaging moderne</option>
-              <option value="Eau">Eau</option>
-              <option value="Bière">Bière</option>
-              <option value="Sucrerie">Sucrerie</option>
+              <option value="">Sélectionner un produit</option>
+              {productTypes.map((product) => (
+                <option key={product.id} value={product.name}>
+                  {product.name} {/* Assurez-vous que le nom du produit est dans l'objet */}
+                </option>
+              ))}
             </select>
             <input
               name="unitPrice"

@@ -436,9 +436,9 @@ const Vendre = () => {
               style={styles.input}
             >
               <option value="">Sélectionner un produit</option>
-              {productTypes.map((product) => (
-                <option key={product.id} value={product.name}>
-                  {product.name} {/* Assurez-vous que le nom du produit est dans l'objet */}
+              {productTypes.map((product, index) => (
+                <option key={index} value={product.Type_produit}>
+                  {product.Type_produit}
                 </option>
               ))}
             </select>

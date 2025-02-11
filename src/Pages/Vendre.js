@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import jsPDF from 'jspdf';
@@ -30,6 +30,7 @@ const Vendre = () => {
   const { Username } = useAuth();
 
   const [isMontantPercuValid, setIsMontantPercuValid] = useState(true); // État pour vérifier la validité du montant perçu
+  const [productTypes, setProductTypes] = useState([]);
 
   const generateParticulierData = () => {
     const randomNumber = Math.floor(100 + Math.random() * 900);
@@ -60,6 +61,25 @@ const Vendre = () => {
       typeClient: value,
       ...updatedFields,
     }));
+  };
+
+  useEffect(() => {
+    fetchProductTypes(); // Appeler la fonction au moment du montage du composant
+  }, []);
+
+   // Récupérer les types de produits depuis le backend
+   const fetchProductTypes = async () => {
+    try {
+      const response = await fetch("https://backend-packaging-4c79ed1cf149.herokuapp.com/product-types");
+      if (response.ok) {
+        const data = await response.json();
+        setProductTypes(data); // Stocker les types de produits dans l'état
+      } else {
+        console.error("Erreur lors de la récupération des types de produits.");
+      }
+    } catch (error) {
+      console.error("Erreur réseau :", error);
+    }
   };
 
   const fetchProduitDetails = async (typeProduit) => {
@@ -416,12 +436,10 @@ const Vendre = () => {
               onChange={handleChange}
               style={styles.input}
             >
-              <option value="">Type de produit</option>
-              <option value="Packaging artisanal">Packaging artisanal</option>
-              <option value="Packaging moderne">Packaging moderne</option>
-              <option value="Eau">Eau</option>
-              <option value="Bière">Bière</option>
-              <option value="Sucrerie">Sucrerie</option>
+              <option value="">Sélectionnez un produit</option>
+              {productTypes.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
             </select>
             <input
               name="unitPrice"

@@ -4,7 +4,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/notifications`)
+    fetch(`https://backend-packaging-4c79ed1cf149.herokuapp.com/notifications`)
       .then((res) => res.json())
       .then((data) => {
         setNotifications(data);

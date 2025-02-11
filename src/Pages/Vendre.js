@@ -65,7 +65,7 @@ const Vendre = () => {
   const fetchProduitDetails = async (typeProduit) => {
     try {
       const response = await fetch(
-        `https://packaging-backend-ccd132e45603.herokuapp.com/search/${typeProduit}?Type_produit=${typeProduit}`
+        `https://backend-packaging-4c79ed1cf149.herokuapp.com/search/${typeProduit}?Type_produit=${typeProduit}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -201,7 +201,7 @@ const Vendre = () => {
       };
 
       const response = await fetch(
-        `https://packaging-backend-ccd132e45603.herokuapp.com/vendreProduit/${Username}/${referenceProduit}`,
+        `https://backend-packaging-4c79ed1cf149.herokuapp.com/vendreProduit/${Username}/${referenceProduit}`,
         options
       );
 

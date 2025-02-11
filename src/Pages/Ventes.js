@@ -12,7 +12,7 @@ const Ventes = () => {
 
   useEffect(() => {
     if (Username) {
-      fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/ventes/${Username}/${typeClient}`)
+      fetch(`https://backend-packaging-4c79ed1cf149.herokuapp.com/ventes/${Username}/${typeClient}`)
         .then((res) => res.json())
         .then((data) => {
           setVentes(data);
@@ -23,7 +23,7 @@ const Ventes = () => {
 
   const handleDelete = (Reference_produit, Qte_produit, Date_vente, Prix_produit, Type_produit) => {
     // Construction de l'URL avec les paramètres dans la route
-    const url = `https://packaging-backend-ccd132e45603.herokuapp.com/annulerProduit/${Username}/${Date_vente}/${Reference_produit}/${Qte_produit}/${Prix_produit}/${Type_produit}`;
+    const url = `https://backend-packaging-4c79ed1cf149.herokuapp.com/annulerProduit/${Username}/${Date_vente}/${Reference_produit}/${Qte_produit}/${Prix_produit}/${Type_produit}`;
 
     fetch(url, {
       method: "POST", // Méthode POST même si les paramètres sont dans l'URL

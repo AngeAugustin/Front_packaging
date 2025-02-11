@@ -17,7 +17,7 @@ const Stocker = () => {
   // Nouvelle fonction pour récupérer les détails du produit
   const fetchProductDetails = async (type) => {
     try {
-      const response = await fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/search/${type}?Type_produit=${type}`);
+      const response = await fetch(`https://backend-packaging-4c79ed1cf149.herokuapp.com/search/${type}?Type_produit=${type}`);
       if (response.ok) {
         const data = await response.json();
         setReferenceProduit(data.Reference_produit); // Met à jour la référence
@@ -64,7 +64,7 @@ const Stocker = () => {
         },
       };
 
-      const response = await fetch(`https://packaging-backend-ccd132e45603.herokuapp.com/stockerProduit/${Username}/${referenceProduit}`, options);
+      const response = await fetch(`https://backend-packaging-4c79ed1cf149.herokuapp.com/stockerProduit/${Username}/${referenceProduit}`, options);
 
       if (response.ok) {
         const responseData = await response.json();

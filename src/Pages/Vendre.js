@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import jsPDF from 'jspdf';
@@ -30,37 +30,26 @@ const Vendre = () => {
   const { Username } = useAuth();
 
   const [isMontantPercuValid, setIsMontantPercuValid] = useState(true); // État pour vérifier la validité du montant perçu
+  const [productTypes, setProductTypes] = useState([]); // Nouvel état pour stocker les types de produits
 
-  const generateParticulierData = () => {
-    const randomNumber = Math.floor(100 + Math.random() * 900);
-    const generatedName = `Client${randomNumber}`;
-    const generatedEmail = `${generatedName.toLowerCase()}@example.com`;
-    return {
-      nameClient: generatedName,
-      firstnameClient: generatedName,
-      emailClient: generatedEmail,
-      telephoneClient: "0123456789",
-    };
-  };
-
-  const handleTypeClientChange = (value) => {
-    let updatedFields = {};
-    if (value === "Particulier") {
-      updatedFields = generateParticulierData();
-    } else if (value === "Entreprise") {
-      updatedFields = {
-        nameClient: "",
-        firstnameClient: "",
-        emailClient: "",
-        telephoneClient: "",
-      };
+  // Récupérer les types de produits depuis le backend
+  const fetchProductTypes = async () => {
+    try {
+      const response = await fetch("https://backend-packaging-4c79ed1cf149.herokuapp.com/allproducts");
+      if (response.ok) {
+        const data = await response.json();
+        setProductTypes(data); // Stocker les types de produits dans l'état
+      } else {
+        console.error("Erreur lors de la récupération des types de produits.");
+      }
+    } catch (error) {
+      console.error("Erreur réseau :", error);
     }
-    setFormData((prevData) => ({
-      ...prevData,
-      typeClient: value,
-      ...updatedFields,
-    }));
   };
+
+  useEffect(() => {
+    fetchProductTypes(); // Appeler la fonction au moment du montage du composant
+  }, []);
 
   const fetchProduitDetails = async (typeProduit) => {
     try {
@@ -109,238 +98,66 @@ const Vendre = () => {
     }
   };
 
-  const generateUniqueCodeFact = () => {
-    const randomNum = Math.floor(10000 + Math.random() * 90000);
-    return `FACT00${randomNum}`;
+  const handleTypeClientChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      typeClient: value,
+      nameClient: "",
+      firstnameClient: "",
+      emailClient: "",
+      telephoneClient: "",
+    }));
+  };
+
+  const nextStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const prevStep = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
   };
 
   const generateTicket = () => {
-    const codeFact = generateUniqueCodeFact();
     const total = formData.unitPrice * formData.quantity;
-    const currentDate = new Date().toLocaleDateString("fr-FR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    const reliquat = formData.montantPercu - total;
+    const reliquat = parseFloat(formData.montantPercu) < total ? total - parseFloat(formData.montantPercu) : 0;
 
-    setTicket({
+    const ticketData = {
+      codeFact: "REF" + Math.floor(Math.random() * 1000000),
       productName: formData.product,
-      unitPrice: formData.unitPrice,
-      quantity: formData.quantity,
-      total: total,
-      paymentMode: formData.paymentMode,
+      date: new Date().toLocaleDateString(),
       nameClient: formData.nameClient,
       firstnameClient: formData.firstnameClient,
       emailClient: formData.emailClient,
       telephoneClient: formData.telephoneClient,
-      codeFact: codeFact,
-      date: currentDate,
+      unitPrice: formData.unitPrice,
+      quantity: formData.quantity,
+      total: total,
       montantPercu: formData.montantPercu,
       reliquat: reliquat,
-      typeClient: formData.typeClient,
-    });
-
-    setCurrentStep(3);
-  };
-
-  const handleVendre = async (e) => {
-    if (e) e.preventDefault();
-
-    if (
-      !formData.product ||
-      !formData.quantity ||
-      !formData.unitPrice ||
-      !formData.paymentMode ||
-      !formData.nameClient ||
-      !formData.firstnameClient ||
-      !formData.emailClient ||
-      !formData.telephoneClient ||
-      !formData.montantPercu ||
-      !formData.typeClient
-    ) {
-      setErrorMessage("Veuillez remplir tous les champs.");
-      setSuccessMessage("");
-      return;
-    }
-
-    try {
-      const codeFact = generateUniqueCodeFact();
-      const customerID = formData.firstnameClient + formData.telephoneClient.slice(0, 5);
-      const totalFact = formData.unitPrice * formData.quantity;
-      const reliquat = formData.montantPercu - totalFact;
-
-      const myVendre = {
-        Username: Username,
-        Reference_produit: referenceProduit,
-        Type_produit: formData.product,
-        Qte_produit: formData.quantity,
-        Prix_produit: formData.unitPrice,
-        Code_facture: codeFact,
-        Date_vente: new Date().toISOString(),
-        Heure_vente: new Date().toISOString(),
-        Statut_produit: "Vendu",
-        Email_client: formData.emailClient,
-        Name_client: formData.nameClient,
-        Firstname_client: formData.firstnameClient,
-        Telephone_client: formData.telephoneClient,
-        Customer: customerID,
-        Montant_facture: totalFact,
-        Mode_paiement: formData.paymentMode,
-        Montant_percu: formData.montantPercu,
-        Reliquat: reliquat,
-        Type_client: formData.typeClient,
-      };
-
-      const options = {
-        method: "POST",
-        body: JSON.stringify(myVendre),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      const response = await fetch(
-        `https://backend-packaging-4c79ed1cf149.herokuapp.com/vendreProduit/${Username}/${referenceProduit}`,
-        options
-      );
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        setSuccessMessage("Produit vendu avec succès !");
-        setErrorMessage("");
-        generatePDF();
-        navigate("/ventes");
-      } else {
-        throw new Error("Une erreur s'est produite lors de la vente.");
-      }
-    } catch (error) {
-      console.error(error.message);
-      setErrorMessage("Erreur lors de la vente du produit.");
-      setSuccessMessage("");
-    }
-  };
-
-  const generatePDF = () => {
-    if (!ticket) return;
-
-    const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: [58, 200]
-    });
-
-    // Contenu du PDF (identique à votre code existant)
-    const width = 58;
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`;
-
-    const entreprise = {
-        adresse: 'Bureau de Poste Cadjèhoun',
-        ville: 'Cotonou',
-        pays: 'Bénin',
-        tel: '+229 01 97 14 53 78',
-        email: 'skypemballage@gmail.com',
-        rccm: 'RB/ COT/ 21 B 29319',
-        ifu: '3 2021 1257 5665',
+      paymentMode: formData.paymentMode,
     };
 
-    const logoUrl = 'https://i.postimg.cc/rFCP5vjM/SKY-P.png';
-    doc.addImage(logoUrl, 'JPEG', (width - 20) / 2, 5, 20, 20);
+    setTicket(ticketData);
+    setSuccessMessage("Ticket généré avec succès !");
+  };
 
-    const gapAfterLogo = 30;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`${entreprise.ville} - ${entreprise.adresse}`, width / 2, gapAfterLogo, { align: 'center' });
-    doc.text(`${entreprise.tel} - ${entreprise.email}`, width / 2, gapAfterLogo + 4, { align: 'center' });
-    doc.text(`RCCM: ${entreprise.rccm} - IFU: ${entreprise.ifu}`, width / 2, gapAfterLogo + 8, { align: 'center' });
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.text(`Facture N° ${ticket.codeFact}`, width / 2, gapAfterLogo + 18, { align: 'center' });
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`Date: ${formattedDate}`, 5, gapAfterLogo + 28);
-    doc.text(`Vendeur: ${Username}`, 5, gapAfterLogo + 33);
-
-    doc.setFont('helvetica', 'bold');
-    doc.text('Informations du client', width / 2, gapAfterLogo + 43, { align: 'center' });
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`Client: ${ticket.firstnameClient} ${ticket.nameClient}`, 5, gapAfterLogo + 48);
-    doc.text(`Email: ${ticket.emailClient}`, 5, gapAfterLogo + 53);
-    doc.text(`Téléphone: ${ticket.telephoneClient}`, 5, gapAfterLogo + 58);
-    doc.text(`Mode de paiement: ${ticket.paymentMode}`, 5, gapAfterLogo + 63);
-
-    const tableColumn = ["Produit", "Qté", "P.U", "Total"];
-    const tableRows = [
-        [ticket.productName, ticket.quantity, `${ticket.unitPrice} `, `${ticket.total} `]
-    ];
-
-    doc.autoTable({
-        head: [tableColumn],
-        body: tableRows,
-        startY: gapAfterLogo + 73,
-        margin: { left: 3, right: 3 },
-        theme: 'grid',
-        styles: {
-            fontSize: 9,
-            cellPadding: 2,
-            fontStyle: 'bold'
-        },
-        headStyles: {
-            fillColor: [23, 84, 154],
-            textColor: [255, 255, 255],
-            fontStyle: 'bold'
-        },
-        bodyStyles: {
-            fontStyle: 'bold'
-        },
-        columnStyles: {
-            0: { cellWidth: 18 },
-            1: { cellWidth: 10 },
-            2: { cellWidth: 11 },
-            3: { cellWidth: 13 }
-        }
-    });
-
-    const montantPerçuX = 5;
-    const reliquatX = 35;
-    const yPosition = gapAfterLogo + 123;
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.text(`Montant perçu: ${ticket.montantPercu} FCFA `, montantPerçuX, yPosition);
-    doc.text(`Reliquat: ${ticket.reliquat} FCFA `, reliquatX, yPosition);
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.text('Merci pour votre achat !', width / 2, gapAfterLogo + 145, { align: 'center' });
-
-    // Enregistrement du fichier localement
-    const fileName = `Facture_${ticket.codeFact}.pdf`;
-    doc.save(fileName); 
-
-    // Génération du PDF en tant que Blob
-    const pdfBlob = doc.output('blob');
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-
-    // Impression directe avec print-js
+  const handlePrint = () => {
     printJS({
-        printable: pdfUrl,
-        type: 'pdf'
+      printable: ticket,
+      type: 'json',
+      properties: ['productName', 'nameClient', 'unitPrice', 'quantity', 'total', 'montantPercu', 'reliquat'],
+      header: 'Ticket de Vente',
     });
   };
 
-
-  const nextStep = () => {
-    setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));
-  };
-
-  const prevStep = () => {
-    setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
+  const handleDownload = () => {
+    const doc = new jsPDF();
+    doc.text('Ticket de Vente', 14, 10);
+    doc.text(`Produit: ${ticket.productName}`, 14, 20);
+    doc.text(`Total: ${ticket.total} FCFA`, 14, 30);
+    doc.text(`Montant Perçu: ${ticket.montantPercu} FCFA`, 14, 40);
+    doc.text(`Reliquat: ${ticket.reliquat} FCFA`, 14, 50);
+    doc.save('ticket_vente.pdf');
   };
 
   return (
@@ -416,12 +233,10 @@ const Vendre = () => {
               onChange={handleChange}
               style={styles.input}
             >
-              <option value="">Type de produit</option>
-              <option value="Packaging artisanal">Packaging artisanal</option>
-              <option value="Packaging moderne">Packaging moderne</option>
-              <option value="Eau">Eau</option>
-              <option value="Bière">Bière</option>
-              <option value="Sucrerie">Sucrerie</option>
+              <option value="">Sélectionnez un produit</option>
+              {productTypes.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
             </select>
             <input
               name="unitPrice"
@@ -497,78 +312,66 @@ const Vendre = () => {
                 <p><strong>Paiement :</strong> {ticket.paymentMode}</p>
               </div>
               <div style={styles.messageContainer}>
+                {successMessage && (
+                  <p style={styles.successMessage}>{successMessage}</p>
+                )}
                 {errorMessage && <p style={styles.errorMessage}>{errorMessage}</p>}
-                {successMessage && <p style={styles.successMessage}>{successMessage}</p>}
               </div>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <button onClick={prevStep} style={styles.grayButton}>
-                Précédent
-              </button>
-              <button onClick={handleVendre} style={styles.marronButton}>
-                Valider la vente
-              </button>
-            </div>
+            <button onClick={handlePrint} style={styles.grayButton}>Imprimer</button>
+            <button onClick={handleDownload} style={styles.grayButton}>Télécharger en PDF</button>
           </div>
         )}
       </div>
     </div>
-  ); 
+  );
 };
 
 const styles = {
-  errorMessage: {
-    color: "red",
-    fontWeight: "bold",
-  },
-  successMessage: {
-    color: "green",
-    fontWeight: "bold",
-  },
   container: {
-    backgroundColor: "white",
-    padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    maxWidth: '600px',
+    margin: '0 auto',
+    padding: '20px',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '8px',
   },
-  section: { marginBottom: "0px" },
-  heading: { marginBottom: "10px" },
-  input: { width: "97%", padding: "10px", margin: "5px 0", fontSize: "16px", borderRadius: "5px", border: "1px solid #ddd" },
-  button: {
-    backgroundColor: "#4CAF50",
-    color: "white",
-    padding: "10px 15px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontSize: "16px",
+  section: {
+    marginBottom: '20px',
+  },
+  heading: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    marginBottom: '15px',
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    marginBottom: '10px',
+    borderRadius: '5px',
+    border: '1px solid #ddd',
   },
   grayButton: {
-    backgroundColor: "#ccc",
-    color: "black",
-    padding: "10px 15px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  marronButton: {
-    backgroundColor: "#004aad",
-    color: "white",
-    padding: "10px 15px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
+    backgroundColor: '#ddd',
+    border: 'none',
+    padding: '10px 20px',
+    cursor: 'pointer',
+    borderRadius: '5px',
   },
   ticketContainer: {
-    marginTop: "20px",
-    display: "flex",
-    justifyContent: "space-between",
+    padding: '20px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    backgroundColor: '#fff',
   },
   messageContainer: {
-    marginTop: "10px",
-    display: "flex",
-    justifyContent: "space-between",
+    marginTop: '20px',
   },
+  successMessage: {
+    color: 'green',
+  },
+  errorMessage: {
+    color: 'red',
+  }
 };
 
 export default Vendre;

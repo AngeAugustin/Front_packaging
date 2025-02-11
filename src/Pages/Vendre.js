@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import jsPDF from 'jspdf';
@@ -7,6 +8,8 @@ import printJS from 'print-js';
 
 const Vendre = () => {
   const navigate = useNavigate();
+
+  const [typesProduit, setTypesProduit] = useState([]);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -84,6 +87,25 @@ const Vendre = () => {
       setErrorMessage("Une erreur s'est produite lors de la connexion à l'API.");
     }
   };
+
+  useEffect(() => {
+    const fetchTypesProduit = async () => {
+      try {
+        const response = await fetch("https://backend-packaging-4c79ed1cf149.herokuapp.com/allproducts");
+        if (response.ok) {
+          const data = await response.json();
+          setTypesProduit(data); // On suppose que l'API retourne une liste de types de produits
+        } else {
+          console.error("Erreur lors de la récupération des types de produits.");
+        }
+      } catch (error) {
+        console.error("Erreur réseau :", error);
+      }
+    };
+  
+    fetchTypesProduit();
+  }, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -411,18 +433,17 @@ const Vendre = () => {
           <div style={styles.section}>
             <h3 style={styles.heading}>Choix du produit et Paiement</h3>
             <select
-              name="product"
-              value={formData.product}
-              onChange={handleChange}
-              style={styles.input}
-            >
-              <option value="">Type de produit</option>
-              <option value="Packaging artisanal">Packaging artisanal</option>
-              <option value="Packaging moderne">Packaging moderne</option>
-              <option value="Eau">Eau</option>
-              <option value="Bière">Bière</option>
-              <option value="Sucrerie">Sucrerie</option>
-            </select>
+  name="product"
+  value={formData.product}
+  onChange={handleChange}
+  style={styles.input}
+>
+  <option value="">Type de produit</option>
+  {typesProduit.map((type, index) => (
+    <option key={index} value={type}>{type}</option>
+  ))}
+</select>
+
             <input
               name="unitPrice"
               placeholder="Prix unitaire"

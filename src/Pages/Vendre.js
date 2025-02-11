@@ -70,7 +70,7 @@ const Vendre = () => {
    // Récupérer les types de produits depuis le backend
    const fetchProductTypes = async () => {
     try {
-      const response = await fetch("https://backend-packaging-4c79ed1cf149.herokuapp.com/product-types");
+      const response = await fetch("https://backend-packaging-4c79ed1cf149.herokuapp.com/allproducts");
       if (response.ok) {
         const data = await response.json();
         setProductTypes(data); // Stocker les types de produits dans l'état

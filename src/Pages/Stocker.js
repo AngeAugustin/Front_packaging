@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +13,8 @@ const Stocker = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const { Username } = useAuth();
+
+    const [productTypes, setProductTypes] = useState([]); 
 
   // Nouvelle fonction pour récupérer les détails du produit
   const fetchProductDetails = async (type) => {
@@ -82,6 +84,25 @@ const Stocker = () => {
     }
   };
 
+  // Récupération des types de produits via l'API
+    useEffect(() => {
+      const fetchProductTypes = async () => {
+        try {
+          const response = await fetch('https://backend-packaging-4c79ed1cf149.herokuapp.com/allproducts');
+          if (response.ok) {
+            const data = await response.json();
+            setProductTypes(data); // Assumons que data est un tableau de types de produits
+          } else {
+            console.error("Erreur lors de la récupération des types de produits.");
+          }
+        } catch (error) {
+          console.error("Erreur réseau :", error);
+        }
+      };
+  
+      fetchProductTypes();
+    }, []); // Ce useEffect se déclenche au montage du composant
+
   const handleTypeChange = (e) => {
     const selectedType = e.target.value;
     setTypeProduit(selectedType);
@@ -123,18 +144,21 @@ const Stocker = () => {
         {successMessage && <p style={successStyle}>{successMessage}</p>}
         <div style={{ height: '5px' }}></div>
         <form onSubmit={handleStocker} style={{ width: '100%', maxWidth: 400 }}>
-         <select
-            placeholder="Type de produit"
-            style={{ ...inputStyle, marginBottom: '15px', width: '420px' }}
-            value={typeProduit}
-            onChange={handleTypeChange} // Récupère les détails
-          >
-            <option value="" disabled selected>
-                Type de produit
-            </option>
-            <option value="Packaging artisanal">Packaging artisanal</option>
-            <option value="Packaging moderne">Packaging moderne</option>
-          </select>
+
+
+          <select
+              name="product"
+              value={formData.product}
+              onChange={handleTypeChange}
+              style={styles.input}
+            >
+              <option value="">Sélectionner un produit</option>
+              {productTypes.map((product, index) => (
+                <option key={index} value={product.Type_produit}>
+                  {product.Type_produit}
+                </option>
+              ))}
+            </select>
 
           <input
             type="text"

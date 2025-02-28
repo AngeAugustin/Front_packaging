@@ -30,7 +30,7 @@ const Vendre = () => {
   const { Username } = useAuth();
   const [isMontantPercuValid, setIsMontantPercuValid] = useState(true); // État pour vérifier la validité du montant perçu
   const [productTypes, setProductTypes] = useState([]); 
-
+ 
   const generateParticulierData = () => {
     const randomNumber = Math.floor(100 + Math.random() * 900);
     const generatedName = `Client${randomNumber}`;

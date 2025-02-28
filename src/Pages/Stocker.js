@@ -144,13 +144,12 @@ const Stocker = () => {
         {successMessage && <p style={successStyle}>{successMessage}</p>}
         <div style={{ height: '5px' }}></div>
         <form onSubmit={handleStocker} style={{ width: '100%', maxWidth: 400 }}>
-
-
+         
           <select
-              name="product" 
-              value={formData.product}
+              placeholder="Type de produit"
+              value={typeProduit}
               onChange={handleTypeChange}
-              style={styles.input}
+              style={{ ...inputStyle, marginBottom: '15px', width: '420px' }}
             >
               <option value="">Sélectionner un produit</option>
               {productTypes.map((product, index) => (

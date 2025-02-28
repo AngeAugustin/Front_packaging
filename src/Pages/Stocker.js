@@ -147,7 +147,7 @@ const Stocker = () => {
 
 
           <select
-              name="product"
+              name="product" 
               value={formData.product}
               onChange={handleTypeChange}
               style={styles.input}

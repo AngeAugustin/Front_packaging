@@ -63,7 +63,7 @@ const Inscription = () => {
         },
       };
 
-      const response = await fetch(`https://backend-packaging-4c79ed1cf149.herokuapp.com/inscriptionUser`, options);
+      const response = await fetch(`https://slategrey-mouse-364952.hostingersite.com/Back_packaging/public/inscriptionUser`, options);
 
       if (response.ok) {
         const responseData = await response.json();

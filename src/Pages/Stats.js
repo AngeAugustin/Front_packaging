@@ -12,7 +12,7 @@ const Stats = () => {
   });
 
   useEffect(() => {
-    fetch(`https://backend-packaging-4c79ed1cf149.herokuapp.com/stats/${Username}`)
+    fetch(`https://slategrey-mouse-364952.hostingersite.com/Back_packaging/public/stats/${Username}`)
       .then((res) => res.json())
       .then((data) => {
         setStats({

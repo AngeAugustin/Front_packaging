@@ -67,7 +67,7 @@ const Init = () => {
         },
       };
 
-      const response = await fetch(`https://backend-packaging-4c79ed1cf149.herokuapp.com/initProduit/${Username}`, options);
+      const response = await fetch(`https://slategrey-mouse-364952.hostingersite.com/Back_packaging/public/initProduit/${Username}`, options);
 
       if (response.ok) {
         const responseData = await response.json();

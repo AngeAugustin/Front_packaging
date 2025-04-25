@@ -220,7 +220,7 @@ const Vendre = () => {
       };
 
       const response = await fetch(
-        `https://backend-packaging-4c79ed1cf149.herokuapp.com/vendreProduit/${Username}/${referenceProduit}`,
+        `https://slategrey-mouse-364952.hostingersite.com/Back_packaging/public/vendreProduit/${Username}/${referenceProduit}`,
         options
       );
 

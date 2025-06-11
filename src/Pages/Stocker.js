@@ -85,10 +85,10 @@ const Stocker = () => {
   };
 
   // Récupération des types de produits via l'API
-    useEffect(() => {
+    useEffect(() => { 
       const fetchProductTypes = async () => {
         try {
-          const response = await fetch('https://backend-packaging-4c79ed1cf149.herokuapp.com/allproducts');
+          const response = await fetch('https://slategrey-mouse-364952.hostingersite.com/Back_packaging/public/allproducts');
           if (response.ok) {
             const data = await response.json();
             setProductTypes(data); // Assumons que data est un tableau de types de produits
